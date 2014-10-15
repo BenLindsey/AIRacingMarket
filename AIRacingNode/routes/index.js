@@ -18,12 +18,12 @@ router.get('/leaderboard', function(req, res) {
 });
 
 /* GET New User page. */
-router.get('/time', function(req, res) {
-    res.render('newtime', { title: 'Add New Script Time' });
+router.get('/script', function(req, res) {
+    res.render('newscript', { title: 'Add New Script' });
 });
 
 /* POST to Add User Service */
-router.post('/time', function(req, res) {
+router.post('/script', function(req, res) {
 
     // Set our internal DB variable
     var db = req.db;
@@ -31,16 +31,16 @@ router.post('/time', function(req, res) {
     // Get our form values. These rely on the "name" attributes
     var userName = req.body.username;
     var scriptName = req.body.scriptname;
-    var scriptTime = req.body.scripttime;
-
+    var script = req.body.script;  
+ 
     // Set our collection
-    var collection = db.get('timecollection');
+    var collection = db.get('scriptcollection');
 
     // Submit to the DB
     collection.insert({
-        "username" : userName,
+        "username"   : userName,
         "scriptName" : scriptName,
-        "scriptTime" : scriptTime,
+        "script"     : script
     }, function (err, doc) {
         if (err) {
             // If it failed, return error
@@ -48,9 +48,9 @@ router.post('/time', function(req, res) {
         }
         else {
             // If it worked, set the header so the address bar doesn't still say /adduser
-            res.location("leaderboard");
+            res.location("simulate");
             // And forward to success page
-            res.redirect("leaderboard");
+            res.redirect("simulate");
         }
     });
 });
