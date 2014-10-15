@@ -17,16 +17,14 @@ router.get('/leaderboard', function(req, res) {
   }); 
 });
 
-/* GET New User page. */
-router.get('/script', function(req, res) {
-    res.render('newscript', { title: 'Add New Script' });
+router.get('/script/:name', function(req, res) {
+  var db = req.db;
+  var collection = db.get('scriptcollection');
+  collection.find({"scriptName":req.params.name}, {}, function(e, docs) {
+    var doc = docs.next();
+    res.end(doc.script);
+  }); 
 });
-
-/* GET New User page. */
-router.get('/simulate', function(req, res) {
-    res.render('/WebBuild.html', { });
-});
-
 /* POST to Add User Service */
 router.post('/script', function(req, res) {
 
@@ -52,10 +50,11 @@ router.post('/script', function(req, res) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
+            var url = "/WebBuild.html?url=" + scriptName;
             // If it worked, set the header so the address bar doesn't still say /adduser
-            res.location("/WebBuild.html");
+            res.location(url);
             // And forward to success page
-            res.redirect("/WebBuild.html");
+            res.redirect(url);
         }
     });
 });
