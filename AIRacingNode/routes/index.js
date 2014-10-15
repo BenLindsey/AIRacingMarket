@@ -22,6 +22,11 @@ router.get('/script', function(req, res) {
     res.render('newscript', { title: 'Add New Script' });
 });
 
+/* GET New User page. */
+router.get('/simulate', function(req, res) {
+    res.render('WebBuild.html', { });
+});
+
 /* POST to Add User Service */
 router.post('/script', function(req, res) {
 
@@ -48,9 +53,9 @@ router.post('/script', function(req, res) {
         }
         else {
             // If it worked, set the header so the address bar doesn't still say /adduser
-            res.location("WebBuild");
+            res.location("simulate");
             // And forward to success page
-            res.redirect("WebBuild");
+            res.redirect("simulate");
         }
     });
 });
