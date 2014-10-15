@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Car : MonoBehaviour {
+public class Car : MonoBehaviour  {
+
+    float power = 100f;
+    float throttle;
+
 
 	// Use this for initialization
 	void Start () {
@@ -9,7 +13,15 @@ public class Car : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		rigidbody.AddForce(new Vector3(0,0,10));
+	void FixedUpdate () {
+        rigidbody.AddForce(transform.forward * power * throttle);
 	}
+
+    void OnCollisionStay(Collision collisionInfo) {
+
+    }
+
+    public void SetThrottle(float amount) {
+        throttle = amount;
+    }
 }
