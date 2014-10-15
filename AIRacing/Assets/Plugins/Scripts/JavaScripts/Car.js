@@ -6,6 +6,8 @@ var suspensionSpringRear : float = 9000;
 
 public var brakeLights : Material;
 
+public var allowInput : boolean = true;
+
 var dragMultiplier : Vector3 = new Vector3(2, 5, 1);
 
 var throttle : float = 0; 
@@ -110,6 +112,20 @@ function FixedUpdate()
 	ApplyThrottle(canDrive, relativeVelocity);
 	
 	ApplySteering(canSteer, relativeVelocity);
+}
+
+function SetThrottle(newThrottle : float)
+{
+    // Set the throttle to the given speed and disable user input, otherwise
+    // the car will set the throttle to 0 after recieving no input.
+    throttle = newThrottle;
+    allowInput = false;
+}
+
+function SetSteer(newSteer : float)
+{
+    steer = newSteer;
+    allowInput = false;
 }
 
 /**************************************************/
@@ -242,15 +258,18 @@ function SetUpSkidmarks()
 
 function GetInput()
 {
-	throttle = Input.GetAxis("Vertical");
-	steer = Input.GetAxis("Horizontal");
+    if (allowInput)
+    {
+        throttle = Input.GetAxis("Vertical");
+        steer = Input.GetAxis("Horizontal");
 	
-	if(throttle < 0.0)
-		brakeLights.SetFloat("_Intensity", Mathf.Abs(throttle));
-	else
-		brakeLights.SetFloat("_Intensity", 0.0);
+        if(throttle < 0.0)
+            brakeLights.SetFloat("_Intensity", Mathf.Abs(throttle));
+        else
+            brakeLights.SetFloat("_Intensity", 0.0);
 	
-	CheckHandbrake();
+        CheckHandbrake();
+    }
 }
 
 function CheckHandbrake()

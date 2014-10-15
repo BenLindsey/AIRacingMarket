@@ -1,0 +1,15 @@
+throttle 80
+wait 2
+steer 100
+throttle 100
+wait 2
+steer 0
+throttle 80
+wait 2
+steer 100
+throttle 100
+wait 2
+steer 0
+throttle 80
+steer 0
+throttle 0
