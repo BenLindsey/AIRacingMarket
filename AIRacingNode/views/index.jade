@@ -1,25 +1,20 @@
 extends layout
 
 block content
-  div.top
     h1= title
-    p Wasssssup, welcome to #{title}
-    form.form-horizontal(method="post", id="loginForm")
-      label Enter script : 
-      input.span3(id="Script", type="text", name="User", placeholder="script tings, wagwan")
-      input.btn(type="submit", value="Submit Script")
-  div.container
-    div.content
-      table.table.table-striped
-        thead
-          tr
-            th Table
-            th Heading
-        tbody
-          tr
-            td Blah
-            td Test
-          tr
-            td Hello
-            td World
-  div.footer
+    p wagwan, welcome to #{title}
+
+    block link
+      -var selected = 'index';
+
+    -var menu = {'submit time' : '/time', 'leaderboard' : '/leaderboard'};
+
+    body
+      nav
+        ul
+          each val, key in menu
+            li
+              if selected === key
+                a.selected(href=val, title=key)= key
+              else
+                a(href=val, title=key)= key
