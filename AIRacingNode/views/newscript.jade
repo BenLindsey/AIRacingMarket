@@ -2,9 +2,10 @@ extends basic_navigator
 
 block content
   h1= title
-    form#formAddScript(name="addscript",method="post",action="/script")
+    form#formAddScript(name="addscript",i method="post", action="/script")
         input#inputUserName(type="text", placeholder="username", name="username")
         input#inputScriptName(type="text", placeholder="scriptname", name="scriptname")
+        br
         input#inputScript(type="text", placeholder="script", name="script") 
         button#btnSubmit(type="submit") submit
 

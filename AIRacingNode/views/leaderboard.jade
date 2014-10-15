@@ -4,15 +4,17 @@ block content
   h1.
     Leaderboard
   div
-    table
-      tr
-        th
-        th
-        th
-      - if (leaderboard.length) {
-      each entry, i in leaderboard
+    table.table.table-striped.table-hover
+      thead
         tr
-          td= entry.username
-          td= entry.scriptName
-          td= entry.scriptTime
-      - }
+          th Name
+          th Script Name
+          th Time
+        tbody
+        - if (leaderboard.length) {
+        each entry, i in leaderboard
+          tr
+            td= entry.username
+            td= entry.scriptName
+            td= entry.scriptTime
+        - }
