@@ -17,6 +17,11 @@ router.get('/leaderboard', function(req, res) {
   }); 
 });
 
+/* GET New User page. */
+router.get('/script', function(req, res) {
+    res.render('newscript', { title: 'Add New Script' });
+});
+
 router.get('/script/:name', function(req, res) {
   var db = req.db;
   var collection = db.get('scriptcollection');
