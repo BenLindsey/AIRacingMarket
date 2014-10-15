@@ -48,9 +48,9 @@ router.post('/script', function(req, res) {
         }
         else {
             // If it worked, set the header so the address bar doesn't still say /adduser
-            res.location("simulate");
+            res.location("WebBuild");
             // And forward to success page
-            res.redirect("simulate");
+            res.redirect("WebBuild");
         }
     });
 });
