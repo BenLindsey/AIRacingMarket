@@ -1,4 +1,4 @@
-extends basic_navigator
+extends index
 
 block content
   h1.
@@ -9,17 +9,17 @@ block content
       fieldset
         .form-group
           label.col-lg-2.control-label(for='inputUserName') Name
-          .col-lg-10
+          .col-lg-6
             input#inputUserName.form-control(placeholder='Enter your Name', type='text', name="username")
         .form-group
           label.col-lg-2.control-label(for='inputScriptName') Script Name
-          .col-lg-10
+          .col-lg-6
             input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
         .form-group
           label.col-lg-2.control-label(for='inputScript') Script
-          .col-lg-10
-            textarea#inputScript.form-control(placeholder='Enter your Script', rows='3', name="script")
+          .col-lg-6
+            textarea#inputScript.form-control(placeholder='Enter your Script', rows='5', name="script")
         .form-group
-          .col-lg-10.col-lg-offset-2
-            button.btn.btn-default Cancel
+          .col-lg-6.col-lg-offset-2
+            button.btn.btn-default(type='reset') Reset
             button.btn.btn-primary(type='submit') Submit

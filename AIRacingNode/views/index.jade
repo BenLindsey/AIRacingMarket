@@ -1,20 +1,7 @@
-extends layout
+extends basic_navigator
 
 block content
-    h1= title
-    p wagwan, welcome to #{title}
+  h1= title
+  h5.
+    DA SIKIST RACING GAEM EVER
 
-    block link
-      -var selected = 'index';
-    
-    -var menu = {'submit script' : '/script', 'leaderboard' : '/leaderboard'};
-
-    body
-      nav
-        ul
-          each val, key in menu
-            li
-              if selected === key
-                a.selected(href=val, title=key)= key
-              else
-                a(href=val, title=key)= key
