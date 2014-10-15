@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+    form#formAddTime(name="addtime",method="post",action="/time")
+        input#inputUserName(type="text", placeholder="username", name="username")
+        input#inputScriptName(type="text", placeholder="scriptname", name="scriptname")
+        input#inputScriptTime(type="text", placeholder="scripttime", name="scripttime") 
+        button#btnSubmit(type="submit") submit

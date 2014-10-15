@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1.
+    Leaderboard
+  ul
+    each entry, i in leaderboard
+      li
+        = entry.username + "/" + entry.scriptName + "/" + entry.scriptTime
