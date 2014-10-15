@@ -3,21 +3,23 @@ extends basic_navigator
 block content
   h1.
     Create your Racing Script
-  div
+
+  div.well.bs-component
     form.form-horizontal
-        fieldset
-            legend Legend
-            .form-group
-              label.col-lg-2.control-label(for='inputUserName') Name
-              .col-lg-10
-                input#inputUserName.form-control(placeholder='Name', type='text')
-            .form-group
-              label.col-lg-2.control-label(for='inputScriptName') Script Name
-              .col-lg-10
-          input#inputScriptName(placeholder='Script Name', type='text')
-            .form-group
-              label.col-lg-2.control-label(for='inputScript') Script
-              .col-lg-10
-                textarea#inputScript.form-control(rows='5')
-                button.btn.btn-default Cancel
-                button.btn.btn-primary(type='submit') Submit
+      fieldset
+        .form-group
+          label.col-lg-2.control-label(for='inputUserName') Name
+          .col-lg-10
+            input#inputUserName.form-control(placeholder='Enter your Name', type='text', name="username")
+        .form-group
+          label.col-lg-2.control-label(for='inputScriptName') Script Name
+          .col-lg-10
+            input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
+        .form-group
+          label.col-lg-2.control-label(for='inputScript') Script
+          .col-lg-10
+            textarea#inputScript.form-control(placeholder='Enter your Script', rows='3', name="script")
+        .form-group
+          .col-lg-10.col-lg-offset-2
+            button.btn.btn-default Cancel
+            button.btn.btn-primary(type='submit') Submit
