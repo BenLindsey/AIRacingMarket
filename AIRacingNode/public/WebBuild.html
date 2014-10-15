@@ -57,10 +57,26 @@
 					}
 				});
 				u.initPlugin(jQuery("#unityPlayer")[0], "WebBuild.unity3d");
-});
-function SetScript(arg) {
-    u.getUnity().SendMessage("Interpreter", "SetScriptPath", "http://fcexb.com/test.txt");
-}
+        });
+
+        function parse(val) {
+            var result = "Not found",
+                        tmp = [];
+            location.search
+            //.replace ( "?", "" ) 
+            // this is better, there might be a question mark inside
+                    .substr(1)
+                        .split("&")
+                        .forEach(function (item) {
+                            tmp = item.split("=");
+                            if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+                        });
+            return result;
+        }
+
+        function SetScript(arg) { 
+            u.getUnity().SendMessage("Interpreter", "SetScriptPath", parse("url"));
+        }
 		-->
 		</script>
 		<style type="text/css">
