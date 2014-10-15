@@ -25,11 +25,11 @@ router.get('/script', function(req, res) {
 router.get('/script/:name', function(req, res) {
   var db = req.db;
   var collection = db.get('scriptcollection');
-  collection.find({"scriptName":req.params.name}, {}, function(e, docs) {
-    var doc = docs.next();
-    res.end(doc.script);
+  collection.findOne({scriptName:req.params.name},  function(e, doc) {
+    res.send(doc.script, 200); 
   }); 
 });
+
 /* POST to Add User Service */
 router.post('/script', function(req, res) {
 
