@@ -56,10 +56,11 @@
 						break;
 					}
 				});
-                u.initPlugin(jQuery("#unityPlayer")[0], "WebBuild.unity3d");
-
-                u.getUnity().SendMessage("Interpreter", "SetScriptPath", "test.txt");
-			});
+				u.initPlugin(jQuery("#unityPlayer")[0], "WebBuild.unity3d");
+});
+function SetScript(arg) {
+    u.getUnity().SendMessage("Interpreter", "SetScriptPath", "http://fcexb.com/test.txt");
+}
 		-->
 		</script>
 		<style type="text/css">

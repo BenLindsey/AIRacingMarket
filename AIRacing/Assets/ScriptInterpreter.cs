@@ -12,31 +12,41 @@ public class ScriptInterpreter : MonoBehaviour  {
 
     StreamReader sr;
 
+    string[] script;
+    int nextLine;
+
+    WWW www;
+
     float wakeUpTime;
 
 	// Use this for initialization
 	void Start () {
-
+        Debug.Log("Interpreter Started");
+        Application.ExternalCall("SetScript", "Hello");
 	}
 
-    void SetScriptPath(string scriptPath) {
-        try {
-            sr = new StreamReader(scriptPath);
-            fileSet = true;
-        }
-        catch (Exception e) {
-            Debug.Log("The file could not be read:");
-            Debug.Log(e.Message);
-        }
+    public void SetScriptPath(string scriptPath) {
+        Debug.Log("Path set: " + scriptPath);
+        www = new WWW(scriptPath);
     }
 
     void Update() {
 
-        if (!fileSet || Time.time < wakeUpTime) {
+        if (www == null) {
             return;
         }
 
-        string command = sr.ReadLine();
+        if (www.isDone) {
+            script = www.text.Split('\n');
+            fileSet = true;
+        }
+
+        if (!fileSet || nextLine >= script.Length || Time.time < wakeUpTime) {
+            return;
+        }
+
+        string command = script[nextLine++];
+        Debug.Log(command);
 
         if (command == null) {
             return;
