@@ -8,24 +8,31 @@ public class ScriptInterpreter : MonoBehaviour  {
     public Car car;
     public string scriptPath;
 
+    bool fileSet;
+
     StreamReader sr;
 
     float wakeUpTime;
 
 	// Use this for initialization
 	void Start () {
-	    try {
+
+	}
+
+    void SetScriptPath(string scriptPath) {
+        try {
             sr = new StreamReader(scriptPath);
+            fileSet = true;
         }
         catch (Exception e) {
             Debug.Log("The file could not be read:");
             Debug.Log(e.Message);
         }
-	}
+    }
 
     void Update() {
 
-        if (Time.time < wakeUpTime) {
+        if (!fileSet || Time.time < wakeUpTime) {
             return;
         }
 

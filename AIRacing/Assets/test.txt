@@ -1,3 +1,7 @@
 throttle 100
 wait 2
 throttle 0
+wait 2
+throttle -100
+wait 2
+throttle 0
