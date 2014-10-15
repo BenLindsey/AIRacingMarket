@@ -1,9 +1,10 @@
-extends layout
+extends basic_navigator
 
 block content
   h1= title
-    form#formAddTime(name="addtime",method="post",action="/time")
+    form#formAddScript(name="addscript",method="post",action="/script")
         input#inputUserName(type="text", placeholder="username", name="username")
         input#inputScriptName(type="text", placeholder="scriptname", name="scriptname")
-        input#inputScriptTime(type="text", placeholder="scripttime", name="scripttime") 
+        input#inputScript(type="text", placeholder="script", name="script") 
         button#btnSubmit(type="submit") submit
+
