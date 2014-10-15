@@ -1,5 +1,25 @@
 extends layout
 
 block content
-  h1= title
-  p Wasssssup, welcome to #{title}
+  div.top
+    h1= title
+    p Wasssssup, welcome to #{title}
+    form.form-horizontal(method="post", id="loginForm")
+      label Enter script : 
+      input.span3(id="Script", type="text", name="User", placeholder="script tings, wagwan")
+      input.btn(type="submit", value="Submit Script")
+  div.container
+    div.content
+      table.table.table-striped
+        thead
+          tr
+            th Table
+            th Heading
+        tbody
+          tr
+            td Blah
+            td Test
+          tr
+            td Hello
+            td World
+  div.footer
