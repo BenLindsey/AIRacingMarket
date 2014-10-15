@@ -1,0 +1,3 @@
+throttle 100
+wait 2
+throttle 0
