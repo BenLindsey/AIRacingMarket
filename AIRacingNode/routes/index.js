@@ -24,7 +24,7 @@ router.get('/script', function(req, res) {
 
 /* GET New User page. */
 router.get('/simulate', function(req, res) {
-    res.render('WebBuild.html', { });
+    res.render('WebBuild', { });
 });
 
 /* POST to Add User Service */
