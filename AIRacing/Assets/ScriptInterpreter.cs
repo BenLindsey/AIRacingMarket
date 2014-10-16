@@ -7,7 +7,7 @@ public class ScriptInterpreter : MonoBehaviour  {
 
     public Car car;
 
-    const string URL = "http://http://146.169.47.15:3000/";
+    const string URL = "http://146.169.47.15:3000/";
 
     string scriptName;
     string scriptPath;
@@ -35,7 +35,7 @@ public class ScriptInterpreter : MonoBehaviour  {
 
         Debug.Log("Script name set: " + scriptName);
 
-        string scriptPath = URL + "/script/" + scriptName;
+        string scriptPath = URL + "script/" + scriptName;
         Debug.Log("Path set: " + scriptPath);
         
         www = new WWW(scriptPath);
