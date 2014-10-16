@@ -96,12 +96,12 @@ app.use(function(err, req, res, next) {
     });
 });
 
-router.get('/', function(req, res) {
+app.get('/', function(req, res) {
     res.render('signup', {  title: 'Register' , message: req.flash('signupMessage') })
 });
 
 // process the signup form
-router.post('/', passport.authenticate('local-signup', {
+app.post('/', passport.authenticate('local-signup', {
     successRedirect : '/profile', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
