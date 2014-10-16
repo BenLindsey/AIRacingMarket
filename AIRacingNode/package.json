@@ -23,6 +23,7 @@
     "passport-twitter" : "*",
     "passport-google-oauth" : "*",
     "bcrypt-nodejs" : "*",
-    "connect-flash" : "*"
+    "connect-flash" : "*",
+    "express-session": "*"
   }
 }
