@@ -11,7 +11,9 @@ var monk = require('monk');
 var db = monk('localhost:27017/AIRacingNode');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var script = require('./routes/script');
+var time = require('./routes/time');
+var leaderboard = require('./routes/leaderboard');
 
 var app = express();
 
@@ -34,7 +36,10 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/script', script);
+app.use('/time', time);
+app.use('/leaderboard', leaderboard);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
