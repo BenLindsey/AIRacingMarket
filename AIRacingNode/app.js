@@ -4,16 +4,25 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var flash = require('connect-flash');
+var session = require('express-session');
+var bcrypt  = require('bcrypt-nodejs');
+
+var configDB = require('./config/database.js');
 
 // setup mongo
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/AIRacingNode');
+var db = monk(configDB.url);
 
 var routes = require('./routes/index');
 var script = require('./routes/script');
 var time = require('./routes/time');
 var leaderboard = require('./routes/leaderboard');
+var login = require('./routes/login');
+var logout = require('./routes/logout');
+var signup = require('./routes/signup');
 
 var app = express();
 
@@ -29,9 +38,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// pass mongo to the router
+app.use(session({ secret: 'cakeissogoodomgguysseriously'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+
+// pass passport/mongo to the router
 app.use(function(req, res, next) {
     req.db = db;
+    req.passport = passport;
+    req.flash = flash;
     next();
 });
 
@@ -39,7 +56,9 @@ app.use('/', routes);
 app.use('/script', script);
 app.use('/time', time);
 app.use('/leaderboard', leaderboard);
-
+app.use('/login', login);
+app.use('/logout', logout);
+app.use('/signup', signup);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -72,5 +91,14 @@ app.use(function(err, req, res, next) {
     });
 });
 
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 module.exports = app;
