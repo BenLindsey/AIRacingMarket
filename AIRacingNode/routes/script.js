@@ -6,7 +6,9 @@ router.get('/', function(req, res) {
     res.render('newscript', { title: 'Add New Script' });
 });
 
-router.get('/:name', function(req, res) {
+router.get('/:name', req.passport.authenticate('local-login', {
+    failureRedirect: '/login'// redirect back to the signup page if there is an error
+}), function(req, res) {
     var db = req.db;
     var collection = db.get('scriptcollection');
     collection.findOne({scriptName:req.params.name},  function(e, doc) {
@@ -15,7 +17,9 @@ router.get('/:name', function(req, res) {
 });
 
 /* POST to Add User Service */
-router.post('/', function(req, res) {
+router.post('/', req.passport.authenticate('local-login', {
+    failureRedirect: '/login'// redirect back to the signup page if there is an error
+}), function(req, res) {
 
     // Set our internal DB variable
     var db = req.db;
