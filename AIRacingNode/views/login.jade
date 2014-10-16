@@ -1,25 +1,24 @@
 extends index
 
 block content
-  h1.
-    Log in
+  h1=title
 
   div.well.bs-component
-    form#newScriptForm.form-horizontal(method='post')
+    form#loginForm.form-horizontal(method='post')
       fieldset
         .form-group
-          label.col-lg-2.control-label(for='inputUserName') Name
+          label.col-lg-2.control-label(for='inputEmail') Email Address
           .col-lg-6
-            input#inputUserName.form-control(placeholder='Enter your Name', type='text', name="username")
-        .form-group
-          label.col-lg-2.control-label(for='inputScriptName') Script Name
-          .col-lg-6
-            input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
-        .form-group
-          label.col-lg-2.control-label(for='inputScript') Script
-          .col-lg-6
-            textarea#inputScript.form-control(placeholder='Enter your Script', rows='5', name="script")
-        .form-group
-          .col-lg-6.col-lg-offset-2
-            button.btn.btn-default(type='reset') Reset
-            button.btn.btn-primary(type='submit') Submit
+            input#inputEmail.form-control(placeholder='Enter your Email', type='email', name="email")
+         .form-group
+           label.col-lg-2.control-label(for='inputPassword') Password
+           .col-lg-6
+             input#inputPassword.form-control(placeholder='Enter a Password', type='password', name="password")
+          .form-group
+            .col-lg-6.col-lg-offset-2
+              button.btn.btn-default(type='reset') Reset
+              button.btn.btn-primary(type='submit') Login
+
+  p 
+    | Need an account? 
+    a(href='/register') Click here to register.
