@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 /* GET New User page. */
-router.get('/',
+router.get('/', isLoggedIn,
     function(req, res) {
     res.render('newscript', { title: 'Add New Script' });
 });
 
-router.get('/:name',
+router.get('/:name', isLoggedIn,
     function(req, res) {
         var db = req.db;
         var collection = db.get('scriptcollection');
@@ -17,7 +17,7 @@ router.get('/:name',
 });
 
 /* POST to Add User Service */
-router.post('/',
+router.post('/', isLoggedIn,
     function(req, res) {
 
     // Set our internal DB variable
@@ -50,5 +50,16 @@ router.post('/',
         }
     });
 });
+
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
+
 
 module.exports = router;
