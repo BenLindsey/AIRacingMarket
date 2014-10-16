@@ -7,3 +7,14 @@ block content
   div.well.bs-component
     form#registerForm.form-horizontal(method='post')
       fieldset
+	.form-group
+	  label.col-lg-2.control-label(for='inputUserName') User Name
+	  .col-lg-6
+	    input#inputUserName.form-control(placeholder='Choose your User Name', type='text', name="username")
+	.form-group
+	  label.col-lg-2.control-label(for='inputPassword') Password
+	  .col-lg-6
+	    input#inputUserName.form-control(type='password', name="password")
+	.form-group
+	  col-lg-6.col-lg-offset-2
+	    button.btn.btn-primary(type='submit') Submit
