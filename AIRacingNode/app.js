@@ -15,6 +15,7 @@ var script = require('./routes/script');
 var time = require('./routes/time');
 var leaderboard = require('./routes/leaderboard');
 var register = require('./routes/register');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -40,7 +41,8 @@ app.use('/', routes);
 app.use('/script', script);
 app.use('/time', time);
 app.use('/leaderboard', leaderboard);
-
+app.use('/register', register);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
