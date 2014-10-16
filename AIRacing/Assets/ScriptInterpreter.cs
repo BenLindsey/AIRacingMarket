@@ -6,7 +6,11 @@ using System.IO;
 public class ScriptInterpreter : MonoBehaviour  {
 
     public Car car;
-    public string scriptPath;
+
+    const string URL = "http://http://146.169.47.15:3000/";
+
+    string scriptName;
+    string scriptPath;
 
     bool fileSet;
 
@@ -22,11 +26,18 @@ public class ScriptInterpreter : MonoBehaviour  {
 	// Use this for initialization
 	void Start () {
         Debug.Log("Interpreter Started");
-        //Application.ExternalCall("SetScript", "Hello");
+        //Application.ExternalCall("SetScript", "");
 	}
 
-    public void SetScriptPath(string scriptPath) {
+    public void SetScriptName(string scriptName) {
+
+        this.scriptName = scriptName;
+
+        Debug.Log("Script name set: " + scriptName);
+
+        string scriptPath = URL + "/script/" + scriptName;
         Debug.Log("Path set: " + scriptPath);
+        
         www = new WWW(scriptPath);
     }
 
@@ -80,5 +91,30 @@ public class ScriptInterpreter : MonoBehaviour  {
         else {
             Debug.LogWarning("Ignoring unknown command.");
         }
+    }
+
+
+    bool timeSent = false;
+
+    // On End Zone enter    
+    void OnTriggerEnter(Collider other) {
+        if (timeSent)
+            return;
+
+        StartCoroutine(SendTime(Time.time));
+    }
+
+    IEnumerator SendTime(float time) {
+        // Create a Web Form
+        var form = new WWWForm();
+        form.AddField("scriptname", scriptName);
+        form.AddField("time", time.ToString());
+        form.AddField("username", "Unity King");
+
+        WWW www = new WWW(URL + "time/", form);
+
+        yield return www;
+
+        timeSent = true;
     }
 }

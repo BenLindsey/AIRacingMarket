@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET times */
+/* GET Times */
 router.get('/', function(req, res) {
     var db = req.db;
     var collection = db.get('timecollection');
