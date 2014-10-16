@@ -8,14 +8,14 @@ block content
                     label.col-lg-2.control-label(for='inputEmail') Email Address
                     .col-lg-6
                         input#inputEmail.form-control(placeholder='Enter your Email', type='email', name="email")
-                    .form-group
-                        label.col-lg-2.control-label(for='inputPassword') Password
-                        .col-lg-6
-                            input#inputPassword.form-control(placeholder='Enter a Password', type='password', name="password")
-                        .form-group
-                            .col-lg-6.col-lg-offset-2
-                                button.btn.btn-default(type='reset') Reset
-                                button.btn.btn-primary(type='submit') Login
+                .form-group
+                    label.col-lg-2.control-label(for='inputPassword') Password
+                    .col-lg-6
+                        input#inputPassword.form-control(placeholder='Enter a Password', type='password', name="password")
+                .form-group
+                    .col-lg-6.col-lg-offset-2
+                        button.btn.btn-default(type='reset') Reset
+                        button.btn.btn-primary(type='submit') Login
     p
         | Need an account?
         a(href='/register') Click here to register.
