@@ -6,14 +6,16 @@ block content
         form#registerForm.form-horizontal(method='post')
             fieldset
                 .form-group
-                    label.col-lg-2.control-label(for='inputLogin') Login
-                        .col-lg-6
-                        input#inputLogin.form-control(placeholder='Enter your email', type='text', name="login")
+                    label.col-lg-2.control-label(for='inputLogin') Email Address
+                    .col-lg-6
+                        input#inputLogin.form-control(placeholder='Enter your Email', type='text', name="login")
                 .form-group
                     label.col-lg-2.control-label(for='inputPassword') Password
-                        .col-lg-6
-                        input#inputPassword.form-control(placeholder='Enter a password', type='password', name="password")
+                    .col-lg-6
+                        input#inputPassword.form-control(placeholder='Enter a Password', type='password', name="password")
                 .form-group
-                    col-lg-6.col-lg-offset-2
-                    button.btn.btn-default(type='reset') Reset
-                    button.btn.btn-primary(type='submit') Submit
+                    .col-lg-6.col-lg-offset-2
+                        button.btn.btn-primary(type='submit') Register
+    p
+        | Have an account?
+        a(href='/login')  Click here to login.
