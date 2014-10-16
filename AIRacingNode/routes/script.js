@@ -2,7 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 /* GET New User page. */
-router.get('/', function(req, res) {
+router.get('/',
+    function(req, res) {
+        return req.passport.authenticate('local-login', {
+            failureRedirect: '/login'// redirect back to the login page if there is an error
+        })(req, res)
+    },
+    function(req, res) {
     res.render('newscript', { title: 'Add New Script' });
 });
 
