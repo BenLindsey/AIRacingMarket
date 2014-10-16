@@ -11,7 +11,7 @@ router.post('/', function(req, res) {
       successRedirect: '/leaderboard',
       failureRedirect: '/login', // redirect back to the signup page if there is an error
       failureFlash: true // allow flash messages
-    })
+  })(req, res);
 });
 
 module.exports = router;
