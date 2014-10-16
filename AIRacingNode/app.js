@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
-var bcrypt  = require('bcrypt-nodejs');
 
 var configDB = require('./config/database.js');
 require('./config/passport')(passport);

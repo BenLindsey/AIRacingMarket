@@ -8,6 +8,7 @@ router.get('/', function(req, res) {
 
 // process the signup form
 router.post('/', function(req, res) {
+    console.log("Post");
     req.passport.authenticate('local-signup', {
         successRedirect : '/script', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
