@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET New User page. */
 router.get('/', function(req, res) {
-    res.render('signup', { message: req.flash('signupMessage') })
+    res.render('signup', {  title: 'Register' , message: req.flash('signupMessage') })
 });
 
 // process the signup form
