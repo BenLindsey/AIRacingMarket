@@ -6,20 +6,27 @@ router.get('/', function(req, res) {
     res.render('newscript', { title: 'Add New Script' });
 });
 
-router.get('/:name', req.passport.authenticate('local-login', {
-    failureRedirect: '/login'// redirect back to the signup page if there is an error
-}), function(req, res) {
-    var db = req.db;
-    var collection = db.get('scriptcollection');
-    collection.findOne({scriptName:req.params.name},  function(e, doc) {
-        res.send(doc.script, 200);
+router.get('/:name',
+    function(req, res) {
+        return req.passport.authenticate('local-login', {
+            failureRedirect: '/login'// redirect back to the login page if there is an error
+        })(req, res)
+    },
+    function(req, res) {
+        var db = req.db;
+        var collection = db.get('scriptcollection');
+        collection.findOne({scriptName:req.params.name},  function(e, doc) {
+            res.send(doc.script, 200);
     });
 });
 
 /* POST to Add User Service */
-router.post('/', req.passport.authenticate('local-login', {
-    failureRedirect: '/login'// redirect back to the signup page if there is an error
-}), function(req, res) {
+router.post('/',
+    function(req, res) {
+        return req.passport.authenticate('local-login', {
+            failureRedirect: '/login'// redirect back to the login page if there is an error
+        })(req, res)
+    }, function(req, res) {
 
     // Set our internal DB variable
     var db = req.db;
