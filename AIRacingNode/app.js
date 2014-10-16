@@ -10,6 +10,7 @@ var session = require('express-session');
 var bcrypt  = require('bcrypt-nodejs');
 
 var configDB = require('./config/database.js');
+require('./config/passport')(passport);
 
 // setup mongo
 var mongo = require('mongodb');
