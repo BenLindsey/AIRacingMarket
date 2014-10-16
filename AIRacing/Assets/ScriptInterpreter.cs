@@ -26,7 +26,7 @@ public class ScriptInterpreter : MonoBehaviour  {
 	// Use this for initialization
 	void Start () {
         Debug.Log("Interpreter Started");
-        //Application.ExternalCall("SetScript", "");
+        Application.ExternalCall("SetScript", "");
 	}
 
     public void SetScriptName(string scriptName) {
