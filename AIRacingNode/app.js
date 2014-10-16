@@ -14,6 +14,7 @@ var routes = require('./routes/index');
 var script = require('./routes/script');
 var time = require('./routes/time');
 var leaderboard = require('./routes/leaderboard');
+var register = require('./routes/register');
 
 var app = express();
 
