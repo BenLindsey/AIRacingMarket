@@ -39,7 +39,7 @@ router.post('/', function(req, res) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
-            var url = "/WebBuild.html?url=http://146.169.47.15:3000/script/" + scriptName;
+            var url = "/WebBuild.html?scriptname=" + scriptName;
             // If it worked, set the header so the address bar doesn't still say /adduser
             res.location(url);
             // And forward to success page
