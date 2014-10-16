@@ -4,20 +4,10 @@ var router = express.Router();
 /* GET New User page. */
 router.get('/',
     function(req, res) {
-        return req.passport.authenticate('local-login', {
-            failureRedirect: '/login'// redirect back to the login page if there is an error
-        })(req, res)
-    },
-    function(req, res) {
     res.render('newscript', { title: 'Add New Script' });
 });
 
 router.get('/:name',
-    function(req, res) {
-        return req.passport.authenticate('local-login', {
-            failureRedirect: '/login'// redirect back to the login page if there is an error
-        })(req, res)
-    },
     function(req, res) {
         var db = req.db;
         var collection = db.get('scriptcollection');
@@ -29,10 +19,6 @@ router.get('/:name',
 /* POST to Add User Service */
 router.post('/',
     function(req, res) {
-        return req.passport.authenticate('local-login', {
-            failureRedirect: '/login'// redirect back to the login page if there is an error
-        })(req, res)
-    }, function(req, res) {
 
     // Set our internal DB variable
     var db = req.db;
