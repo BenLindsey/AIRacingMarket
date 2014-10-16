@@ -7,9 +7,13 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
+var mongoose = require('mongoose');
 
 var configDB = require('./config/database.js');
-require('./config/passport')(passport);
+
+mongoose.connect(configDB.url); // connect to our database
+
+require('./config/passport')(passport); // pass passport for configuration
 
 // setup mongo
 var mongo = require('mongodb');
@@ -22,7 +26,7 @@ var time = require('./routes/time');
 var leaderboard = require('./routes/leaderboard');
 var login = require('./routes/login');
 var logout = require('./routes/logout');
-var signup = require('./routes/signup');
+//var signup = require('./routes/signup');
 
 
 var app = express();
@@ -91,6 +95,17 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
+
+router.get('/', function(req, res) {
+    res.render('signup', {  title: 'Register' , message: req.flash('signupMessage') })
+});
+
+// process the signup form
+router.post('/', passport.authenticate('local-signup', {
+    successRedirect : '/profile', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+}));
 
 function isLoggedIn(req, res, next) {
 
