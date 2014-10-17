@@ -2,14 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/', function(req, res) {
-
     // Set our internal DB variable
     var db = req.db;
 
     // Get our form values. These rely on the "name" attributes
     var userName = req.body.username;
     var scriptName = req.body.scriptname;
-    var scriptTime = req.body.scripttime;
+    var scriptTime = req.body.time;
 
     // Set our collection
     var collection = db.get('timecollection');
