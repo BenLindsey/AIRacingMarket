@@ -5,7 +5,7 @@ using System.IO;
 
 public class ScriptInterpreter : MonoBehaviour  {
 
-    public Car car;
+    public AiApi aiApi;
 
     const string URL = "http://146.169.47.15:3000/";
 
@@ -73,13 +73,13 @@ public class ScriptInterpreter : MonoBehaviour  {
             int throttle = int.Parse(command.Substring(9, command.Length - 9));
             Debug.Log("Set throttle:" + throttle);
 
-            car.SetThrottle(throttle / 100.0f);
+            aiApi.SetThrottle(throttle);
         }
         else if (command.StartsWith("steer")) {
             int steer = int.Parse(command.Substring(6, command.Length - 6));
             Debug.Log("Set steer:" + steer);
 
-            car.SetSteer(steer / 100f);
+			aiApi.SetSteer(steer);
         }
         else if (command.StartsWith("wait"))
         {
