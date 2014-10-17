@@ -8,7 +8,7 @@ router.post('/', function(req, res) {
     // Get our form values. These rely on the "name" attributes
     var userName = req.body.username;
     var scriptName = req.body.scriptname;
-    var scriptTime = parseInt(req.body.time, 10);
+    var scriptTime = parseFloat(req.body.time);
 
     // Set our collection
     var collection = db.get('timecollection');
