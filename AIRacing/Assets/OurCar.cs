@@ -15,23 +15,13 @@ public class OurCar : MonoBehaviour {
 	
 	}
 
-	void Update() {
-	}
-	
 	// Update is called once per frame
 	void FixedUpdate () {
-
-
-		/*if (!Physics.Raycast(transform.position, -transform.up, 5f)) {
-			return;
-		}*/
-
 
 		if(rigidbody.velocity.magnitude < maxSpeed){
 			leftWheel.UpdateWheelForce();
 			rightWheel.UpdateWheelForce();
 		}
-
 	}
 
 	public void SetThrottle(float value) {
@@ -42,7 +32,7 @@ public class OurCar : MonoBehaviour {
 			brakeLights.SetFloat("_Intensity", 0);
 		}
 
-		float wheelSpeed = value * 100;
+		float wheelSpeed = value * 200;
 
 		leftWheel.SetWheelSpeed(wheelSpeed);
 		rightWheel.SetWheelSpeed(wheelSpeed);

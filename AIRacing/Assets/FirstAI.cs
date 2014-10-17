@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class FirstAI : MonoBehaviour {
@@ -7,31 +7,26 @@ public class FirstAI : MonoBehaviour {
 	
 	void Start () {
 		api = GetComponentInChildren<AiApi>();
-
-		api.SetThrottle(50f);
+		api.SetThrottle(45f);
 	}
 
 	void FixedUpdate () {
-		/*
-		if (Time.time > 2) {
-			api.SetSteer(30);
-		}*/
 
-		float rightDistance = api.GetDistanceToNearestObstacle(90);
-		float leftDistance = api.GetDistanceToNearestObstacle(-90);
+		float rightDistance = api.GetDistanceToNearestObstacle(75);
+		float leftDistance = api.GetDistanceToNearestObstacle(-75);
 
 		if (rightDistance < 0 || leftDistance < 0) {
 			return;
 		}
 
-		//rightDistance = Mathf.Clamp(rightDistance, 0, 50);
-		//leftDistance = Mathf.Clamp(leftDistance, 0, 50);
-		//rightDistance = (rightDistance + lastRight) / 2;
-		//leftDistance = (leftDistance + lastLeft) / 2;
+		float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
 
-		float difference = rightDistance - leftDistance;
+		api.SetSteer(position * 45);
 
-		api.SetSteer(difference * 15);
-		//Debug.Log(difference * 10);
+		/*if (Mathf.Abs(position) > 0.9) {
+			api.SetThrottle(100f);
+		} else {
+			api.SetThrottle(70f);
+		}*/
 	}
 }

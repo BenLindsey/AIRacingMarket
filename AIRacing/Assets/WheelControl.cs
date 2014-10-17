@@ -7,6 +7,7 @@ public class WheelControl : MonoBehaviour {
 	float wheelSpeed;
 
 	Transform car;
+	
 
 	// Use this for initialization
 	void Start () {
@@ -20,19 +21,15 @@ public class WheelControl : MonoBehaviour {
 			currentAngle = -currentAngle;
 		}
 
-		Debug.Log("Current: " + currentAngle + " Target: " + steerAngle);
+		Debug.Log("Steer: " + steerAngle);
 
-		//float difference = steerAngle - currentAngle; 
-
-		//float mag = difference * 0.1f;
-
-		//Debug.Log(difference);
-		rigidbody.MoveRotation(Quaternion.AngleAxis(steerAngle - 135, car.up));
-
+		rigidbody.MoveRotation(Quaternion.AngleAxis(steerAngle, car.up) * car.rotation);
 	}
 
 	public void UpdateWheelForce() {
-		rigidbody.AddForce(transform.forward * wheelSpeed);
+		if (Physics.Raycast(transform.position, -transform.up, 0.6f)) {
+			rigidbody.AddForce(transform.forward * wheelSpeed);
+		}
 	}
 
 	public void SetTurnAngle(float value) {
