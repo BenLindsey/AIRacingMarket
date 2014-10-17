@@ -8,10 +8,14 @@ public class FirstAI : MonoBehaviour {
 	void Start () {
 		api = GetComponentInChildren<AiApi>();
 
-		api.SetThrottle(0.00001f);
+		api.SetThrottle(50f);
 	}
 
 	void FixedUpdate () {
+		/*
+		if (Time.time > 2) {
+			api.SetSteer(30);
+		}*/
 
 		float rightDistance = api.GetDistanceToNearestObstacle(90);
 		float leftDistance = api.GetDistanceToNearestObstacle(-90);
@@ -20,12 +24,14 @@ public class FirstAI : MonoBehaviour {
 			return;
 		}
 
-		rightDistance = Mathf.Clamp(rightDistance, 0, 10);
-		leftDistance = Mathf.Clamp(leftDistance, 0, 10);
+		//rightDistance = Mathf.Clamp(rightDistance, 0, 50);
+		//leftDistance = Mathf.Clamp(leftDistance, 0, 50);
+		//rightDistance = (rightDistance + lastRight) / 2;
+		//leftDistance = (leftDistance + lastLeft) / 2;
 
 		float difference = rightDistance - leftDistance;
 
-		api.SetSteer(difference);
-		Debug.Log(difference);
+		api.SetSteer(difference * 15);
+		//Debug.Log(difference * 10);
 	}
 }

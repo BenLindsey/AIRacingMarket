@@ -3,10 +3,11 @@ using System.Collections;
 
 public class AiApi : MonoBehaviour {
 
-	public Car car;
+	OurCar car;
 
 	// Use this for initialization
 	void Start () {
+		car = transform.parent.GetComponentInChildren<OurCar>();
 	}
 
 	public float GetDistanceToNearestObstacle(float deg) {
@@ -27,7 +28,7 @@ public class AiApi : MonoBehaviour {
 	}
 
 	public void SetSteer(float value) {
-		value = Mathf.Clamp(value, -100, 100);
-		car.SetSteer(value / 100f);
+		value = Mathf.Clamp(value, -45, 45);
+		car.SetSteer(value);
 	}
 }
