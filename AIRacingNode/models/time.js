@@ -5,7 +5,7 @@ var timeSchema = mongoose.Schema({
     time  : {
         username     : String,
         scriptName   : String,
-        scriptTime   : Double
+        scriptTime   : Number
     }
 });
 
