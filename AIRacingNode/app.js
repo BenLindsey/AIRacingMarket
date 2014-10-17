@@ -4,18 +4,30 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var flash = require('connect-flash');
+var session = require('express-session');
+var mongoose = require('mongoose');
+
+var configDB = require('./config/database.js');
+
+mongoose.connect(configDB.url); // connect to our database
+
+require('./config/passport')(passport); // pass passport for configuration
 
 // setup mongo
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/AIRacingNode');
+var db = monk(configDB.url);
 
 var routes = require('./routes/index');
 var script = require('./routes/script');
 var time = require('./routes/time');
 var leaderboard = require('./routes/leaderboard');
-var register = require('./routes/register');
 var login = require('./routes/login');
+var logout = require('./routes/logout');
+var signup = require('./routes/signup');
+
 
 var app = express();
 
@@ -31,9 +43,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// pass mongo to the router
+app.use(session({ secret: 'cakeissogoodomgguysseriously'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+
+// pass passport/mongo to the router
 app.use(function(req, res, next) {
     req.db = db;
+    req.passport = passport;
+    req.flash = flash;
     next();
 });
 
@@ -41,8 +61,9 @@ app.use('/', routes);
 app.use('/script', script);
 app.use('/time', time);
 app.use('/leaderboard', leaderboard);
-app.use('/register', register);
 app.use('/login', login);
+app.use('/logout', logout);
+app.use('/signup', signup);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -74,6 +95,5 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
-
 
 module.exports = app;

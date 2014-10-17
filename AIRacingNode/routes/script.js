@@ -2,20 +2,23 @@ var express = require('express');
 var router = express.Router();
 
 /* GET New User page. */
-router.get('/', function(req, res) {
+router.get('/', isLoggedIn,
+    function(req, res) {
     res.render('newscript', { title: 'Add New Script' });
 });
 
-router.get('/:name', function(req, res) {
-    var db = req.db;
-    var collection = db.get('scriptcollection');
-    collection.findOne({scriptName:req.params.name},  function(e, doc) {
-        res.send(doc.script, 200);
+router.get('/:name', isLoggedIn,
+    function(req, res) {
+        var db = req.db;
+        var collection = db.get('scriptcollection');
+        collection.findOne({scriptName:req.params.name},  function(e, doc) {
+            res.send(doc.script, 200);
     });
 });
 
 /* POST to Add User Service */
-router.post('/', function(req, res) {
+router.post('/', isLoggedIn,
+    function(req, res) {
 
     // Set our internal DB variable
     var db = req.db;
@@ -47,5 +50,16 @@ router.post('/', function(req, res) {
         }
     });
 });
+
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/login');
+}
+
 
 module.exports = router;

@@ -5,7 +5,7 @@ using System.IO;
 public class RunInterpreterLocally : MonoBehaviour {
 
     public ScriptInterpreter interpreter;
-    public string file = "test.txt";
+    public string file = "racetrack.txt";
     private string folder = Directory.GetCurrentDirectory() + "\\Assets\\Racing Scripts\\";
 
 	// Use this for initialization
