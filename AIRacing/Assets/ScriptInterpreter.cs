@@ -101,10 +101,15 @@ public class ScriptInterpreter : MonoBehaviour  {
         if (timeSent)
             return;
 
+		timeSent = true;
+
         StartCoroutine(SendTime(Time.time));
     }
 
     IEnumerator SendTime(float time) {
+
+		Debug.Log("Finished! With a time of: " + time);
+
         // Create a Web Form
         var form = new WWWForm();
         form.AddField("scriptname", scriptName);
@@ -114,7 +119,5 @@ public class ScriptInterpreter : MonoBehaviour  {
         WWW www = new WWW(URL + "time/", form);
 
         yield return www;
-
-        timeSent = true;
     }
 }

@@ -23,10 +23,29 @@ public class FirstAI : MonoBehaviour {
 
 		api.SetSteer(position * 45);
 
-		if (api.GetSpeed() > 10) {
-			api.SetThrottle(-20f);
-		} else {
-			api.SetThrottle(70f);
+		float frontDistance = api.GetDistanceToNearestObstacle(0);
+
+		frontDistance = Mathf.Min(100, frontDistance);
+
+		if (frontDistance < 0) {
+			frontDistance = 100;
 		}
+		if (frontDistance < 38) {
+			if (api.GetSpeed() > 7) { 
+				api.SetThrottle(-50f);
+			} else {
+				api.SetThrottle (50f);
+			}
+		} else {
+			api.SetThrottle(80f);
+		}
+		/*
+		if (api.GetSpeed() > 10) {
+			api.SetThrottle(0f);
+		} else {
+			api.SetThrottle(80f);
+		}*/
+
+		Debug.Log(api.GetSpeed());
 	}
 }
