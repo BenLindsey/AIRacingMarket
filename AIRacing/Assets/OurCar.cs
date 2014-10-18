@@ -3,22 +3,24 @@ using System.Collections;
 
 public class OurCar : MonoBehaviour {
 
-	public Transform centerOfMass;
+    private class Wheel {
+        public WheelCollider collider;
+        public Transform transform;
+        public bool canSteer;
+        public bool isPowered;
+    }
 
-    public WheelCollider frontLeft;
-    public WheelCollider frontRight;
-    public WheelCollider rearLeft;
-    public WheelCollider rearRight;
+	public Transform centerOfMass;
 
     public Transform frontLeftTransform;
     public Transform frontRightTransform;
     public Transform rearLeftTransform;
     public Transform rearRightTransform;
-    private Transform[] steeringTransforms;
-    private Transform[] allTransforms;
 
-    private float throttle;
-    private float steer;
+    private Wheel[] wheels;
+
+    private float throttle = 0;
+    private float steer = 0;
 
 	public Material brakeLights;
 
@@ -27,10 +29,7 @@ public class OurCar : MonoBehaviour {
 
 		rigidbody.centerOfMass = centerOfMass.localPosition;
 
-        steeringTransforms = new Transform[] { frontLeftTransform,
-            frontRightTransform };
-        allTransforms = new Transform[] { frontRightTransform,
-            frontRightTransform, rearLeftTransform, rearRightTransform };
+        SetupWheels();
 	}
 
 	// Update is called once per frame
@@ -43,29 +42,69 @@ public class OurCar : MonoBehaviour {
             brakeLights.SetFloat("_Intensity", 0);
         }
 
-        // Set the power of the front wheels.
-        frontLeft.motorTorque = throttle;
-        frontRight.motorTorque = throttle;
+        foreach (Wheel wheel in wheels) {
+            UpdateWheel(wheel);
+        }
+    }
 
-        // Steer the front wheels.
-        frontLeft.steerAngle = steer;
-        frontRight.steerAngle = steer;
+    // Adds a wheel collider for each wheel transform.
+    private void SetupWheels() {
 
-        // Rotate the front wheels around the y axis to show steering.
-        frontLeftTransform.localEulerAngles = new Vector3(frontLeftTransform.localEulerAngles.x,
-            frontLeft.steerAngle, frontLeftTransform.localEulerAngles.z);
-        frontRightTransform.localEulerAngles = new Vector3(frontRightTransform.localEulerAngles.x,
-            frontRight.steerAngle, frontRightTransform.localEulerAngles.z);
+        wheels = new Wheel[4];
+        wheels[0] = SetupWheel(frontLeftTransform, true, true);
+        wheels[1] = SetupWheel(frontRightTransform, true, true);
+        wheels[2] = SetupWheel(rearLeftTransform, false, false);
+        wheels[3] = SetupWheel(rearRightTransform, false, false);
+    }
+
+    // Creates the wheel object and its collider from the transform.
+    private Wheel SetupWheel(Transform wheelTransfrom, bool canSteer,
+        bool isPowered) {
+
+        GameObject colliderObject = new GameObject(wheelTransfrom.name + " Collider");
+        colliderObject.transform.position = wheelTransfrom.position;
+        colliderObject.transform.parent = wheelTransfrom.parent;
+        colliderObject.transform.rotation = wheelTransfrom.rotation;
+
+        WheelCollider collider = colliderObject.AddComponent<WheelCollider>();
+        collider.radius = wheelTransfrom.GetComponentsInChildren<Transform>()[1]
+            .renderer.bounds.size.y / 2;
+
+        Wheel wheel = new Wheel();
+        wheel.collider = collider;
+        wheel.transform = wheelTransfrom;
+        wheel.canSteer = canSteer;
+        wheel.isPowered = isPowered;
+
+        return wheel;
+    }
+
+    private void UpdateWheel(Wheel wheel) {
+
+        // Update the power of the wheel.
+        if (wheel.isPowered) {
+
+            wheel.collider.motorTorque = throttle;
+            wheel.collider.motorTorque = throttle;
+        }
+
+        // Update the steering of the wheel.
+        if (wheel.canSteer) {
+
+            wheel.collider.steerAngle = steer;
+            wheel.collider.steerAngle = steer;
+
+            // Rotate the front wheel around the y axis to show steering.
+            wheel.transform.localEulerAngles = new Vector3(wheel.transform.localEulerAngles.x,
+                wheel.collider.steerAngle, wheel.transform.localEulerAngles.z);
+        }
 
         // Cumulatively rotate the wheel around the x axis to show speed.
         // Magic number: rpm / 60 * 360 * fixedDeltaTime.
-        frontLeftTransform.Rotate(frontLeft.rpm * 6 * Time.fixedDeltaTime, 0, 0);
-        frontRightTransform.Rotate(frontRight.rpm * 6 * Time.fixedDeltaTime, 0, 0);
-        rearLeftTransform.Rotate(rearLeft.rpm * 6 * Time.fixedDeltaTime, 0, 0);
-        rearRightTransform.Rotate(rearRight.rpm * 6 * Time.fixedDeltaTime, 0, 0);
+        wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
     }
 
-	public void SetThrottle(float value) {
+    public void SetThrottle(float value) {
         throttle = value * 100;
 	}
 
