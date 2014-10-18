@@ -14,5 +14,7 @@ public class UserInput : MonoBehaviour {
 	void Update () {
         car.SetSteer(Mathf.Clamp(Input.GetAxis("Horizontal"), -1, 1) * 45);
         car.SetThrottle(Mathf.Clamp(Input.GetAxis("Vertical"), -1, 1));
+
+		car.SetBrake((Input.GetButton("Brake") ? 1 : 0) * 100f);
 	}
 }

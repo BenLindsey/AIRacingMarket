@@ -20,6 +20,7 @@ public class OurCar : MonoBehaviour {
     private Wheel[] wheels;
 
     private float throttle = 0;
+	private float brake = 0;
     private float steer = 0;
 
 	public Material brakeLights;
@@ -35,12 +36,9 @@ public class OurCar : MonoBehaviour {
 	// Update is called once per frame
     void FixedUpdate() {
 
-        if (throttle < 0) {
-            brakeLights.SetFloat("_Intensity", Mathf.Abs(throttle / 100));
-        }
-        else {
-            brakeLights.SetFloat("_Intensity", 0);
-        }
+		float maxBrakeForce = -Mathf.Min(throttle, -brake);
+
+        brakeLights.SetFloat("_Intensity", Mathf.Abs(maxBrakeForce / 100));
 
         foreach (Wheel wheel in wheels) {
             UpdateWheel(wheel);
@@ -81,6 +79,8 @@ public class OurCar : MonoBehaviour {
 
     private void UpdateWheel(Wheel wheel) {
 
+		wheel.collider.brakeTorque = brake;
+
         // Update the power of the wheel.
         if (wheel.isPowered) {
 
@@ -99,9 +99,9 @@ public class OurCar : MonoBehaviour {
                 wheel.collider.steerAngle, wheel.transform.localEulerAngles.z);
         }
 
-        // Cumulatively rotate the wheel around the x axis to show speed.
-        // Magic number: rpm / 60 * 360 * fixedDeltaTime.
-        wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
+		// Cumulatively rotate the wheel around the x axis to show speed.
+		// Magic number: rpm / 60 * 360 * fixedDeltaTime.
+		wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
     }
 
     public void SetThrottle(float value) {
@@ -110,5 +110,9 @@ public class OurCar : MonoBehaviour {
 
 	public void SetSteer(float value) {
         steer = Mathf.Clamp(value, -45, 45);
+	}
+
+	public void SetBrake(float value) {
+		brake = Mathf.Max(value, 0);
 	}
 }
