@@ -4,7 +4,7 @@ using System.Collections;
 public class FirstAI : MonoBehaviour {
 
 	AiApi api;
-	
+
 	void Start () {
 		api = GetComponentInChildren<AiApi>();
 	}
@@ -20,7 +20,7 @@ public class FirstAI : MonoBehaviour {
 
 		float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
 
-		api.SetSteer(position * 20);
+		api.SetSteer(position * 35);
 
 		float frontDistance = api.GetDistanceToNearestObstacle(0);
 
@@ -30,27 +30,15 @@ public class FirstAI : MonoBehaviour {
 			frontDistance = 100;
 		}
 
-		if (frontDistance < 8) {
-			if (api.GetSpeed() > 1f) {
+		if (frontDistance < 50) { 
+			if (api.GetSpeed() < 15) { 
 				api.SetThrottle(0f);
-				return;
+			} else {
+				api.SetThrottle(-50f);
 			}
+		} else {
+			api.SetThrottle(70f);
 		}
-
-		if (api.GetSpeed() > 15) { 
-
-			if (frontDistance < 40) {
-				api.SetThrottle(-70f);
-				return;
-			}
-		} 
-
-		if( api.GetSpeed() > 9 && Mathf.Abs(position) > 0.5) {
-			api.SetThrottle(-60f);
-			return;
-		}
-
-		api.SetThrottle(70f);
 
 		//Debug.Log(api.GetSpeed());
 	}

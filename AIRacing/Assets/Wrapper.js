@@ -12,12 +12,10 @@ var scriptContents;
 var www : WWW;
 
 function Start () {
-	api = GetComponentInChildren(AiApi);
-	
 	Application.ExternalCall("SetScript", "");
 }
 
-function Update () {
+function FixedUpdate () {
 	if (www != null && www.isDone) {
 		eval(www.text);
 	}
