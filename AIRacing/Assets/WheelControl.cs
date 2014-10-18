@@ -4,14 +4,15 @@ using System.Collections;
 public class WheelControl : MonoBehaviour {
 
 	float steerAngle;
-	float wheelSpeed;
 
 	Transform car;
-	
+
+	WheelCollider wheelCollider;
 
 	// Use this for initialization
 	void Start () {
 		car = transform.parent;
+		wheelCollider = GetComponentInChildren<WheelCollider>();
 	}
 
 	public void FixedUpdate () {
@@ -21,22 +22,16 @@ public class WheelControl : MonoBehaviour {
 			currentAngle = -currentAngle;
 		}
 
-		Debug.Log("Steer: " + steerAngle);
+		//Debug.Log("Steer: " + steerAngle);
 
 		rigidbody.MoveRotation(Quaternion.AngleAxis(steerAngle, car.up) * car.rotation);
 	}
-
-	public void UpdateWheelForce() {
-		if (Physics.Raycast(transform.position, -transform.up, 0.6f)) {
-			rigidbody.AddForce(transform.forward * wheelSpeed);
-		}
-	}
-
+	
 	public void SetTurnAngle(float value) {
 		steerAngle = value;
 	}
 
 	public void SetWheelSpeed(float value) {
-		wheelSpeed = value;
+		wheelCollider.motorTorque = value;
 	}
 }

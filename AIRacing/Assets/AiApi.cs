@@ -22,6 +22,10 @@ public class AiApi : MonoBehaviour {
 		return -1;
 	}
 
+	public float GetSpeed() {
+		return car.rigidbody.velocity.magnitude;
+	}
+
 	public void SetThrottle(float value) {
 		value = Mathf.Clamp(value, -100, 100);
 		car.SetThrottle(value / 100.0f);

@@ -7,7 +7,7 @@ public class FirstAI : MonoBehaviour {
 	
 	void Start () {
 		api = GetComponentInChildren<AiApi>();
-		api.SetThrottle(45f);
+		api.SetThrottle(15f);
 	}
 
 	void FixedUpdate () {
@@ -23,10 +23,10 @@ public class FirstAI : MonoBehaviour {
 
 		api.SetSteer(position * 45);
 
-		/*if (Mathf.Abs(position) > 0.9) {
-			api.SetThrottle(100f);
+		if (api.GetSpeed() > 10) {
+			api.SetThrottle(-20f);
 		} else {
 			api.SetThrottle(70f);
-		}*/
+		}
 	}
 }

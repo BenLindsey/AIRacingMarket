@@ -5,8 +5,6 @@ public class OurCar : MonoBehaviour {
 
 	public WheelControl rightWheel;
 	public WheelControl leftWheel;
-	
-	public float maxSpeed = 100;
 
 	public Material brakeLights;
 
@@ -17,11 +15,6 @@ public class OurCar : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-
-		if(rigidbody.velocity.magnitude < maxSpeed){
-			leftWheel.UpdateWheelForce();
-			rightWheel.UpdateWheelForce();
-		}
 	}
 
 	public void SetThrottle(float value) {
@@ -32,7 +25,7 @@ public class OurCar : MonoBehaviour {
 			brakeLights.SetFloat("_Intensity", 0);
 		}
 
-		float wheelSpeed = value * 200;
+		float wheelSpeed = value * 100;
 
 		leftWheel.SetWheelSpeed(wheelSpeed);
 		rightWheel.SetWheelSpeed(wheelSpeed);
