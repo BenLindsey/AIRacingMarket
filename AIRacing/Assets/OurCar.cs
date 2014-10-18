@@ -3,6 +3,8 @@ using System.Collections;
 
 public class OurCar : MonoBehaviour {
 
+	public Transform centerOfMass;
+
 	public WheelControl rightWheel;
 	public WheelControl leftWheel;
 
@@ -10,7 +12,7 @@ public class OurCar : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		rigidbody.centerOfMass = centerOfMass.localPosition;
 	}
 
 	// Update is called once per frame

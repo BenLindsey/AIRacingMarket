@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class FirstAI : MonoBehaviour {
+public class BasicTestAI : MonoBehaviour {
 
 	AiApi api;
 	
@@ -20,37 +20,22 @@ public class FirstAI : MonoBehaviour {
 
 		float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
 
-		api.SetSteer(position * 20);
+		api.SetSteer(position * 40);
+
 
 		float frontDistance = api.GetDistanceToNearestObstacle(0);
-
+		
 		frontDistance = Mathf.Min(100, frontDistance);
-
-		if (frontDistance < 0) {
-			frontDistance = 100;
-		}
-
-		if (frontDistance < 8) {
-			if (api.GetSpeed() > 1f) {
-				api.SetThrottle(0f);
-				return;
+		
+		if (frontDistance < 20) {
+			if (api.GetSpeed() > 10) {
+				api.SetThrottle(-60f);
+			} else {
+				api.SetThrottle(70f);
 			}
+		} else {
+			api.SetThrottle(100f);
 		}
-
-		if (api.GetSpeed() > 15) { 
-
-			if (frontDistance < 40) {
-				api.SetThrottle(-70f);
-				return;
-			}
-		} 
-
-		if( api.GetSpeed() > 9 && Mathf.Abs(position) > 0.5) {
-			api.SetThrottle(-60f);
-			return;
-		}
-
-		api.SetThrottle(70f);
 
 		//Debug.Log(api.GetSpeed());
 	}
