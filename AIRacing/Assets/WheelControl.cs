@@ -7,12 +7,11 @@ public class WheelControl : MonoBehaviour {
 
 	Transform car;
 
-	WheelCollider wheelCollider;
+	public WheelCollider wheelCollider;
 
 	// Use this for initialization
 	void Start () {
 		car = transform.parent;
-		wheelCollider = GetComponentInChildren<WheelCollider>();
 	}
 
 	public void FixedUpdate () {
@@ -24,7 +23,9 @@ public class WheelControl : MonoBehaviour {
 
 		//Debug.Log("Steer: " + steerAngle);
 
-		rigidbody.MoveRotation(Quaternion.AngleAxis(steerAngle, car.up) * car.rotation);
+        wheelCollider.steerAngle = steerAngle;
+
+        rigidbody.MoveRotation(Quaternion.AngleAxis(steerAngle, car.up) * car.rotation);
 	}
 	
 	public void SetTurnAngle(float value) {
