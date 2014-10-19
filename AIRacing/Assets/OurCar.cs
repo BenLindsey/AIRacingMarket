@@ -6,6 +6,7 @@ public class OurCar : MonoBehaviour {
     private class Wheel {
         public WheelCollider collider;
         public Transform transform;
+        public Vector3 originalPosition;
         public bool canSteer;
         public bool isPowered;
     }
@@ -24,8 +25,8 @@ public class OurCar : MonoBehaviour {
     // Physics variables.
     public float downwardsForce = 0;
     public float suspensionDistance = 0.1f;
-    public float suspensionFrontForce = 18;
-    public float suspensionRearForce = 9;
+    public float suspensionFrontForce = 1800;
+    public float suspensionRearForce = 900;
     public float suspensionDamper = 5;
 
     private Wheel[] wheels;
@@ -113,6 +114,7 @@ public class OurCar : MonoBehaviour {
         wheel.transform = wheelTransfrom;
         wheel.canSteer  = isFront;
         wheel.isPowered = isPowered;
+        wheel.originalPosition = wheelTransfrom.parent.localPosition;
 
         // Move the wheel down according to the height of the suspension.
         wheelTransfrom.position += Vector3.down * suspensionDistance;
@@ -146,7 +148,13 @@ public class OurCar : MonoBehaviour {
 		// Magic number: rpm / 60 * 360 * fixedDeltaTime.
 		wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
 
-        // TODO: Update the position of the wheel according to the suspension.
+        //WheelHit hit;
+        //float a = (wheel.collider.GetGroundHit(out hit))
+        //    ? (-wheel.transform.InverseTransformPoint(hit.point).y - wheel.collider.radius)
+        //    : 1;
+        //// TODO: Update the position of the wheel according to the suspension.
+        //wheel.transform.parent.localPosition
+        //    = wheel.originalPosition + Vector3.down * a * wheel.collider.suspensionDistance;
 
         // Messy hack, force the car down on the road to reduce flips.
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
