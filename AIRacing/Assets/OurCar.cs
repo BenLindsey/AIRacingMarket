@@ -24,8 +24,9 @@ public class OurCar : MonoBehaviour {
     // Physics variables.
     public float downwardsForce = 0;
     public float suspensionDistance = 0.1f;
-    public float suspensionFrontForce = 18500;
-    public float suspensionRearForce = 9000;
+    public float suspensionFrontForce = 18;
+    public float suspensionRearForce = 9;
+    public float suspensionDamper = 5;
 
     private Wheel[] wheels;
 
@@ -92,24 +93,25 @@ public class OurCar : MonoBehaviour {
         collider.steerAngle = 0;
 
         WheelFrictionCurve frictionCurve = new WheelFrictionCurve();
-        frictionCurve.extremumSlip = 1.0f;  // Default values apart from stiffness.
-        frictionCurve.extremumValue = 20000.0f;
-        frictionCurve.asymptoteSlip = 2.0f;
+        frictionCurve.extremumSlip   = 1.0f;  // Default values apart from stiffness.
+        frictionCurve.extremumValue  = 20000.0f;
+        frictionCurve.asymptoteSlip  = 2.0f;
         frictionCurve.asymptoteValue = 10000.0f;
-        frictionCurve.stiffness = 0.04f;
-        collider.sidewaysFriction = frictionCurve;
+        frictionCurve.stiffness      = 0.04f;
+        collider.sidewaysFriction    = frictionCurve;
 
         JointSpring suspension = new JointSpring();
-        suspension.spring = (isFront) ? suspensionFrontForce : suspensionRearForce;
-        suspension.damper = 50;
-        suspension.targetPosition = 0;
-        collider.suspensionSpring = suspension;
-        collider.suspensionDistance = suspensionDistance;
+        suspension.spring = (isFront) ? suspensionFrontForce
+                                      : suspensionRearForce;
+        suspension.damper             = suspensionDamper;
+        suspension.targetPosition     = 0;
+        collider.suspensionSpring     = suspension;
+        collider.suspensionDistance   = suspensionDistance;
 
         Wheel wheel = new Wheel();
-        wheel.collider = collider;
+        wheel.collider  = collider;
         wheel.transform = wheelTransfrom;
-        wheel.canSteer = isFront;
+        wheel.canSteer  = isFront;
         wheel.isPowered = isPowered;
 
         // Move the wheel down according to the height of the suspension.
