@@ -13,7 +13,7 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(configDB.url);
 
-var collection = req.db.get('redirectcollection');
+var collection = db.get('redirectcollection');
 
 var found = false;
 
