@@ -21,7 +21,7 @@ var collection = db.get('redirectcollection');
 var found = false;
 
 collection.find({}, {}, function(e, docs) {
-    docs.forEach(function (doc) {
+    for(var doc in docs) {
         console.log("Checking doc");
 
         if(doc.branch === branch) {
@@ -33,7 +33,7 @@ collection.find({}, {}, function(e, docs) {
         if(!found && doc.port >= port) {
             port = doc.port + 1;
         }
-    });
+    }
 });
 
 if(!found) {
