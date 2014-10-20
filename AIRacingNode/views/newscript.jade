@@ -4,27 +4,30 @@ block content
   h1.
     Create your Racing Script
 
-  div.well.bs-component
-    form#newScriptForm.form-horizontal(method='post')
-      fieldset
-        .form-group
-          label.col-lg-2.control-label(for='inputUserName') Name
-          .col-lg-6
-            input#inputUserName.form-control(placeholder='Enter your Name', type='text', name="username")
-        .form-group
-          label.col-lg-2.control-label(for='inputScriptName') Script Name
-          .col-lg-6
-            input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
-        .form-group
-          label.col-lg-2.control-label(for='inputScript') Script
-          .col-lg-6
-            textarea#inputScript.form-control(placeholder='Enter your Script', rows='5', name="script")
-        .form-group
-          label.col-lg-2.control-label(for='inputLevelName') Level
-          .col-lg-6
-            select#select.form-control(placeholder='Select Level', name="levelname")
-              option Mr. Bubbles
-        .form-group
-          .col-lg-6.col-lg-offset-2
-            button.btn.btn-default(type='reset') Reset
-            button.btn.btn-primary(type='submit') Submit
+<<<<<<< HEAD
+  .col-lg-6
+    div.well.bs-component
+      form#newScriptForm.form-horizontal(method='post')
+        fieldset
+          .form-group
+            label.col-lg-2.control-label(for='inputUserName') Name
+            .col-lg-8
+              input#inputUserName.form-control(placeholder='Enter your Name', type='text', name="username")
+           .form-group
+             label.col-lg-2.control-label(for='inputScriptName') Script Name
+             .col-lg-8
+               input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
+            .form-group
+              label.col-lg-2.control-label(for='inputScript') Script
+              .col-lg-8
+                textarea#inputScript.form-control(placeholder='Enter your Script', rows='5', name="script")
+            .form-group
+              label.col-lg-2.control-label(for='inputLevelName') Level
+              .col-lg-6
+                select#select.form-control(placeholder='Select Level', name="levelname")
+                  option Mr. Bubbles
+            .form-group
+              .col-lg-6.col-lg-offset-2
+                .btn-group
+                  button.btn.btn-default(type='reset') Reset
+                  button.btn.btn-primary(type='submit') Submit

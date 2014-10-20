@@ -1,23 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-router.post('/', function(req, res) {
-    // Set our internal DB variable
-    var db = req.db;
+router.post('/', function (req, res) {
+    var collection = req.db.get('timecollection');
 
-    // Get our form values. These rely on the "name" attributes
-    var userName = req.body.username;
-    var scriptName = req.body.scriptname;
-    var scriptTime = parseFloat(req.body.time);
-
-    // Set our collection
-    var collection = db.get('timecollection');
-
-    // Submit to the DB
     collection.insert({
-        "username": userName,
-        "scriptName": scriptName,
-        "scriptTime": scriptTime
+        "scriptName": req.body.scriptname,
+        "levelName": req.body.levelname,
+        "time": parseFloat(req.body.time)
     }, function (err, doc) {
         if (err) {
             // If it failed, return error

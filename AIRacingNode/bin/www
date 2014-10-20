@@ -2,8 +2,44 @@
 var debug = require('debug')('AIRacingNode');
 var app = require('../app');
 
-app.set('port', process.env.PORT || 3000);
+
+// FIND/CREATE port for branch
+
+var branch = process.env.BRANCH;
+var port = 3000;
+
+var configDB = require('./config/database.js');
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk(configDB.url);
+
+var collection = req.db.get('redirectcollection');
+
+var found = false;
+
+collection.find({}, {}, function(e, docs) {
+    docs.forEach(function (doc) {
+        if(doc.branch == branch) {
+            found = true;
+            port = doc.port;
+            debug("Found port " + port);
+        }
+
+        if(!found && doc.port >= port) {
+            port = doc.port + 1;
+        }
+    });
+});
+
+if(!found) {
+    collection.insert({"branch" : branch, "port" : port});
+    debug("Created port " + port);
+}
+
+// END
+
+app.set('port', port);
 
 var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port ' + server.address().port);
+    debug('Express server listening on port ' + server.address().port);
 });

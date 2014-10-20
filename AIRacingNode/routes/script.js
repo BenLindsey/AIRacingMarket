@@ -19,33 +19,21 @@ router.get('/:name', isLoggedIn, function(req, res) {
 
 /* POST to script service */
 router.post('/', isLoggedIn, function(req, res) {
-    // Set our internal DB variable
-    var db = req.db;
+    var collection = req.db.get('scriptcollection');
 
-    // Get our form values.
-    var userName    = req.body.username;
-    var scriptName  = req.body.scriptname;
-    var script      = req.body.script;
-    var levelName   = req.body.levelName;
-
-    // Set our collection
-    var collection = db.get('scriptcollection');
-
-    // Submit to the DB
     collection.insert({
-        "username"   : userName,
-        "scriptName" : scriptName,
-        "script"     : script,
-        "levelName"  : levelName
+        "username"   : req.body.username,
+        "scriptName" : req.body.scriptname,
+        "script"     : req.body.script,
+        "levelName"  : req.body.levelName
     }, function (err, doc) {
         if (err) {
-            // If it failed, return error
             res.send("There was a problem adding the information to the database.");
         }
         else {
             // Build the inputs to unity
             var url = "/WebBuild.html?" + require('qs').stringify({scriptname : scriptName, levelname : levelName});
-            // If it worked, set the header so the address bar doesn't still say /adduser
+            // If it worked, set the header so the address bar doesn't still say /script
             res.location(url);
             // And forward to success page
             res.redirect(url);
@@ -54,11 +42,11 @@ router.post('/', isLoggedIn, function(req, res) {
 });
 
 function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on
+    // if user is authenticated in the session, pass to GET/POST handlers
     if (req.isAuthenticated())
         return next();
 
-    // if they aren't redirect them to the home page
+    // if they aren't redirect them to the login page
     res.redirect('/login');
 }
 
