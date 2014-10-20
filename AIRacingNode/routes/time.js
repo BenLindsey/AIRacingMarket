@@ -5,9 +5,9 @@ router.post('/', function (req, res) {
     var collection = req.db.get('timecollection');
 
     collection.insert({
-        "scriptName": req.body.scriptname,
-        "levelName": req.body.levelname,
-        "time": parseFloat(req.body.time)
+        "scriptName" : req.body.scriptname,
+        "levelName"  : req.body.levelname,
+        "time"       : parseFloat(req.body.time)
     }, function (err, doc) {
         if (err) {
             // If it failed, return error
