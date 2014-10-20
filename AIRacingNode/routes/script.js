@@ -42,9 +42,13 @@ router.post('/', isLoggedIn, function(req, res) {
 });
 
 function isLoggedIn(req, res, next) {
+
+    req.session.redirect = '/script';
+
     // if user is authenticated in the session, pass to GET/POST handlers
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
         return next();
+    }
 
     // if they aren't redirect them to the login page
     res.redirect('/login');
