@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res) {
     var db = req.db;
     var collection = db.get('timecollection');
-    collection.find({}, {}, function(e, docs) {
+    collection.group("levelname").find({}, {sort : { time : 1 }}, function(e, docs) {
         res.render('leaderboard', {
             "leaderboard" : docs
         });

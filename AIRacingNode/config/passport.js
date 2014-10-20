@@ -8,7 +8,6 @@ var User       		= require('../models/user');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
-    console.log("Passport");
     // =========================================================================
     // passport session setup ==================================================
     // =========================================================================
@@ -43,13 +42,10 @@ module.exports = function(passport) {
 
             // asynchronous
             // User.findOne wont fire unless data is sent back
-            console.log("Use");
             process.nextTick(function() {
-                console.log("Tick");
                 // find a user whose email is the same as the forms email
                 // we are checking to see if the user trying to login already exists
                 User.findOne({ 'local.email' :  email }, function(err, user) {
-                    console.log("Findone");
                     // if there are any errors, return the error
                     if (err)
                         return done(err);
