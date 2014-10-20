@@ -15,7 +15,6 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-// setup mongo
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(configDB.url);
@@ -28,7 +27,6 @@ var login = require('./routes/login');
 var logout = require('./routes/logout');
 var signup = require('./routes/signup');
 var profile = require('./routes/profile');
-
 
 var app = express();
 

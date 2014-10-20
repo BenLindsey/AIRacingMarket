@@ -1,50 +1,16 @@
 #!/usr/bin/env node
-var debug = require('debug')('AIRacingNode');
 var app = require('../app');
 
-// FIND/CREATE port for branch
+// Connect to Mongo
+var monk = require('monk');
+var db = monk(require('../config/database').url);
 
+// Fetch the branch name from the environment
 var branch = process.env.BRANCH;
-
 console.log("Found branch " + branch);
 
-var port = 3001;
-
-var configDB = require('../config/database.js');
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk(configDB.url);
-
-var collection = db.get('redirectcollection');
-
-collection.find({}, {}, function(e, docs) {
-    var found = false;
-
-    docs.forEach(function(doc) {
-        if(doc.branch == branch) {
-            found = true;
-            port = doc.port;
-        }
-
-        if(!found && doc.port >= port) {
-            port = doc.port + 1;
-        }
-    });
-
-    if(!found) {
-        collection.insert({"branch" : branch, "port" : port});
-
-        require('fs').appendFileSync('/var/www/html/.htaccess',
-            '\nRewriteEngine on\nRewriteRule ^' + branch +'$ http://146.169.47.15:' + port + ' [NC]');
-
-        var exec = require('child_process').exec;
-        exec('sudo service apache2 restart', function callback(error, stdout, stderr){
-
-        });
-
-        console.log("Created port " + port);
-    }
-
+// Convert BRANCH to a port for the server to run on
+require('../config/branch')(db, branch, function(port) {
     app.set('port', port);
 
     var server = app.listen(app.get('port'), function() {
