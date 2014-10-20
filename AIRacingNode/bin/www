@@ -21,7 +21,9 @@ var collection = db.get('redirectcollection');
 var found = false;
 
 collection.find({}, {}, function(e, docs) {
-    for(var doc in docs) {
+    for(var i = 0; i < docs.length; i++) {
+        var doc = docs[i];
+
         console.log("Checking doc");
 
         if(doc.branch === branch) {
