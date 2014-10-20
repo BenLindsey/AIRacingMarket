@@ -7,7 +7,7 @@ var app = require('../app');
 
 var branch = process.env.BRANCH;
 
-debug("Found branch" + branch);
+console.log("Found branch" + branch);
 
 var port = 3000;
 
@@ -36,7 +36,7 @@ collection.find({}, {}, function(e, docs) {
 
 if(!found) {
     collection.insert({"branch" : branch, "port" : port});
-    debug("Created port " + port);
+    console.log("Created port " + port);
 }
 
 // END
@@ -44,5 +44,5 @@ if(!found) {
 app.set('port', port);
 
 var server = app.listen(app.get('port'), function() {
-    debug('Express server listening on port ' + server.address().port);
+    console.log('Express server listening on port ' + server.address().port);
 });
