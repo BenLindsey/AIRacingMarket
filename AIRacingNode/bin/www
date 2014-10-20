@@ -21,21 +21,7 @@ var collection = db.get('redirectcollection');
 var found = false;
 
 collection.find({}, {}, function(e, docs) {
-    for(var i = 0; i < docs.length; i++) {
-        var doc = docs[i];
-
-        console.log("Checking doc");
-
-        if(doc.branch === branch) {
-            found = true;
-            port = doc.port;
-            console.log("Found port " + port);
-        }
-
-        if(!found && doc.port >= port) {
-            port = doc.port + 1;
-        }
-    }
+    console.log("found " + JSON.stringify(docs));
 });
 
 if(!found) {
