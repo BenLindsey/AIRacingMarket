@@ -21,7 +21,11 @@ var collection = db.get('redirectcollection');
 var found = false;
 
 collection.find({}, {}, function(e, docs) {
-    console.log("found " + JSON.stringify(docs));
+    if(e) {
+        console.log("error " + JSON.stringify(e));
+    } else {
+        console.log("found " + JSON.stringify(docs));
+    }
 });
 
 if(!found) {
