@@ -7,7 +7,7 @@ var app = require('../app');
 
 var branch = process.env.BRANCH;
 
-console.log("Found branch" + branch);
+console.log("Found branch " + branch);
 
 var port = 3000;
 
@@ -22,10 +22,12 @@ var found = false;
 
 collection.find({}, {}, function(e, docs) {
     docs.forEach(function (doc) {
-        if(doc.branch == branch) {
+        console.log("Checking doc");
+
+        if(doc.branch === branch) {
             found = true;
             port = doc.port;
-            debug("Found port " + port);
+            console.log("Found port " + port);
         }
 
         if(!found && doc.port >= port) {
