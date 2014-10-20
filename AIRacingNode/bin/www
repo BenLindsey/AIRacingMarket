@@ -33,6 +33,10 @@ collection.find({}, {}, function(e, docs) {
 
     if(!found) {
         collection.insert({"branch" : branch, "port" : port});
+
+        require('fs').appendFileSync('/var/www/html/.htaccess',
+            'RewriteEngine on\n RewriteRule ^' + branch +'$ http://146.169.47.15:' + port + ' [NC]');
+
         console.log("Created port " + port);
     }
 
