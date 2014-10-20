@@ -2,7 +2,6 @@
 var debug = require('debug')('AIRacingNode');
 var app = require('../app');
 
-
 // FIND/CREATE port for branch
 
 var branch = process.env.BRANCH;
@@ -20,16 +19,18 @@ var collection = db.get('redirectcollection');
 
 var found = false;
 
-collection.find({}, {}, function(e, docs) {
+collection.findOne({branch : branch},  function(e, doc) {
     if(e) {
-        console.log("error " + JSON.stringify(e));
+        console.log("error! couldnt find one of " + branch);
+        console.log(e);
     } else {
-        console.log("found " + JSON.stringify(docs));
+        console.log("found port for branch as " + doc.port);
+        found = true;
     }
-});
+})
 
 if(!found) {
-    collection.insert({"branch" : branch, "port" : port});
+    collection.insert({branch : branch, port : port});
     console.log("Created port " + port);
 }
 
