@@ -16,9 +16,5 @@ public class UserInput : MonoBehaviour {
         car.SetThrottle(Mathf.Clamp(Input.GetAxis("Vertical"), -1, 1));
 
 		car.SetBrake((Input.GetButton("Brake") ? 1 : 0) * 100f);
-
-        if (Input.GetButton("Reset")) {
-            car.Reset();
-        }
 	}
 }

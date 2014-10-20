@@ -19,8 +19,8 @@ public class OurCar : MonoBehaviour {
     public Transform rearLeftTransform;
     public Transform rearRightTransform;
 
-    public WheelAxleControl frontAntiRoll;
-    public WheelAxleControl rearAntiRoll;
+    public AntiRollBar frontAntiRoll;
+    public AntiRollBar rearAntiRoll;
 
     // Physics variables.
     public float downwardsForce = 0;
@@ -28,9 +28,6 @@ public class OurCar : MonoBehaviour {
     public float suspensionFrontForce = 1800;
     public float suspensionRearForce = 900;
     public float suspensionDamper = 5;
-
-    private Vector3 startingPosition;
-    private Quaternion startingRotation;
 
     private Wheel[] wheels;
 
@@ -43,20 +40,17 @@ public class OurCar : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        startingPosition = rigidbody.position;
-        startingRotation = rigidbody.rotation;
-
 		rigidbody.centerOfMass = centerOfMass.localPosition;
 
         SetupWheels();
 
         frontAntiRoll.leftWheel = wheels[0].collider;
         frontAntiRoll.rightWheel = wheels[1].collider;
-        frontAntiRoll.antiRollForce = suspensionFrontForce;
+        frontAntiRoll.antiRoll = suspensionFrontForce;
 
         rearAntiRoll.leftWheel = wheels[2].collider;
         rearAntiRoll.rightWheel = wheels[3].collider;
-        rearAntiRoll.antiRollForce = suspensionRearForce;
+        rearAntiRoll.antiRoll = suspensionRearForce;
 	}
 
 	// Update is called once per frame
@@ -164,7 +158,7 @@ public class OurCar : MonoBehaviour {
 
         // Messy hack, force the car down on the road to reduce flips.
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
-            rigidbody.centerOfMass);
+            centerOfMass.position);
     }
 
     public void SetThrottle(float value) {
@@ -172,19 +166,13 @@ public class OurCar : MonoBehaviour {
 	}
 
 	public void SetSteer(float value) {
-        steer = Mathf.Clamp(value, -45, 45); // / 45 * GetMaxSteeringAngle(rigidbody.velocity.magnitude);
+        steer = Mathf.Clamp(value, -45, 45) / 45
+            * GetMaxSteeringAngle(rigidbody.velocity.magnitude);
 	}
 
 	public void SetBrake(float value) {
 		brake = Mathf.Max(value, 0);
 	}
-
-    public void Reset() {
-        rigidbody.MovePosition(startingPosition);
-        rigidbody.MoveRotation(startingRotation);
-        rigidbody.velocity = new Vector3();
-        rigidbody.angularVelocity = new Vector3();
-    }
     
     private float GetMaxSteeringAngle(float speed) {
 
