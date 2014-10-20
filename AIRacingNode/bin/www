@@ -6,6 +6,9 @@ var app = require('../app');
 // FIND/CREATE port for branch
 
 var branch = process.env.BRANCH;
+
+debug("Found branch" + branch);
+
 var port = 3000;
 
 var configDB = require('../config/database.js');
