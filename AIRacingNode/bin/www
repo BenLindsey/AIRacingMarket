@@ -33,6 +33,15 @@ collection.find({}, {}, function(e, docs) {
 
     if(!found) {
         collection.insert({"branch" : branch, "port" : port});
+
+        require('fs').appendFileSync('/var/www/html/.htaccess',
+            '\nRewriteEngine on\nRewriteRule ^' + branch +'$ http://146.169.47.15:' + port + ' [NC]');
+
+        var exec = require('child_process').exec;
+        exec('sudo service apache2 restart', function callback(error, stdout, stderr){
+
+        });
+
         console.log("Created port " + port);
     }
 

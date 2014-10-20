@@ -8,9 +8,9 @@ router.get('/', function (req, res) {
 // process the signup form
 router.post('/', function (req, res) {
     return req.passport.authenticate('local-signup', {
-        successRedirect: '/leaderboard',
-        failureRedirect: '/signup', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
+        successRedirect : '/profile',
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
     })(req, res);
 });
 
