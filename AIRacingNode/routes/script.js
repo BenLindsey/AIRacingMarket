@@ -53,9 +53,10 @@ router.post('/', isLoggedIn,
 
 function isLoggedIn(req, res, next) {
 
+    req.session.redirect = '/script';
+
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated()) {
-        next.successRedirect = '/script';
         return next();
     }
 

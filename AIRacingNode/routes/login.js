@@ -14,11 +14,11 @@ router.post('/', function(req, res, next) {
       
       req.login(user, function(err) {
         if (err) { return next(err); }
-        return res.redirect(next.successRedirect);
+        if (!req.session.redirect) {
+          return res.redirect('/');
+        }
+        return res.redirect(req.session.redirect);
       });
-      //successRedirect: '/script',
-      //failureRedirect: '/login', // redirect back to the signin page if there is an error
-      //failureFlash: true // allow flash messages
   })(req, res, next);
 });
 

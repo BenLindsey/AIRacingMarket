@@ -11,6 +11,8 @@ router.get('/', isLoggedIn,
 
 function isLoggedIn(req, res, next) {
 
+  req.session.redirect = '/profile';
+
     if (req.isAuthenticated())
         return next();
 
