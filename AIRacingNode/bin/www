@@ -6,9 +6,9 @@ var app = require('../app');
 
 var branch = process.env.BRANCH;
 
-console.log("Found branch" + branch);
+console.log("Found branch " + branch);
 
-var port = 3000;
+var port = 3001;
 
 var configDB = require('../config/database.js');
 var mongo = require('mongodb');
@@ -17,31 +17,28 @@ var db = monk(configDB.url);
 
 var collection = db.get('redirectcollection');
 
-var found = false;
-
 collection.find({}, {}, function(e, docs) {
-    docs.forEach(function (doc) {
+    var found = false;
+
+    docs.forEach(function(doc) {
         if(doc.branch == branch) {
             found = true;
             port = doc.port;
-            debug("Found port " + port);
         }
 
         if(!found && doc.port >= port) {
             port = doc.port + 1;
         }
     });
-});
 
-if(!found) {
-    collection.insert({"branch" : branch, "port" : port});
-    console.log("Created port " + port);
-}
+    if(!found) {
+        collection.insert({"branch" : branch, "port" : port});
+        console.log("Created port " + port);
+    }
 
-// END
+    app.set('port', port);
 
-app.set('port', port);
-
-var server = app.listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + server.address().port);
+    var server = app.listen(app.get('port'), function() {
+        console.log('Express server listening on port ' + server.address().port);
+    });
 });
