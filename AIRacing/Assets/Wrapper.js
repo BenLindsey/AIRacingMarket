@@ -2,7 +2,9 @@
 
 var api : AiApi;
 
-var URL = "http://146.169.47.15:3000/";
+var URL = "http://146.169.47.15:3001/";
+
+var endZone : EndZone;
 
 var scriptName;
 var scriptPath;
@@ -11,17 +13,28 @@ var scriptContents;
 
 var www : WWW;
 
+var loaded = false;
+var script;
+
 function Start () {
 	Application.ExternalCall("SetScript", "");
+    endZone.SetURL(URL);
 }
 
 function FixedUpdate () {
-	if (www != null && www.isDone) {
-		eval(www.text);
+    if (!loaded && www != null && www.isDone) {
+        loaded = true;
+        script = www.text;
+        endZone.SetStartTime(Time.time);
+    } 
+
+	if (loaded) {
+		eval(script);
 	}
 }
 
 function SetScriptName(name) {
+    endZone.SetScriptName(name);
 
 	scriptName = name;
 
