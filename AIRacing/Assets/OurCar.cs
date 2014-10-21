@@ -34,6 +34,7 @@ public class OurCar : MonoBehaviour {
     private float throttle = 0;
 	private float brake = 0;
     private float steer = 0;
+    private float lastSteer = 0;
 
 	public Material brakeLights;
 
@@ -114,10 +115,7 @@ public class OurCar : MonoBehaviour {
         wheel.transform = wheelTransfrom;
         wheel.canSteer  = isFront;
         wheel.isPowered = isPowered;
-        wheel.originalPosition = wheelTransfrom.parent.localPosition;
-
-        // Move the wheel down according to the height of the suspension.
-        wheelTransfrom.position += Vector3.down * suspensionDistance;
+        wheel.originalPosition = wheelTransfrom.localPosition;
 
         return wheel;
     }
@@ -140,21 +138,20 @@ public class OurCar : MonoBehaviour {
             wheel.collider.steerAngle = steer;
 
             // Rotate the front wheel around the y axis to show steering.
-            wheel.transform.localEulerAngles = new Vector3(wheel.transform.localEulerAngles.x,
-                wheel.collider.steerAngle, wheel.transform.localEulerAngles.z);
+            wheel.transform.Rotate(wheel.transform.parent.up, steer - lastSteer, Space.World);
         }
 
 		// Cumulatively rotate the wheel around the x axis to show speed.
 		// Magic number: rpm / 60 * 360 * fixedDeltaTime.
 		wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
 
-        //WheelHit hit;
-        //float a = (wheel.collider.GetGroundHit(out hit))
-        //    ? (-wheel.transform.InverseTransformPoint(hit.point).y - wheel.collider.radius)
-        //    : 1;
-        //// TODO: Update the position of the wheel according to the suspension.
-        //wheel.transform.parent.localPosition
-        //    = wheel.originalPosition + Vector3.down * a * wheel.collider.suspensionDistance;
+        // Update the vertical position of the wheel according to the suspension.
+        WheelHit hit;
+        float extension = (wheel.collider.GetGroundHit(out hit))
+            ? (-wheel.collider.transform.InverseTransformPoint(hit.point).y - wheel.collider.radius)
+            : wheel.collider.suspensionDistance;
+        wheel.transform.localPosition
+            = wheel.originalPosition + Vector3.down * extension;
 
         // Messy hack, force the car down on the road to reduce flips.
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
@@ -166,6 +163,7 @@ public class OurCar : MonoBehaviour {
 	}
 
 	public void SetSteer(float value) {
+        lastSteer = steer;
         steer = Mathf.Clamp(value, -45, 45) / 45
             * GetMaxSteeringAngle(rigidbody.velocity.magnitude);
 	}
