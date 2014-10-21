@@ -25,6 +25,7 @@
     "bcrypt-nodejs" : "*",
     "connect-flash" : "*",
     "express-session": "*",
-    "fs" : "*"
+    "fs" : "*",
+    "qs" : "*"
   }
 }
