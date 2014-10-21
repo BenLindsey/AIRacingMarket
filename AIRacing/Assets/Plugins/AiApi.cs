@@ -3,11 +3,15 @@ using System.Collections;
 
 public class AiApi : MonoBehaviour {
 
+	public LayerMask ignoreLayers;
+	Transform detector;
+
 	OurCar car;
 
 	// Use this for initialization
 	void Start () {
-		car = transform.parent.GetComponentInChildren<OurCar>();
+		car = GetComponent<OurCar>();
+		detector = transform.FindChild("Detector");
 	}
 
 	public float GetDistanceToNearestObstacle(float deg) {
@@ -15,7 +19,7 @@ public class AiApi : MonoBehaviour {
 		Vector3 direction = Quaternion.AngleAxis(deg, transform.up) * transform.forward;
 
 		RaycastHit hit;
-		if (Physics.Raycast(transform.position, direction, out hit)) {
+		if (Physics.Raycast(detector.position, direction, out hit, ignoreLayers.value)) {
 			return hit.distance;
 		}
 
@@ -23,7 +27,7 @@ public class AiApi : MonoBehaviour {
 	}
 
 	public float GetSpeed() {
-		return car.rigidbody.velocity.magnitude;
+		return rigidbody.velocity.magnitude;
 	}
 
 	public void SetThrottle(float value) {
