@@ -25,7 +25,7 @@ router.post('/', isLoggedIn, function(req, res) {
         "username"   : req.body.username,
         "scriptName" : req.body.scriptname,
         "script"     : req.body.script,
-        "levelName"  : req.body.levelName
+        "levelName"  : req.body.levelname
     }, function (err, doc) {
         if (err) {
             res.send("There was a problem adding the information to the database.");
