@@ -96,4 +96,10 @@ app.use(function(err, req, res, next) {
     });
 });
 
+app.get('*', function(req, res, next) {
+  // put user into res.locals for easy access from templates
+  res.locals.user = req.user || null;
+  next();
+});
+
 module.exports = app;
