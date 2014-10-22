@@ -20,5 +20,9 @@ block content
                   a(href=val, title=key)= key
           ul.nav.navbar-nav.navbar-right
             li.active
-              a(href="/logout") Logout
+              - if (_user) {
+                a(href="/logout") Logout
+              - } else {
+                a(href="/login") Login
+              - }
 
