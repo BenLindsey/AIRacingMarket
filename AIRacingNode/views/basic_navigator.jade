@@ -20,8 +20,8 @@ block content
                   a(href=val, title=key)= key
           ul.nav.navbar-nav.navbar-right
             li.active
-              - console.log("CHECKING USER : " + _user);
-              - if (_user) {
+              - console.log("CHECKING USER : " + user);
+              - if (user) {
                 a(href="/logout") Logout
               - } else {
                 a(href="/login") Login
