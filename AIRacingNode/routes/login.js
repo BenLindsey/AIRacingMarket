@@ -9,11 +9,22 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res, next) {
   return req.passport.authenticate('local-login', function(err, user, info){
 
-      if (err)   { return next(err); }
-      if (!user) { return res.redirect('/login'); }
+      if (err)   { 
+        res.locals.user = null;
+        return next(err); 
+      }
+
+      if (!user) { 
+        res.locals.user = null;
+        return res.redirect('/login'); 
+      }
       
       req.login(user, function(err) {
-        if (err) { return next(err); }
+        if (err) { 
+          return next(err); 
+        }
+
+        res.locals.user = req.user || null;
         if (!req.session.redirect) {
           return res.redirect('/');
         }
