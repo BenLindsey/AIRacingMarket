@@ -20,9 +20,5 @@ block content
                   a(href=val, title=key)= key
           ul.nav.navbar-nav.navbar-right
             li.active
-            - if (req.isAuthenticated()) {
               a(href="/logout") Logout
-            - } else {
-              a(href="/login") Login
-            - }
 
