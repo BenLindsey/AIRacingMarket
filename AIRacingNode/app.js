@@ -65,6 +65,13 @@ app.use('/logout', logout);
 app.use('/signup', signup);
 app.use('/profile', profile);
 
+app.get('*', function(req, res, next) {
+  // put user into res.locals for easy access from templates
+  res.locals.user = req.user || null;
+  console.log("USER : " + res.locals.user);
+  next();
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -94,12 +101,6 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: {}
     });
-});
-
-app.get('*', function(req, res, next) {
-  // put user into res.locals for easy access from templates
-  res.locals.user = req.user || null;
-  next();
 });
 
 module.exports = app;

@@ -20,6 +20,7 @@ block content
                   a(href=val, title=key)= key
           ul.nav.navbar-nav.navbar-right
             li.active
+              - console.log("CHECKING USER : " + _user);
               - if (_user) {
                 a(href="/logout") Logout
               - } else {
