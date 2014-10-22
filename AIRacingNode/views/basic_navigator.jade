@@ -19,5 +19,10 @@ block content
                 else
                   a(href=val, title=key)= key
           ul.nav.navbar-nav.navbar-right
-            a.btn.btn-default(class='button', href='/logout') Logout
+            li.active
+            - if (req.isAuthenticated()) {
+              a(href="/logout") Logout
+            - } else {
+              a(href="/login") Login
+            - }
 
