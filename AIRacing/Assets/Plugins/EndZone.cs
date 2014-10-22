@@ -50,7 +50,7 @@ public class EndZone : MonoBehaviour {
         var form = new WWWForm();
         form.AddField("scriptname", scriptName);
         form.AddField("time", time.ToString());
-        form.AddField("username", "Unity King");
+        form.AddField("levelname", "Mr Bubbles");
 
         WWW www = new WWW(URL + "time/", form);
 
