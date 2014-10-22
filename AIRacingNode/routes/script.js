@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET the form used to create a script. */
 router.get('/', isLoggedIn, function(req, res) {
-    res.render('newscript', { title: 'Add New Script' });
+    res.render('script', { title: 'Add New Script' });
 });
 
 /* GET the contents of a script by name */
