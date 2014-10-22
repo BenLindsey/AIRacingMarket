@@ -8,29 +8,39 @@ router.get('/', isLoggedIn, function(req, res) {
 
     var scores = [];
 
-    findAndCheckIfFinal(scripts, {email: req.user.local.email}, function(scriptDoc, isLastScript) {
-        findAndCheckIfFinal(times, {scriptName: scriptDoc.scriptName}, function(timeDoc, isLastTime) {
+    // Create a new object to keep track of how much async work is done, and what to do when all work is complete
+    var work = new Work(function() { res.render('profile', { "scores": scores }); });
+
+    find(scripts, {email: req.user.local.email}, work, function(scriptDoc) {
+        find(times, {scriptName: scriptDoc.scriptName}, work, function(timeDoc) {
             scores.push({
                 time       : timeDoc.time,
                 scriptName : timeDoc.scriptName,
                 levelName  : scriptDoc.levelName
             });
-
-            if (isLastScript && isLastTime) {
-                res.render('profile', { "scores": scores });
-            }
         });
     });
 });
 
-// Calls BODY for each document in COLLECTION that matches FILTER.
-// where BODY takes a document and a flag indicating if this is the final document.
-function findAndCheckIfFinal(collection, filter, body) {
+// Calls BODY(doc) for each document in COLLECTION that matches FILTER.
+// Uses work to track async tasks remaining
+function find(collection, filter, work, body) {
+    work.start();
+
     collection.find(filter, {}, function(e, docs) {
         for (var i = 0; i < docs.length; i++) {
-            body(docs[i], i == docs.length - 1);
+            body(docs[i]);
         }
+
+        work.end();
     });
+}
+
+function Work(onComplete) {
+    this.count = 0;
+    this.onComplete = onComplete;
+    this.end = function() { if(--this.count == 0) this.onComplete(); };
+    this.start = function() { this.count++ };
 }
 
 function isLoggedIn(req, res, next) {
