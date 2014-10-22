@@ -3,20 +3,18 @@ var router = express.Router();
 
 /* GET New User page. */
 router.get('/', function(req, res) {
-    res.render('login', { message: req.flash('loginMessage') });
+    res.render('login');
 });
 
 router.post('/', function(req, res, next) {
   return req.passport.authenticate('local-login', function(err, user, info){
 
       if (err)   { 
-        res.locals.user = null;
         return next(err); 
       }
 
       if (!user) { 
-        res.locals.user = null;
-        return res.redirect('/login'); 
+        return res.render('login', {message: req.flash('loginMessage')});
       }
       
       req.login(user, function(err) {
@@ -24,7 +22,6 @@ router.post('/', function(req, res, next) {
           return next(err); 
         }
 
-        res.locals.user = req.user || null;
         if (!req.session.redirect) {
           return res.redirect('/');
         }
