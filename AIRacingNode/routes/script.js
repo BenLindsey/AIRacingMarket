@@ -7,7 +7,7 @@ router.get('/', isLoggedIn, function(req, res) {
 });
 
 /* GET the contents of a script by name */
-router.get('/:name', isLoggedIn, function(req, res) {
+router.get('/:name', function(req, res) {
     var db = req.db;
 
     var collection = db.get('scriptcollection');
