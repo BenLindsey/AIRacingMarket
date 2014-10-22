@@ -47,12 +47,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
 // pass passport/mongo to the router
 app.use(function(req, res, next) {
     req.db = db;
     req.passport = passport;
     req.flash = flash;
+    res.locals.user = req.user || null;
     next();
 });
 
@@ -64,13 +64,6 @@ app.use('/login', login);
 app.use('/logout', logout);
 app.use('/signup', signup);
 app.use('/profile', profile);
-
-app.get('*', function(req, res, next) {
-  // put user into res.locals for easy access from templates
-  res.locals.user = req.user || null;
-  console.log("USER : " + res.locals.user);
-  next();
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

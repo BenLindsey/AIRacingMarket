@@ -1,9 +1,6 @@
-extends layout 
+extends layout
 
-block link
-  a(class='btn btn-default', href='/') Return to Home
-block content
-  block head
+block head
     -var menu = {'Submit Script' : '/script', 'Leaderboard' : '/leaderboard', 'Profile' : '/profile'};
 
     div.navbar.navbar-default.navbar-fixed-top
