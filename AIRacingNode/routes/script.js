@@ -21,8 +21,11 @@ router.get('/:name', function(req, res) {
 router.post('/', isLoggedIn, function(req, res) {
     var collection = req.db.get('scriptcollection');
 
+    console.log("user :" );
+    console.log(req.user);
+
     collection.insert({
-        "username"   : req.body.username,
+        "email"      : req.user.local.email,
         "scriptName" : req.body.scriptname,
         "script"     : req.body.script,
         "levelName"  : req.body.levelname
