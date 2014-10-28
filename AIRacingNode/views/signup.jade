@@ -1,9 +1,18 @@
-extends index
+include ./basic_navigator.jade
+
 block content
     h1.
       Register
 
     .col-lg-6
+
+      if message.length > 0
+        .alert.alert-danger
+          button.close(type='button', data-dismiss='alert') &times;
+          strong Uh-oh! 
+          p.
+            #{message}
+
       div.well.bs-component
           form#registerForm.form-horizontal(method='post')
               fieldset

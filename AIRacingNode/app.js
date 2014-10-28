@@ -47,12 +47,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
 // pass passport/mongo to the router
 app.use(function(req, res, next) {
     req.db = db;
     req.passport = passport;
-    req.flash = flash;
+    res.locals.user = req.user || null;
     next();
 });
 

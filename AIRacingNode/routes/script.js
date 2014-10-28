@@ -3,11 +3,11 @@ var router = express.Router();
 
 /* GET the form used to create a script. */
 router.get('/', isLoggedIn, function(req, res) {
-    res.render('newscript', { title: 'Add New Script' });
+    res.render('script', { title: 'Add New Script' });
 });
 
 /* GET the contents of a script by name */
-router.get('/:name', isLoggedIn, function(req, res) {
+router.get('/:name', function(req, res) {
     var db = req.db;
 
     var collection = db.get('scriptcollection');
@@ -21,8 +21,11 @@ router.get('/:name', isLoggedIn, function(req, res) {
 router.post('/', isLoggedIn, function(req, res) {
     var collection = req.db.get('scriptcollection');
 
+    console.log("user :" );
+    console.log(req.user);
+
     collection.insert({
-        "username"   : req.body.username,
+        "email"      : req.user.local.email,
         "scriptName" : req.body.scriptname,
         "script"     : req.body.script,
         "levelName"  : req.body.levelname

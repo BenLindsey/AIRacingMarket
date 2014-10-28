@@ -1,5 +1,23 @@
-extends index
+include ./basic_navigator.jade
 
 block content
   h1.
     Profile
+
+  p
+    | Welcome #{user.local.email}
+  div
+      table.table.table-striped.table-hover
+          thead
+              tr
+                  th Level Name
+                  th Script Name
+                  th Time
+              tbody
+              - if (scores.length) {
+              each entry, i in scores
+                  tr
+                      td= entry.levelName
+                      td= entry.scriptName
+                      td= entry.time
+              - }
