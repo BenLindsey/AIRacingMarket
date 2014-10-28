@@ -38,5 +38,3 @@ if( api.GetSpeed() > 9 && Mathf.Abs(position) > 0.5) {
 }
 
 api.SetThrottle(70f);
-
-transform.position. y = 100;

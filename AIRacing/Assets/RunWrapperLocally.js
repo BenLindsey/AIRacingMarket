@@ -1,7 +1,7 @@
 ﻿#pragma strict
 import System.IO;
 
-public var file : String = "racetrack.txt";
+public var file : String = "test.txt";
 
 private var folder : String = Directory.GetCurrentDirectory() + "\\Assets\\Racing Scripts\\";
 private var wrapper : Wrapper;
