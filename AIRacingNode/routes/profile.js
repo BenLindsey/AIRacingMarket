@@ -9,7 +9,7 @@ router.get('/', isLoggedIn, function(req, res) {
     var scores = [];
 
     // Create a new object to keep track of how much async work is done, and what to do when all work is complete
-    var work = new Work(function() { res.render('profile', { "scores": scores }); });
+    var work = new Work(function() { res.render('profile', { "title": "Profile", "scores": scores }); });
 
     find(scripts, {email: req.user.local.email}, work, function(scriptDoc) {
         find(times, {scriptName: scriptDoc.scriptName}, work, function(timeDoc) {
