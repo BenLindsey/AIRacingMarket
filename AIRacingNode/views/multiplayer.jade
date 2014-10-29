@@ -1,0 +1,81 @@
+include ./basic_navigator.jade
+block content
+    script.
+        var handleChange = function() {
+            var select = document.getElementById("selectCount");
+            var size = parseInt(select.options[select.selectedIndex].text, 10);
+
+            if(size < 3) {
+                document.getElementById("carC").style.display = 'none';
+            } else {
+                document.getElementById("carC").style.display = 'block';
+            }
+
+            if(size < 4) {
+                document.getElementById("carD").style.display = 'none';
+            } else {
+                document.getElementById("carD").style.display = 'block';
+            }
+        }
+
+    h1.
+      Create your Match
+    .col-lg-6
+        div.well.bs-component
+            form#newMultiplayerForm.form-horizontal(method='post')
+                fieldset#multiplayerFieldSet
+                    .form-group
+                        label.col-lg-2.control-label(for='inputScriptCount') Players
+                        .col-lg-6
+                            select#selectCount.form-control(placeholder='How many scripts?', name="scriptcount", onchange='handleChange()')
+                                option 2
+                                option 3
+                                option 4
+
+                    .form-group#carA
+                        label.col-lg-2.control-label(for='inputScriptNameA') Car A
+                        .col-lg-6
+                            select.form-control(placeholder='Select Script', name="scriptnameA")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group#carB
+                        label.col-lg-2.control-label(for='inputScriptNameB') Car B
+                        .col-lg-6
+                            select.form-control(placeholder='Select Script', name="scriptnameB")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group#carC(style="display: none;")
+                        label.col-lg-2.control-label(for='inputScriptNameC') Car C
+                        .col-lg-6
+                            select.form-control(placeholder='Select Script', name="scriptnameC")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group#carD(style="display: none;")
+                        label.col-lg-2.control-label(for='inputScriptNameD') Car D
+                        .col-lg-6
+                            select.form-control(placeholder='Select Script', name="scriptnameD")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group
+                        label.col-lg-2.control-label(for='inputLevelName') Level
+                        .col-lg-6
+                            select#select.form-control(placeholder='Select Level', name="levelname")
+                                option Wish-There-Was-A-Cow
+
+                    .form-group
+                        .col-lg-6.col-lg-offset-2
+                            .btn-group
+                                button.btn.btn-default(type='reset') Reset
+                                button.btn.btn-primary(type='submit') Submit
