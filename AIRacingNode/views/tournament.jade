@@ -5,10 +5,16 @@ block content
             var select = document.getElementById("selectCount");
             var size = parseInt(select.options[select.selectedIndex].text, 10);
 
+            if(size == 2) {
+                var parent = document.getElementById("tournamentFieldSet");
+                var child = document.getElementById("carC")
+                parent.removeChild(child);
+            }
+
             if(size == 3) {
                 var parent = document.getElementById("tournamentFieldSet");
-                var child = document.getElementById("carA")
-                parent.removeChild(child);
+                var child = document.getElementById("carC")
+                parent.appendChild(child);
             }
         }
 
@@ -20,7 +26,7 @@ block content
                 fieldset#tournamentFieldSet
                     .form-group
                         label.col-lg-2.control-label(for='inputTournamentName') Name
-                        .col-lg-8
+                        .col-lg-6
                             input#inputTournamentName.form-control(placeholder='Enter a Tournament Name', type='text', name="tournamentname")
 
                     .form-group
@@ -34,7 +40,7 @@ block content
                     .form-group#carA
                         label.col-lg-2.control-label(for='inputScriptNameA') Car A
                         .col-lg-6
-                            select#selectA.form-control(placeholder='Select Script', name="scriptnameA")
+                            select.form-control(placeholder='Select Script', name="scriptnameA")
                                 - if (scripts.length) {
                                 each entry, i in scripts
                                     option= entry.scriptName
@@ -43,7 +49,16 @@ block content
                     .form-group#carB
                         label.col-lg-2.control-label(for='inputScriptNameB') Car B
                         .col-lg-6
-                            select#selectB.form-control(placeholder='Select Script', name="scriptnameB")
+                            select.form-control(placeholder='Select Script', name="scriptnameB")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group#carC
+                        label.col-lg-2.control-label(for='inputScriptNameC') Car C
+                        .col-lg-6
+                            select.form-control(placeholder='Select Script', name="scriptnameC")
                                 - if (scripts.length) {
                                 each entry, i in scripts
                                     option= entry.scriptName
