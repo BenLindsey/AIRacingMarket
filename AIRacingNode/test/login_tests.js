@@ -11,6 +11,7 @@ describe('login page', function() {
   beforeEach(function() {
     Browser.localhost('146.169.47.15', 2999);
     browser = Browser.create();
+    this.timeout(4000);
   });
 
   it('should visit the login page', function(done) {
