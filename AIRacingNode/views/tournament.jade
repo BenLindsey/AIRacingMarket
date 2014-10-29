@@ -1,19 +1,19 @@
 include ./basic_navigator.jade
 block content
-    - var cars = 2;
+    script.
+        var cars = 2;
 
-    - var addCar = function() {
-    -   console.log('Adding car');
-    -   cars++;
-    - }
+        var addCar = function() {
+            cars++;
+        }
 
-    - var removeCar = function(id) {
-    -   if(cars > 1) {
-    -     var element = document.getElementById("element-id");
-    -     element.parentNode.removeChild(element);
-    -     cars--;
-    -   }
-    - }
+        var removeCar = function(id) {
+            if(cars > 1) {
+                var element = document.getElementById(id);
+                element.parentNode.removeChild(element);
+                cars--;
+            }
+        }
 
     h1.
       Create your Tournament
