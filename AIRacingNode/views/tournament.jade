@@ -12,9 +12,15 @@ block content
                             input#inputTournamentName.form-control(placeholder='Enter a Tournament Name', type='text', name="tournamentname")
 
                     .form-group
+                        .col-lg-6.col-lg-offset-2
+                            .btn-group
+                                button.btn.btn-default(type='addCar') Add Car
+                                button.btn.btn-default(type='removeCar') Remove Car
+
+                    .form-group
                         label.col-lg-2.control-label(for='inputScriptName') Car A
                         .col-lg-6
-                            select#select.form-control(placeholder='Select Script', name="scriptnameA")
+                            select#select.form-control(placeholder='Select Script', name="scriptname")
                                 - if (scripts.length) {
                                 each entry, i in scripts
                                     option= entry.scriptName
