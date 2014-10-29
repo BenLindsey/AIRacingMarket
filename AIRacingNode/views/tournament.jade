@@ -6,9 +6,9 @@ block content
             var size = parseInt(select.options[select.selectedIndex].text, 10);
 
             if(size == 3) {
-                alert("removing");
-                document.getElementById("newTournamentForm").removeChild(document.getElementById("carB"));
-                alert("removed");
+                var parent = document.getElementById("tournamentFieldSet");
+                var child = document.getElementById("carA")
+                parent.removeChild(child);
             }
         }
 
@@ -17,7 +17,7 @@ block content
     .col-lg-6
         div.well.bs-component
             form#newTournamentForm.form-horizontal(method='post')
-                fieldset
+                fieldset#tournamentFieldSet
                     .form-group
                         label.col-lg-2.control-label(for='inputTournamentName') Name
                         .col-lg-8
@@ -31,8 +31,8 @@ block content
                                 option 3
                                 option 4
 
-                    .form-group
-                        label#carA.col-lg-2.control-label(for='inputScriptNameA') Car A
+                    .form-group#carA
+                        label.col-lg-2.control-label(for='inputScriptNameA') Car A
                         .col-lg-6
                             select#selectA.form-control(placeholder='Select Script', name="scriptnameA")
                                 - if (scripts.length) {
@@ -40,8 +40,8 @@ block content
                                     option= entry.scriptName
                                 - }
 
-                    .form-group
-                        label#carB.col-lg-2.control-label(for='inputScriptNameB') Car B
+                    .form-group#carB
+                        label.col-lg-2.control-label(for='inputScriptNameB') Car B
                         .col-lg-6
                             select#selectB.form-control(placeholder='Select Script', name="scriptnameB")
                                 - if (scripts.length) {
