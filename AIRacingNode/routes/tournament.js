@@ -14,12 +14,18 @@ router.get('/', isLoggedIn, function(req, res) {
 
 /* POST to start tournament */
 router.post('/', isLoggedIn, function(req, res) {
+    var size = parseInt(req.body.scriptcount, 10);
+
     // Build the inputs to unity
-    var url = "/WebBuild.html?scriptname=" + req.body.scriptname
-        +"&scriptname=" + req.body.scriptname;
-        +"&scriptname=" + req.body.scriptname;
-        +"&scriptname=" + req.body.scriptname;
-        +"&levelname=" + req.body.levelname;
+    var url = "/WebBuild.html?levelname" + req.body.levelname
+             + "&scriptname=" + req.body.scriptnameA
+             + "&scriptname=" + req.body.scriptnameB;
+    if(size > 2) {
+        url += "&scriptname=" + req.body.scriptnameC;
+    }
+    if(size > 3) {
+        url += "&scriptname=" + req.body.scriptnameD;
+    }
 
     console.log("Redirecting user to: " + url);
     // If it worked, set the header so the address bar doesn't still say /script
