@@ -1,5 +1,20 @@
 include ./basic_navigator.jade
 block content
+    - var cars = 2;
+
+    - var addCar = function() {
+    -   console.log('Adding car');
+    -   cars++;
+    - }
+
+    - var removeCar = function(id) {
+    -   if(cars > 1) {
+    -     var element = document.getElementById("element-id");
+    -     element.parentNode.removeChild(element);
+    -     cars--;
+    -   }
+    - }
+
     h1.
       Create your Tournament
     .col-lg-6
@@ -15,16 +30,26 @@ block content
                         .col-lg-6.col-lg-offset-2
                             .btn-group
                                 button.btn.btn-default(type='button', onClick = "addCar()") Add Car
-                                button.btn.btn-default(type='button', onClick = "removeCar()") Remove Car
 
                     .form-group
                         label.col-lg-2.control-label(for='inputScriptName') Car A
                         .col-lg-6
-                            select#select.form-control(placeholder='Select Script', name="scriptname")
+                            select#select.form-control(placeholder='Select Script', name="scriptnameA")
                                 - if (scripts.length) {
                                 each entry, i in scripts
                                     option= entry.scriptName
                                 - }
+                            button.btn.btn-default(type='button', onClick = "removeCar(this)") Remove Car
+
+                    .form-group
+                        label.col-lg-2.control-label(for='inputScriptName') Car B
+                        .col-lg-6
+                            select#select.form-control(placeholder='Select Script', name="scriptnameB")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+                            button.btn.btn-default(type='button', onClick = "removeCar(this)") Remove Car
 
                     .form-group
                         label.col-lg-2.control-label(for='inputLevelName') Level
