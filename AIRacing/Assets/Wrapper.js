@@ -18,14 +18,18 @@ var script;
 
 function Start () {
 	Application.ExternalCall("SetScript", "");
-    endZone.SetURL(URL);
+    if (endZone != null) {
+        endZone.SetURL(URL);
+    }
 }
 
 function FixedUpdate () {
     if (!loaded && www != null && www.isDone) {
         loaded = true;
         script = www.text;
-        endZone.SetStartTime(Time.time);
+        if (endZone != null) {
+            endZone.SetStartTime(Time.time);
+        }
     } 
 
 	if (loaded) {

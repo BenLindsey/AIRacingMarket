@@ -1,40 +1,20 @@
-var rightDistance = api.GetDistanceToNearestObstacle(65);
-var leftDistance = api.GetDistanceToNearestObstacle(-65);
+var maxSpeed = 15;
 
-if (rightDistance < 0 || leftDistance < 0) {
-	return;
-}
+var dist = api.GetDistanceToCar(0);
 
-var position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
-
-api.SetSteer(position * 20);
-
-var frontDistance = api.GetDistanceToNearestObstacle(0);
-
-frontDistance = Mathf.Min(100, frontDistance);
-
-if (frontDistance < 0) {
-	frontDistance = 100;
-}
-
-if (frontDistance < 8) {
-	if (api.GetSpeed() > 1f) {
-		api.SetThrottle(0f);
-		return;
-	}
-}
-
-if (api.GetSpeed() > 15) { 
-
-	if (frontDistance < 40) {
-		api.SetThrottle(-70f);
-		return;
-	}
+if (dist > 0 && dist < 50) {
+	maxSpeed = 25;
 } 
 
-if( api.GetSpeed() > 9 && Mathf.Abs(position) > 0.5) {
-	api.SetThrottle(-60f);
-	return;
+if (api.CarInFront() || api.CarOnLeft()) {
+	api.SteerToRight();
+	maxSpeed = 25;
+} else {
+	api.SteerToLeft();
 }
 
-api.SetThrottle(70f);
+if (api.GetSpeed() > maxSpeed) { 
+	api.SetThrottle(0f);
+} else {
+	api.SetThrottle(70f);
+}

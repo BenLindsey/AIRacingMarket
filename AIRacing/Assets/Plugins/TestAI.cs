@@ -11,8 +11,8 @@ public class TestAI : MonoBehaviour {
 
 	void FixedUpdate () {
 
-		float rightDistance = api.GetDistanceToNearestObstacle(65);
-		float leftDistance = api.GetDistanceToNearestObstacle(-65);
+		float rightDistance = api.GetDistanceToEdge(65);
+		float leftDistance = api.GetDistanceToEdge(-65);
 
 		if (rightDistance < 0 || leftDistance < 0) {
 			return;
@@ -22,7 +22,7 @@ public class TestAI : MonoBehaviour {
 
 		api.SetSteer(position * 20);
 
-		float frontDistance = api.GetDistanceToNearestObstacle(0);
+		float frontDistance = api.GetDistanceToEdge(0);
 
 		frontDistance = Mathf.Min(100, frontDistance);
 

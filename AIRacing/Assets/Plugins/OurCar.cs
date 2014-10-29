@@ -166,8 +166,7 @@ public class OurCar : MonoBehaviour {
 	}
 
 	public void SetSteer(float value) {
-        steer = Mathf.Clamp(value, -45, 45) / 45
-            * GetMaxSteeringAngle(rigidbody.velocity.magnitude);
+        steer = Mathf.Clamp(value, -45, 45); // / 45 * GetMaxSteeringAngle(rigidbody.velocity.magnitude);
 	}
 
 	public void SetBrake(float value) {
