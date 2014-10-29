@@ -4,10 +4,12 @@ block content
         var cars = 2;
 
         var addCar = function() {
+            alert("I am an alert box!add");
             cars++;
         }
 
         var removeCar = function(id) {
+            alert("I am an alert box!remove");
             if(cars > 1) {
                 var element = document.getElementById(id);
                 element.parentNode.removeChild(element);
