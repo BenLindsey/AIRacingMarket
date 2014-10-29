@@ -16,7 +16,7 @@ block content
                             select#select.form-control(placeholder='Select Script', name="scriptname")
                                 - if (scripts.length) {
                                 each entry, i in scripts
-                                    option entry.scriptName
+                                    option= entry.scriptName
                                 - }
                     .form-group
                         .col-lg-6.col-lg-offset-2
