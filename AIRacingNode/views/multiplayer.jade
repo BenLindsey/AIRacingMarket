@@ -19,18 +19,13 @@ block content
         }
 
     h1.
-      Create your Tournament
+      Create your Match
     .col-lg-6
         div.well.bs-component
-            form#newTournamentForm.form-horizontal(method='post')
-                fieldset#tournamentFieldSet
+            form#newMultiplayerForm.form-horizontal(method='post')
+                fieldset#multiplayerFieldSet
                     .form-group
-                        label.col-lg-2.control-label(for='inputTournamentName') Name
-                        .col-lg-6
-                            input#inputTournamentName.form-control(placeholder='Enter a Tournament Name', type='text', name="tournamentname")
-
-                    .form-group
-                        label.col-lg-2.control-label(for='inputScriptCount') Size
+                        label.col-lg-2.control-label(for='inputScriptCount') Players
                         .col-lg-6
                             select#selectCount.form-control(placeholder='How many scripts?', name="scriptcount", onchange='handleChange()')
                                 option 2

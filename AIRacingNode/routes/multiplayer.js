@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET tournament form */
+/* GET multiplayer form */
 router.get('/', isLoggedIn, function(req, res) {
     var collection = req.db.get('scriptcollection');
 
     collection.find({}, {sort : { scriptName : 1 }}, function(e, docs) {
-        res.render('tournament', {
+        res.render('multiplayer', {
             "scripts" : docs
         });
     });
 });
 
-/* POST to start tournament */
+/* POST to start multiplayer */
 router.post('/', isLoggedIn, function(req, res) {
     var size = parseInt(req.body.scriptcount, 10);
 
@@ -36,7 +36,7 @@ router.post('/', isLoggedIn, function(req, res) {
 
 function isLoggedIn(req, res, next) {
 
-    req.session.redirect = '/tournament';
+    req.session.redirect = '/multiplayer';
 
     // if user is authenticated in the session, pass to GET/POST handlers
     if (req.isAuthenticated()) {
