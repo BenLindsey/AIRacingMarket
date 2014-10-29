@@ -21,6 +21,7 @@ var db = monk(configDB.url);
 
 var routes = require('./routes/index');
 var script = require('./routes/script');
+var admin = require('./routes/admin');
 var time = require('./routes/time');
 var leaderboard = require('./routes/leaderboard');
 var login = require('./routes/login');
@@ -63,6 +64,7 @@ app.use('/login', login);
 app.use('/logout', logout);
 app.use('/signup', signup);
 app.use('/profile', profile);
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

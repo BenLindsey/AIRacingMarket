@@ -1,0 +1,25 @@
+include ./basic_navigator.jade
+block content
+    h1.
+      Create your Tournament
+    .col-lg-6
+        div.well.bs-component
+            form#newTournamentForm.form-horizontal(method='post')
+                fieldset
+                    .form-group
+                        label.col-lg-2.control-label(for='inputTournamentName') Script Name
+                        .col-lg-8
+                            input#inputTournamentName.form-control(placeholder='Enter a Tournament Name', type='text', name="tournamentname")
+                    .form-group
+                        label.col-lg-2.control-label(for='inputScriptName') Level
+                        .col-lg-6
+                            select#select.form-control(placeholder='Select Script', name="scriptname")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option entry.scriptName
+                                - }
+                    .form-group
+                        .col-lg-6.col-lg-offset-2
+                            .btn-group
+                                button.btn.btn-default(type='reset') Reset
+                                button.btn.btn-primary(type='submit') Submit
