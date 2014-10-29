@@ -3,18 +3,9 @@ block content
     script.
         var cars = 2;
 
-        var addCar = function() {
+        var handleChange = function() {
             alert("add" + cars);
             cars++;
-        }
-
-        var removeCar = function(id) {
-            alert("remove" + id);
-            if(cars > 1) {
-                var element = document.getElementById(id);
-                element.parentNode.removeChild(element);
-                cars--;
-            }
         }
 
     h1.
@@ -29,9 +20,12 @@ block content
                             input#inputTournamentName.form-control(placeholder='Enter a Tournament Name', type='text', name="tournamentname")
 
                     .form-group
-                        .col-lg-6.col-lg-offset-2
-                            .btn-group
-                                button.btn.btn-default(type='button', onClick = "addCar()") Add Car
+                        label.col-lg-2.control-label(for='inputScriptCount') Scripts
+                        .col-lg-6
+                            select#select.form-control(placeholder='How many scripts?', name="scriptcount", onchange='handleChange()')
+                                option 2
+                                option 3
+                                option 4
 
                     .form-group
                         label.col-lg-2.control-label(for='inputScriptName') Car A
@@ -41,7 +35,6 @@ block content
                                 each entry, i in scripts
                                     option= entry.scriptName
                                 - }
-                            button.btn.btn-default(type='button', onClick = "removeCar(this)") Remove Car
 
                     .form-group
                         label.col-lg-2.control-label(for='inputScriptName') Car B
@@ -51,7 +44,6 @@ block content
                                 each entry, i in scripts
                                     option= entry.scriptName
                                 - }
-                            button.btn.btn-default(type='button', onClick = "removeCar(this)") Remove Car
 
                     .form-group
                         label.col-lg-2.control-label(for='inputLevelName') Level
