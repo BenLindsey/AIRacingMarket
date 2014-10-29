@@ -1,16 +1,14 @@
-api.SteerToLeft();
+var maxSpeed = 25f;
+var dist = Mathf.Max(api.GetDistanceToEdge(0), api.GetDistanceToCar(0));
 
-var frontDistance = api.GetDistanceToNearestObstacle(0);
-
-frontDistance = Mathf.Min(100, frontDistance);
-
-if (frontDistance < 0) {
-	frontDistance = 100;
+if (dist < 50) {
+	maxSpeed = 20f;
 }
 
+api.SteerToLeft();
 
-if (api.GetSpeed() > 25) { 
+if (api.GetSpeed() > maxSpeed) { 
 	api.SetThrottle(0f);
 } else {
-	api.SetThrottle(70f);
+	api.SetThrottle(65f);
 }

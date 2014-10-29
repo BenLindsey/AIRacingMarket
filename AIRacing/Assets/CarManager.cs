@@ -42,6 +42,7 @@ public class CarManager : MonoBehaviour {
 		} else {
 			newCar = Instantiate(original) as GameObject;
 			cameras.Add(newCar.GetComponentInChildren<Camera>());
+			newCar.GetComponentInChildren<Camera>().enabled = false;
 		}
 
 		newCar.transform.position = startPositions[cars.Count].position;

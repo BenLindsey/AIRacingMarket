@@ -58,7 +58,7 @@ public class OurCar : MonoBehaviour {
 
 		float maxBrakeForce = -Mathf.Min(throttle, -brake);
 
-        brakeLights.SetFloat("_Intensity", Mathf.Abs(maxBrakeForce / 100));
+        brakeLights.SetFloat("_Intensity", Mathf.Abs(maxBrakeForce / 100f));
 
         foreach (Wheel wheel in wheels) {
             UpdateWheel(wheel);
@@ -162,11 +162,11 @@ public class OurCar : MonoBehaviour {
     }
 
     public void SetThrottle(float value) {
-        throttle = value * 100;
+        throttle = value * 80;
 	}
 
 	public void SetSteer(float value) {
-        steer = Mathf.Clamp(value, -45, 45); // / 45 * GetMaxSteeringAngle(rigidbody.velocity.magnitude);
+        steer = Mathf.Clamp(value, -45, 45);
 	}
 
 	public void SetBrake(float value) {

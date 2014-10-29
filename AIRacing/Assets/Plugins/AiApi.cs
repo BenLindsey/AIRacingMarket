@@ -27,20 +27,16 @@ public class AiApi : MonoBehaviour {
 
         float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
 
-        SetSteer(position * 25f);
+        SetSteer(position * 30f);
     }
 
     public void SteerToLeft() {
-        float rightDistance = GetDistanceToEdge(40);
-        float leftDistance = GetDistanceToEdge(-40);
-
-        if (rightDistance < 0 || leftDistance < 0) {
-            return;
-        }
+		float rightDistance = GetDistanceToEdge(40f);
+		float leftDistance = GetDistanceToEdge(-40f);
 
         float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
 
-        SetSteer((position - 0.8f) * 25f);
+        SetSteer((position - 0.8f) * 30f);
     }
 
     public void SteerToRight() {
@@ -53,7 +49,7 @@ public class AiApi : MonoBehaviour {
 
         float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
 
-        SetSteer((position + 0.8f) * 25f);
+        SetSteer((position + 0.8f) * 30f);
     }
 
 	public float GetDistanceToEdge(float deg) {
@@ -76,7 +72,7 @@ public class AiApi : MonoBehaviour {
             return hit.distance;
         }
 
-        return -1;
+		return -1;
     }
 
     public bool CarInFront() {
@@ -112,6 +108,11 @@ public class AiApi : MonoBehaviour {
 	public void SetThrottle(float value) {
 		value = Mathf.Clamp(value, -100, 100);
 		car.SetThrottle(value / 100.0f);
+	}
+
+	public void SetBrake(float value) {
+		value = Mathf.Clamp(value, 0, 100);
+		car.SetThrottle(value);
 	}
 
 	public void SetSteer(float value) {

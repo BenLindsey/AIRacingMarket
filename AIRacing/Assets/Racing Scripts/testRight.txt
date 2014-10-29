@@ -1,15 +1,6 @@
 api.SteerToRight();
 
-var frontDistance = api.GetDistanceToNearestObstacle(0);
-
-frontDistance = Mathf.Min(100, frontDistance);
-
-if (frontDistance < 0) {
-	frontDistance = 100;
-}
-
-
-if (api.GetSpeed() > 25) { 
+if (api.GetSpeed() > 20) { 
 	api.SetThrottle(0f);
 } else {
 	api.SetThrottle(70f);
