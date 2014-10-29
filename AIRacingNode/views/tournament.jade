@@ -6,8 +6,9 @@ block content
             var size = parseInt(select.options[select.selectedIndex].text, 10);
 
             if(size == 3) {
-                document.getElementById("newTournamentForm").removeChild(getElementById("carB"));
                 alert("removing");
+                document.getElementById("newTournamentForm").removeChild(document.getElementById("carB"));
+                alert("removed");
             }
         }
 
