@@ -3,7 +3,12 @@ block content
     script.
         var handleChange = function() {
             var select = document.getElementById("selectCount");
-            alert("changed to " + select.options[select.selectedIndex].text);
+            var size = parseInt(select.options[select.selectedIndex].text, 10);
+
+            if(size == 3) {
+                document.getElementById("newTournamentForm").removeChild(getElementById("carB"));
+                alert("removing");
+            }
         }
 
     h1.
@@ -26,7 +31,7 @@ block content
                                 option 4
 
                     .form-group
-                        label.col-lg-2.control-label(for='inputScriptName') Car A
+                        label#carA.col-lg-2.control-label(for='inputScriptNameA') Car A
                         .col-lg-6
                             select#selectA.form-control(placeholder='Select Script', name="scriptnameA")
                                 - if (scripts.length) {
@@ -35,7 +40,7 @@ block content
                                 - }
 
                     .form-group
-                        label.col-lg-2.control-label(for='inputScriptName') Car B
+                        label#carB.col-lg-2.control-label(for='inputScriptNameB') Car B
                         .col-lg-6
                             select#selectB.form-control(placeholder='Select Script', name="scriptnameB")
                                 - if (scripts.length) {
@@ -48,6 +53,7 @@ block content
                         .col-lg-6
                             select#select.form-control(placeholder='Select Level', name="levelname")
                                 option Wish-There-Was-A-Cow
+
                     .form-group
                         .col-lg-6.col-lg-offset-2
                             .btn-group
