@@ -5,15 +5,15 @@ block content
             var select = document.getElementById("selectCount");
             var size = parseInt(select.options[select.selectedIndex].text, 10);
 
+            var parent = document.getElementById("tournamentFieldSet");
+
             if(size == 2) {
-                var parent = document.getElementById("tournamentFieldSet");
-                var child = document.getElementById("carC")
+                var child = document.getElementById("carC");
                 parent.removeChild(child);
             }
 
             if(size == 3) {
-                var parent = document.getElementById("tournamentFieldSet");
-                var child = document.getElementById("carC")
+                var child = document.createElement("carC");
                 parent.appendChild(child);
             }
         }
