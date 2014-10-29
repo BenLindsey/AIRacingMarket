@@ -30,7 +30,7 @@ router.post('/', isLoggedIn, function(req, res) {
 
 function isLoggedIn(req, res, next) {
 
-    req.session.redirect = '/admin';
+    req.session.redirect = '/tournament';
 
     // if user is authenticated in the session, pass to GET/POST handlers
     if (req.isAuthenticated()) {
