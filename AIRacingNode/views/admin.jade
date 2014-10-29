@@ -7,17 +7,51 @@ block content
             form#newTournamentForm.form-horizontal(method='post')
                 fieldset
                     .form-group
-                        label.col-lg-2.control-label(for='inputTournamentName') Script Name
+                        label.col-lg-2.control-label(for='inputTournamentName') Tournament Name
                         .col-lg-8
                             input#inputTournamentName.form-control(placeholder='Enter a Tournament Name', type='text', name="tournamentname")
+
                     .form-group
-                        label.col-lg-2.control-label(for='inputScriptName') Level
+                        label.col-lg-2.control-label(for='inputScriptName') Car A
                         .col-lg-6
-                            select#select.form-control(placeholder='Select Script', name="scriptname")
+                            select#select.form-control(placeholder='Select Script', name="scriptnameA")
                                 - if (scripts.length) {
                                 each entry, i in scripts
                                     option= entry.scriptName
                                 - }
+
+                    .form-group
+                        label.col-lg-2.control-label(for='inputScriptName') Car B
+                        .col-lg-6
+                            select#select.form-control(placeholder='Select Script', name="scriptnameB")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group
+                        label.col-lg-2.control-label(for='inputScriptName') Car C
+                        .col-lg-6
+                            select#select.form-control(placeholder='Select Script', name="scriptnameC")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group
+                        label.col-lg-2.control-label(for='inputScriptName') Car D
+                        .col-lg-6
+                            select#select.form-control(placeholder='Select Script', name="scriptnameD")
+                                - if (scripts.length) {
+                                each entry, i in scripts
+                                    option= entry.scriptName
+                                - }
+
+                    .form-group
+                        label.col-lg-2.control-label(for='inputLevelName') Level
+                        .col-lg-6
+                            select#select.form-control(placeholder='Select Level', name="levelname")
+                                option Wish-There-Was-A-Cow
                     .form-group
                         .col-lg-6.col-lg-offset-2
                             .btn-group
