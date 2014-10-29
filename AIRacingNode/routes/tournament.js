@@ -6,7 +6,7 @@ router.get('/', isLoggedIn, function(req, res) {
     var collection = req.db.get('scriptcollection');
 
     collection.find({}, {sort : { scriptName : 1 }}, function(e, docs) {
-        res.render('admin', {
+        res.render('tournament', {
             "scripts" : docs
         });
     });
@@ -15,10 +15,10 @@ router.get('/', isLoggedIn, function(req, res) {
 /* POST to start tournament */
 router.post('/', isLoggedIn, function(req, res) {
     // Build the inputs to unity
-    var url = "/WebBuild.html?scriptnameA=" + req.body.scriptnameA
-        +"&scriptnameB=" + req.body.scriptnameB;
-        +"&scriptnameC=" + req.body.scriptnameC;
-        +"&scriptnameD=" + req.body.scriptnameD;
+    var url = "/WebBuild.html?scriptname=" + req.body.scriptname
+        +"&scriptname=" + req.body.scriptname;
+        +"&scriptname=" + req.body.scriptname;
+        +"&scriptname=" + req.body.scriptname;
         +"&levelname=" + req.body.levelname;
 
     console.log("Redirecting user to: " + url);
