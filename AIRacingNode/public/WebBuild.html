@@ -65,7 +65,8 @@
 
 			    for (var i = 0; i < scripts.length; i++) {
                     console.log(scripts[i]);
-			        u.getUnity().SendMessage("StartingGrid", "AddScript", scripts[i]);
+                    u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
+                    u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
 			    }
 
 			    u.getUnity().SendMessage("StartingGrid", "StartRace");
