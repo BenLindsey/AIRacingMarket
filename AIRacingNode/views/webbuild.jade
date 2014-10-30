@@ -1,4 +1,7 @@
 include ./basic_navigator.jade
 
+
 block content
+    script.
+        var scripts = !{JSON.stringify(scripts)}
     include ../public/WebBuild.html

@@ -17,17 +17,18 @@ router.post('/', isLoggedIn, function(req, res) {
     var size = parseInt(req.body.scriptcount, 10);
 
     // Build the inputs to unity
-    var url = "/webbuild?levelname" + req.body.levelname
-             + "&scriptname=" + req.body.scriptnameA
-             + "&scriptname=" + req.body.scriptnameB;
+    var url = "/webbuild";
+
+    req.body.scripts = [req.body.scriptnameA, req.body.scriptnameB];
+
     if(size > 2) {
-        url += "&scriptname=" + req.body.scriptnameC;
-    }
-    if(size > 3) {
-        url += "&scriptname=" + req.body.scriptnameD;
+        req.body.scripts.push(req.body.scriptnameC);
     }
 
-    console.log("Redirecting user to: " + url);
+    if(size > 3) {
+        req.body.scripts.push(req.body.scriptnameD);
+    }
+
     // If it worked, set the header so the address bar doesn't still say /script
     res.location(url);
     // And forward to success page
