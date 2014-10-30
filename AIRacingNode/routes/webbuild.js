@@ -16,10 +16,8 @@ router.get('/', isLoggedIn, function(req, res) {
     }
 
     for(var key in scriptNames) {
-        var name = scriptNames[key];
-
-        collection.findOne({scriptName:name},  function(e, doc) {
-            scripts.push({name : name, content : doc.script});
+        collection.findOne({scriptName:scriptNames[key]},  function(e, doc) {
+            scripts.push({name : doc.scriptName, content : doc.script});
 
             if(scripts.length >= count) {
                 res.render('webbuild', {scripts : scripts, levelname : req.query.levelname});
