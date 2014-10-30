@@ -23,6 +23,7 @@ public class CarManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Application.ExternalCall("RequestScripts");
 	}
 	
 	// Update is called once per frame

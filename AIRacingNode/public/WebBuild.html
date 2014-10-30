@@ -60,23 +60,15 @@
 				u.initPlugin(jQuery("#unityPlayer")[0], "WebBuild.unity3d");
 			});
 
-			function parse(val) {
-			    var result = "Not found",
-                            tmp = [];
-			    location.search
-                //.replace ( "?", "" ) 
-                // this is better, there might be a question mark inside
-                        .substr(1)
-                            .split("&")
-                            .forEach(function (item) {
-                                tmp = item.split("=");
-                                if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
-                            });
-			    return result;
-			}
+			function RequestScripts() {
+			    console.log("Scripts Requested!");
 
-			function SetScript(arg) { 
-			    u.getUnity().SendMessage("Wrapper", "SetScriptName", parse("scriptname"));
+			    for (var i = 0; i < scripts.length; i++) {
+                    console.log(scripts[i]);
+			        u.getUnity().SendMessage("StartingGrid", "AddScript", scripts[i]);
+			    }
+
+			    u.getUnity().SendMessage("StartingGrid", "StartRace");
 			}
 		-->
 		</script>
