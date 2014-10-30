@@ -37,7 +37,7 @@ router.post('/', isLoggedIn, function(req, res) {
             // Build the inputs to unity
             var url = "/webbuild";
 
-            req.body.scripts = [{req.body.scriptname, req.body.script}];
+            req.body.scripts = [{name : req.body.scriptname, content : req.body.script}];
 
             // If it worked, set the header so the address bar doesn't still say /script
             res.location(url);
