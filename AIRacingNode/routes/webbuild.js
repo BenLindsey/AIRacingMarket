@@ -7,11 +7,25 @@ router.get('/', isLoggedIn, function(req, res) {
 
     var scripts = [];
 
+    var collection = req.db.get('scriptcollection');
+
+    var count = 0;
+
     for(var key in scriptNames) {
-        scripts.push({name: scriptNames[key], content:""});
+        count++;
     }
 
-    res.render('webbuild', { scripts : scripts, levelname : req.query.levelname } );
+    for(var key in scriptNames) {
+        var name = scriptNames[key];
+
+        collection.findOne({scriptName:name},  function(e, doc) {
+            scripts.push({name : name, content : doc.script});
+
+            if(scripts.length >= count) {
+                res.render('webbuild', {scripts : scripts, levelname : req.query.levelname});
+            }
+        });
+    }
 });
 
 function isLoggedIn(req, res, next) {
