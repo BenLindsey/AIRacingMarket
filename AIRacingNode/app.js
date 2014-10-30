@@ -28,7 +28,7 @@ var login = require('./routes/login');
 var logout = require('./routes/logout');
 var signup = require('./routes/signup');
 var profile = require('./routes/profile');
-var webBuild = require('./routes/WebBuild');
+var webBuild = require('./routes/webbuild');
 
 var app = express();
 
