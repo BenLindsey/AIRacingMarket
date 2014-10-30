@@ -35,11 +35,10 @@ router.post('/', isLoggedIn, function(req, res) {
         }
         else {
             // Build the inputs to unity
-            var url = "/webbuild";
+            var url = "/WebBuild.html?levelname=" + req.body.levelname
+                                    +"&scripts[A]=" + req.body.scriptname;
 
-            res.levelname = req.body.levelname;
-            res.scripts = [{name : req.body.scriptname, content : req.body.script}];
-
+            console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script
             res.location(url);
             // And forward to success page
