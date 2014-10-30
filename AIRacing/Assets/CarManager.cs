@@ -19,11 +19,10 @@ public class CarManager : MonoBehaviour {
 
 	public GameObject original;
 
-    private CameraManager cameraManager;
+    public CameraManager cameraManager;
 
 	// Use this for initialization
 	void Start () {
-        cameraManager = GetComponent<CameraManager>();
         cameraManager.AddCamera(original.GetComponentInChildren<Camera>());
 	}
 	
@@ -53,7 +52,7 @@ public class CarManager : MonoBehaviour {
         cars.Add(newCar);
 
         newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", script.name);
-        newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", script.contents);
+        newCar.transform.FindChild("OurCar").SendMessage("SetScriptContents", script.contents);
     }
 
 	public void StartRace() {

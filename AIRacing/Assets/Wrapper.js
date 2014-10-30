@@ -1,17 +1,15 @@
 ﻿#pragma strict
 
-public var scriptName;
+var api : AiApi;
 
-private var scriptContents;
-private var api : AiApi;
-
-var running = false;
+var scriptName;
+var scriptContents;
 
 function Start () {
 }
 
 function FixedUpdate () {
-	if (running && scriptContents != null) {
+	if (scriptContents) {
 		eval(scriptContents);
 	}
 }
