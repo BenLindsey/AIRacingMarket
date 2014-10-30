@@ -8,7 +8,7 @@ public class LocalRaceStarter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		foreach (string script in scriptsToRace) {
-			GetComponent<CarManager>().AddLocalScript(script);
+			//GetComponent<CarManager>().AddLocalScript(script);
 		}
 		GetComponent<CarManager>().StartRace();
 	}

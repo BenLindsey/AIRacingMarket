@@ -5,64 +5,58 @@ using System.IO;
 
 public class CarManager : MonoBehaviour {
 
+    public struct Script {
+        public string name;
+        public string contents;
+    }
+
+    public static string URL = "http://146.169.47.15:3001/";
+
 	public Transform[] startPositions;
 
 	private List<GameObject> cars = new List<GameObject>();
+    private List<WWW> requests = new List<WWW>();
 
 	private string folder = Directory.GetCurrentDirectory() + "\\Assets\\Racing Scripts\\";
 
 	public GameObject original;
 
-	private List<Camera> cameras = new List<Camera>();
-	private int activeCamera = 0;
-	
+    private CameraManager cameraManager;
+
 	// Use this for initialization
 	void Start () {
-		cameras.Add(original.GetComponentInChildren<Camera>());
+        cameraManager = GetComponent<CameraManager>();
+        cameraManager.AddCamera(original.GetComponentInChildren<Camera>());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("CameraToggle")) {
-			cameras[activeCamera].enabled = false;
-			activeCamera = (activeCamera + 1) % cameras.Count;
-			cameras[activeCamera].enabled = true;
-		}
 	}
 
-	public void AddLocalScript(string name) {
-		if (cars.Count == startPositions.Length) {
-			return;
-		}
+    public void AddScript(Script script) {
+        if (cars.Count == startPositions.Length) {
+            return;
+        }
 
-		GameObject newCar;
+        GameObject newCar;
 
-		if (cars.Count == 0) {
-			newCar = original;
-		} else {
-			newCar = Instantiate(original) as GameObject;
-			cameras.Add(newCar.GetComponentInChildren<Camera>());
-			newCar.GetComponentInChildren<Camera>().enabled = false;
-		}
+        if (cars.Count == 0) {
+            newCar = original;
+        }
+        else {
+            newCar = Instantiate(original) as GameObject;
+            cameraManager.AddCamera(newCar.GetComponentInChildren<Camera>());
+            newCar.GetComponentInChildren<Camera>().enabled = false;
+        }
 
-		newCar.transform.position = startPositions[cars.Count].position;
-		newCar.transform.rotation = startPositions[cars.Count].rotation;
+        newCar.transform.position = startPositions[cars.Count].position;
+        newCar.transform.rotation = startPositions[cars.Count].rotation;
 
-		cars.Add(newCar);
+        cars.Add(newCar);
 
-		string path = folder + name;
-		if (File.Exists(path)) {
-			Debug.Log("Setting local script path to: " + path);
-			newCar.transform.FindChild("OurCar").SendMessage("SetLocalScriptPath", path);
-		}
-		else {
-			Debug.Log("Path: '" + path + "' does not exist.");
-		}
-	}
-
-	public void AddRemoteScript(string name) {
-		
-	}
+        newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", script.name);
+        newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", script.contents);
+    }
 
 	public void StartRace() {
 		foreach (GameObject car in cars) {
