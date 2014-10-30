@@ -35,6 +35,8 @@ public class CarManager : MonoBehaviour {
             return;
         }
 
+        Debug.Log("Script added with name: " + script.name);
+
         GameObject newCar = Instantiate(original) as GameObject;
         cameraManager.AddCamera(newCar.GetComponentInChildren<Camera>());
 
@@ -50,6 +52,8 @@ public class CarManager : MonoBehaviour {
     }
 
 	public void StartRace() {
+        Debug.Log("Race started with " + cars.Count + " racers!");
+
 		foreach (GameObject car in cars) {
 			car.SetActive(true);
 		}
