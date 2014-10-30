@@ -3,21 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class CarManager : MonoBehaviour {
+public struct Script
+{
+    public string name;
+    public string contents;
+}
 
-    public struct Script {
-        public string name;
-        public string contents;
-    }
+public class CarManager : MonoBehaviour {
 
     public static string URL = "http://146.169.47.15:3001/";
 
 	public Transform[] startPositions;
 
 	private List<GameObject> cars = new List<GameObject>();
-    private List<WWW> requests = new List<WWW>();
-
-	private string folder = Directory.GetCurrentDirectory() + "\\Assets\\Racing Scripts\\";
 
 	public GameObject original;
 
