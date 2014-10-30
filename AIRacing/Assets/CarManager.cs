@@ -54,7 +54,7 @@ public class CarManager : MonoBehaviour {
         cars[cars.Count - 1].transform.FindChild("OurCar").SendMessage("SetScriptContents", scriptContent);
     }
 
-	public void StartRace() {
+	public void StartRace(string arg) {
         Debug.Log("Race started with " + cars.Count + " racers!");
 
 		foreach (GameObject car in cars) {

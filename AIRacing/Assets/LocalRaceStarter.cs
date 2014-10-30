@@ -11,9 +11,10 @@ public class LocalRaceStarter : MonoBehaviour {
             Script script;
             script.name = scriptName;
             script.contents = GetScript(Directory.GetCurrentDirectory() + "\\Assets\\Racing Scripts\\" + scriptName);
-			GetComponent<CarManager>().AddScript(script);
+			GetComponent<CarManager>().AddScriptByName(script.name);
+            GetComponent<CarManager>().AddScriptContent(script.contents);
 		}
-		GetComponent<CarManager>().StartRace();
+		GetComponent<CarManager>().StartRace("");
 	}
 
     private string GetScript(string scriptPath) {
