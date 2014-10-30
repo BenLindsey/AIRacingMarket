@@ -51,6 +51,7 @@ public class CarManager : MonoBehaviour {
     }
 
     public void AddScriptContent(string scriptContent) {
+        Debug.Log("Trying to add script...");
         cars[cars.Count - 1].transform.FindChild("OurCar").SendMessage("SetScriptContents", scriptContent);
     }
 

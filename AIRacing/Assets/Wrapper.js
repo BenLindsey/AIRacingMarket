@@ -19,5 +19,6 @@ function SetScriptName(name) {
 }
 
 function SetScriptContents(contents) {
+    Debug.Log("Added script: " + contents);
     scriptContents = contents;
 }
