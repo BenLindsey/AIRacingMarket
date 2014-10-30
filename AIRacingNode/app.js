@@ -28,6 +28,7 @@ var login = require('./routes/login');
 var logout = require('./routes/logout');
 var signup = require('./routes/signup');
 var profile = require('./routes/profile');
+var webBuild = require('./routes/WebBuild');
 
 var app = express();
 
@@ -65,6 +66,7 @@ app.use('/logout', logout);
 app.use('/signup', signup);
 app.use('/profile', profile);
 app.use('/multiplayer', multiplayer);
+app.use('/webbuild', webBuild);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

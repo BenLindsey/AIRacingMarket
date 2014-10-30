@@ -17,7 +17,7 @@ router.post('/', isLoggedIn, function(req, res) {
     var size = parseInt(req.body.scriptcount, 10);
 
     // Build the inputs to unity
-    var url = "/WebBuild.html?levelname" + req.body.levelname
+    var url = "/webbuild?levelname" + req.body.levelname
              + "&scriptname=" + req.body.scriptnameA
              + "&scriptname=" + req.body.scriptnameB;
     if(size > 2) {
