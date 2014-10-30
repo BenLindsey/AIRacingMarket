@@ -35,8 +35,6 @@ public class CarManager : MonoBehaviour {
             return;
         }
 
-        Debug.Log("Script added with name: " + scriptName);
-
         GameObject newCar = Instantiate(original) as GameObject;
         cameraManager.AddCamera(newCar.GetComponentInChildren<Camera>());
 
@@ -51,8 +49,10 @@ public class CarManager : MonoBehaviour {
     }
 
     public void AddScriptContent(string scriptContent) {
-        Debug.Log("Trying to add script...");
-        cars[cars.Count - 1].transform.FindChild("OurCar").SendMessage("SetScriptContents", scriptContent);
+        cars[cars.Count - 1].SetActive(true);
+        Debug.Log("Trying to add script...: " + scriptContent);
+        cars[cars.Count - 1].transform.FindChild("OurCar").SendMessage("SetScriptContent", scriptContent);
+        cars[cars.Count - 1].SetActive(false);
     }
 
 	public void StartRace(string arg) {

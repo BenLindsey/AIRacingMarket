@@ -16,9 +16,11 @@ function FixedUpdate () {
 
 function SetScriptName(name) {
     scriptName = name;
+
+    Debug.Log("Script added with name: " + scriptName);
 }
 
-function SetScriptContents(contents) {
+function SetScriptContent(contents) {
     Debug.Log("Added script: " + contents);
     scriptContents = contents;
 }
