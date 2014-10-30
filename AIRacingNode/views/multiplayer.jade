@@ -26,7 +26,7 @@ block content
                 fieldset#multiplayerFieldSet
                     .form-group
                         label.col-lg-2.control-label(for='inputScriptCount') Players
-                        .col-lg-6
+                        .col-lg-8
                             select#selectCount.form-control(placeholder='How many scripts?', name="scriptcount", onchange='handleChange()')
                                 option 2
                                 option 3
@@ -34,7 +34,7 @@ block content
 
                     .form-group#carA
                         label.col-lg-2.control-label(for='inputScriptNameA') Car A
-                        .col-lg-6
+                        .col-lg-8
                             select.form-control(placeholder='Select Script', name="scriptnameA")
                                 - if (scripts.length) {
                                 each entry, i in scripts
@@ -43,7 +43,7 @@ block content
 
                     .form-group#carB
                         label.col-lg-2.control-label(for='inputScriptNameB') Car B
-                        .col-lg-6
+                        .col-lg-8
                             select.form-control(placeholder='Select Script', name="scriptnameB")
                                 - if (scripts.length) {
                                 each entry, i in scripts
@@ -52,7 +52,7 @@ block content
 
                     .form-group#carC(style="display: none;")
                         label.col-lg-2.control-label(for='inputScriptNameC') Car C
-                        .col-lg-6
+                        .col-lg-8
                             select.form-control(placeholder='Select Script', name="scriptnameC")
                                 - if (scripts.length) {
                                 each entry, i in scripts
@@ -61,7 +61,7 @@ block content
 
                     .form-group#carD(style="display: none;")
                         label.col-lg-2.control-label(for='inputScriptNameD') Car D
-                        .col-lg-6
+                        .col-lg-8
                             select.form-control(placeholder='Select Script', name="scriptnameD")
                                 - if (scripts.length) {
                                 each entry, i in scripts
@@ -70,12 +70,11 @@ block content
 
                     .form-group
                         label.col-lg-2.control-label(for='inputLevelName') Level
-                        .col-lg-6
+                        .col-lg-8
                             select#select.form-control(placeholder='Select Level', name="levelname")
                                 option Wish-There-Was-A-Cow
 
                     .form-group
                         .col-lg-6.col-lg-offset-2
                             .btn-group
-                                button.btn.btn-default(type='reset') Reset
                                 button.btn.btn-primary(type='submit') Submit
