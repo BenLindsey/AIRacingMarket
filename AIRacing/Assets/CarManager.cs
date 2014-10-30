@@ -23,7 +23,6 @@ public class CarManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        cameraManager.AddCamera(original.GetComponentInChildren<Camera>());
 	}
 	
 	// Update is called once per frame
@@ -35,16 +34,8 @@ public class CarManager : MonoBehaviour {
             return;
         }
 
-        GameObject newCar;
-
-        if (cars.Count == 0) {
-            newCar = original;
-        }
-        else {
-            newCar = Instantiate(original) as GameObject;
-            cameraManager.AddCamera(newCar.GetComponentInChildren<Camera>());
-            newCar.GetComponentInChildren<Camera>().enabled = false;
-        }
+        GameObject newCar = Instantiate(original) as GameObject;
+        cameraManager.AddCamera(newCar.GetComponentInChildren<Camera>());
 
         newCar.transform.position = startPositions[cars.Count].position;
         newCar.transform.rotation = startPositions[cars.Count].rotation;
@@ -53,6 +44,8 @@ public class CarManager : MonoBehaviour {
 
         newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", script.name);
         newCar.transform.FindChild("OurCar").SendMessage("SetScriptContents", script.contents);
+
+        newCar.SetActive(false);
     }
 
 	public void StartRace() {
@@ -60,8 +53,8 @@ public class CarManager : MonoBehaviour {
 			car.SetActive(true);
 		}
 
-		foreach (Transform t in startPositions) {
-			t.gameObject.SetActive(false);
-		}
+        foreach (Transform t in startPositions) {
+            t.gameObject.SetActive(false);
+        }
 	}
 }

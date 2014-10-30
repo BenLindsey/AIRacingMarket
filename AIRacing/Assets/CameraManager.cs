@@ -22,7 +22,10 @@ public class CameraManager : MonoBehaviour {
 
     public void AddCamera(Camera camera) {
         cameras.Add(camera);
-    }
 
+        for (int i = 0; i < cameras.Count; i++) {
+            cameras[i].enabled = (i == activeCamera);
+        }
+    }
 }
 
