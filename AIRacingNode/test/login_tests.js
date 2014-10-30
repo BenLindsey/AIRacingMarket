@@ -11,10 +11,10 @@ describe('login page', function() {
   beforeEach(function() {
     Browser.localhost('146.169.47.15', 2999);
     browser = Browser.create();
-    this.timeout(4000);
   });
 
   it('should visit the login page', function(done) {
+    this.timeout(4000);
     browser.visit('/login', function() {
       assert.equal(browser.location.pathname, "/login");
       done();
@@ -22,6 +22,7 @@ describe('login page', function() {
   });
 
   it('should redirect to home on login', function(done) {
+    this.timeout(4000);
     browser.visit('/login')
       .then(function() {
         browser.fill("email", "a@b.com");
