@@ -17,14 +17,14 @@ router.post('/', isLoggedIn, function(req, res) {
     var size = parseInt(req.body.scriptcount, 10);
 
     // Build the inputs to unity
-    var url = "/webbuild?levelname" + req.body.levelname
-             + "&scriptname=" + req.body.scriptnameA
-             + "&scriptname=" + req.body.scriptnameB;
+    var url = "/webbuild?levelname=" + req.body.levelname
+             + "&scripts[A]=" + req.body.scriptnameA
+             + "&scripts[B]=" + req.body.scriptnameB;
     if(size > 2) {
-        url += "&scriptname=" + req.body.scriptnameC;
+        url += "&scripts[C]=" + req.body.scriptnameC;
     }
     if(size > 3) {
-        url += "&scriptname=" + req.body.scriptnameD;
+        url += "&scripts[D]=" + req.body.scriptnameD;
     }
 
     console.log("Redirecting user to: " + url);
