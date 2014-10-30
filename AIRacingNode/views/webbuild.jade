@@ -3,5 +3,7 @@ include ./basic_navigator.jade
 
 block content
     script.
-        var scripts = !{JSON.stringify(scripts)}
+        var scripts = !{JSON.stringify(scripts)};
+        var levelname = !{JSON.stringify(levelname)};
+
     include ../public/WebBuild.html
