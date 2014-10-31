@@ -10,8 +10,7 @@ public class OurCar : MonoBehaviour {
         public bool canSteer;
         public bool isPowered;
 
-        public List<TrailRenderer> trailRenderers;
-        public bool isSlipping;
+        public TrailRenderer currentSkidmark;
     }
 
 	public Transform centerOfMass;
@@ -26,6 +25,7 @@ public class OurCar : MonoBehaviour {
     public AntiRollBar rearAntiRoll;
 
     public Material brakeLights;
+    public Material skidmark;
 
     // Physics variables.
     public float downwardsForce = 0;
@@ -126,9 +126,6 @@ public class OurCar : MonoBehaviour {
         // Move the wheel down according to the height of the suspension.
         wheelTransform.position += Vector3.down * suspensionDistance;
 
-        wheel.trailRenderers = new List<TrailRenderer>();
-        wheel.isSlipping = false;
-
         return wheel;
     }
 
@@ -140,13 +137,11 @@ public class OurCar : MonoBehaviour {
         if (wheel.isPowered) {
 
             wheel.collider.motorTorque = throttle;
-            wheel.collider.motorTorque = throttle;
         }
 
         // Update the steering of the wheel.
         if (wheel.canSteer) {
 
-            wheel.collider.steerAngle = steer;
             wheel.collider.steerAngle = steer;
 
             // Rotate the front wheel around the y axis to show steering.
@@ -166,38 +161,43 @@ public class OurCar : MonoBehaviour {
         //wheel.transform.parent.localPosition
         //    = wheel.originalPosition + Vector3.down * a * wheel.collider.suspensionDistance;
 
-        // Update the skid marks for this wheel.
+        UpdateSkidmarks(wheel);
+    }
+
+    private void UpdateSkidmarks(Wheel wheel) {
+
+        const float minSkidSpeed = 1.0f;
+
+        // Check if the wheel is on the ground and skidding enough to draw a skidmark.
         WheelHit hit;
-        bool isWheelCurrentlySllpping = wheel.collider.GetGroundHit(out hit) && hit.sidewaysSlip > 0.5;
+        bool isWheelCurrentlySllpping = wheel.collider.GetGroundHit(out hit)
+            && (hit.sidewaysSlip > minSkidSpeed || hit.forwardSlip > minSkidSpeed);
 
         // If the wheel has now stopped slipping, move the trail renderer out of the car
-        // to stop drawing new skip marks.
-        if (wheel.isSlipping && !isWheelCurrentlySllpping) {
+        // to stop drawing new skidmarks.
+        if (wheel.currentSkidmark != null && !isWheelCurrentlySllpping) {
 
-            wheel.trailRenderers[0].transform.parent = null;
-            wheel.isSlipping = false;
+            wheel.currentSkidmark.transform.parent = null;
+            wheel.currentSkidmark = null;
         }
 
         // If the wheel has just started skidding, create a new trail renderer on a new
         // game object as a child of the wheel.
-        else if (!wheel.isSlipping && isWheelCurrentlySllpping) {
+        else if (wheel.currentSkidmark == null && isWheelCurrentlySllpping) {
 
-            GameObject trailRendererObject = new GameObject("TrailRenderer");
+            // Create a new game object on the bottom of the wheel to hold the trail renderer.
+            GameObject trailRendererObject = new GameObject("Skidmark");
             trailRendererObject.transform.position = new Vector3(wheel.transform.position.x,
                 wheel.transform.position.y - wheel.collider.radius / 2, wheel.transform.position.z);
             trailRendererObject.transform.parent = wheel.transform.parent;
 
             // Setup the new trail renderer.
-            TrailRenderer trailRenderer = trailRendererObject.AddComponent<TrailRenderer>();
-            trailRenderer.time = 3;
-            trailRenderer.startWidth = 0.3f;
-            trailRenderer.endWidth = trailRenderer.startWidth;
-            trailRenderer.materials[0] = Resources.Load<Material>("Skidmarks/Skidmarks");
-            trailRenderer.autodestruct = true;
-
-            // Add the renderer to the wheel's list.
-            wheel.trailRenderers.Insert(0, trailRenderer);
-            wheel.isSlipping = true;
+            wheel.currentSkidmark = trailRendererObject.AddComponent<TrailRenderer>();
+            wheel.currentSkidmark.time = 30;
+            wheel.currentSkidmark.startWidth = 0.3f;
+            wheel.currentSkidmark.endWidth = wheel.currentSkidmark.startWidth;
+            wheel.currentSkidmark.material = skidmark;
+            wheel.currentSkidmark.autodestruct = true; // Remove the game object when it stops drawing.
         }
     }
 
