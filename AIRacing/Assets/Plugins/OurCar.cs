@@ -9,6 +9,7 @@ public class OurCar : MonoBehaviour {
         public Vector3 originalPosition;
         public bool canSteer;
         public bool isPowered;
+        public TrailRenderer trailRenderer;
     }
 
 	public Transform centerOfMass;
@@ -21,6 +22,8 @@ public class OurCar : MonoBehaviour {
 
     public AntiRollBar frontAntiRoll;
     public AntiRollBar rearAntiRoll;
+
+    public Material brakeLights;
 
     // Physics variables.
     public float downwardsForce = 0;
@@ -35,7 +38,7 @@ public class OurCar : MonoBehaviour {
 	private float brake = 0;
     private float steer = 0;
 
-	public Material brakeLights;
+    private TrailRenderer trailRender;
 
 	// Use this for initialization
 	void Start () {
@@ -63,6 +66,10 @@ public class OurCar : MonoBehaviour {
         foreach (Wheel wheel in wheels) {
             UpdateWheel(wheel);
         }
+
+        // Messy hack, force the car down on the road to reduce flips.
+        rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
+            centerOfMass.position);
     }
 
     // Adds a wheel collider for each wheel transform.
@@ -80,16 +87,16 @@ public class OurCar : MonoBehaviour {
     }
 
     // Creates the wheel object and its collider from the transform.
-    private Wheel SetupWheel(Transform wheelTransfrom, bool isPowered, bool isFront) {
+    private Wheel SetupWheel(Transform wheelTransform, bool isPowered, bool isFront) {
 
-        GameObject colliderObject = new GameObject(wheelTransfrom.name + " Collider");
-        colliderObject.transform.position = wheelTransfrom.position;
-        colliderObject.transform.parent = wheelTransfrom.parent.parent;
-        colliderObject.transform.rotation = wheelTransfrom.rotation;
+        GameObject colliderObject = new GameObject(wheelTransform.name + " Collider");
+        colliderObject.transform.position = wheelTransform.position;
+        colliderObject.transform.parent = wheelTransform.parent.parent;
+        colliderObject.transform.rotation = wheelTransform.rotation;
 
         // Create the collider and set the wheel's radius, friction and suspension.
         WheelCollider collider = colliderObject.AddComponent<WheelCollider>();
-        collider.radius = wheelTransfrom.GetComponentsInChildren<Transform>()[1]
+        collider.radius = wheelTransform.GetComponentsInChildren<Transform>()[1]
             .renderer.bounds.size.y / 2;
         collider.steerAngle = 0;
 
@@ -111,13 +118,26 @@ public class OurCar : MonoBehaviour {
 
         Wheel wheel = new Wheel();
         wheel.collider  = collider;
-        wheel.transform = wheelTransfrom;
+        wheel.transform = wheelTransform;
         wheel.canSteer  = isFront;
         wheel.isPowered = isPowered;
-        wheel.originalPosition = wheelTransfrom.parent.localPosition;
+        wheel.originalPosition = wheelTransform.parent.localPosition;
 
         // Move the wheel down according to the height of the suspension.
-        wheelTransfrom.position += Vector3.down * suspensionDistance;
+        wheelTransform.position += Vector3.down * suspensionDistance;
+
+        Transform trailRendererObject = wheelTransform.parent.FindChild("TrailRenderer");
+        if (trailRendererObject != null)
+        {
+            wheel.trailRenderer = trailRendererObject.gameObject.GetComponent<TrailRenderer>();
+            if (wheel.trailRenderer != null) {
+                wheel.trailRenderer.enabled = false;
+            }
+        }
+
+        if (wheel.trailRenderer == null) {
+            Debug.LogWarning(wheelTransform.name + " has no trailrenderer. This wheel will not draw skidmarks.");
+        }
 
         return wheel;
     }
@@ -156,9 +176,25 @@ public class OurCar : MonoBehaviour {
         //wheel.transform.parent.localPosition
         //    = wheel.originalPosition + Vector3.down * a * wheel.collider.suspensionDistance;
 
-        // Messy hack, force the car down on the road to reduce flips.
-        rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
-            centerOfMass.position);
+        WheelHit hit;
+        if (wheel.collider.GetGroundHit(out hit))
+        {
+            if (hit.forwardSlip > 0.5)
+            {
+                Debug.Log(wheel.transform.name + ": Forward slip!");
+            }
+            if (hit.sidewaysSlip > 0.5)
+            {
+                Debug.Log(wheel.transform.name + ": Sideways slip!");
+            }
+            if (wheel.trailRenderer != null) {
+                wheel.trailRenderer.enabled = hit.sidewaysSlip > 0.5;
+            }
+        }
+        //else
+        //{
+        //    Debug.Log("No hit.");
+        //}
     }
 
     public void SetThrottle(float value) {
