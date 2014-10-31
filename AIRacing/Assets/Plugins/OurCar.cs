@@ -172,8 +172,7 @@ public class OurCar : MonoBehaviour {
 
         // If the wheel has now stopped slipping, move the trail renderer out of the car
         // to stop drawing new skip marks.
-        if (wheel.isSlipping && !isWheelCurrentlySllpping)
-        {
+        if (wheel.isSlipping && !isWheelCurrentlySllpping) {
 
             wheel.trailRenderers[0].transform.parent = null;
             wheel.isSlipping = false;
@@ -181,20 +180,22 @@ public class OurCar : MonoBehaviour {
 
         // If the wheel has just started skidding, create a new trail renderer on a new
         // game object as a child of the wheel.
-        else if (!wheel.isSlipping && isWheelCurrentlySllpping)
-        {
+        else if (!wheel.isSlipping && isWheelCurrentlySllpping) {
 
             GameObject trailRendererObject = new GameObject("TrailRenderer");
-            trailRendererObject.transform.position = wheel.transform.position;
+            trailRendererObject.transform.position = new Vector3(wheel.transform.position.x,
+                wheel.transform.position.y - wheel.collider.radius / 2, wheel.transform.position.z);
             trailRendererObject.transform.parent = wheel.transform.parent;
 
             // Setup the new trail renderer.
             TrailRenderer trailRenderer = trailRendererObject.AddComponent<TrailRenderer>();
-            trailRenderer.time = 3; // Number of seconds each particle will be drawn.
-            trailRenderer.startWidth = 0.5f;
-            trailRenderer.endWidth = 0.5f;
+            trailRenderer.time = 3;
+            trailRenderer.startWidth = 0.3f;
+            trailRenderer.endWidth = trailRenderer.startWidth;
+            trailRenderer.materials[0] = Resources.Load<Material>("Skidmarks/Skidmarks");
             trailRenderer.autodestruct = true;
 
+            // Add the renderer to the wheel's list.
             wheel.trailRenderers.Insert(0, trailRenderer);
             wheel.isSlipping = true;
         }
