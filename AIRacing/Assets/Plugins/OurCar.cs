@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class OurCar : MonoBehaviour {
 
@@ -9,7 +9,9 @@ public class OurCar : MonoBehaviour {
         public Vector3 originalPosition;
         public bool canSteer;
         public bool isPowered;
-        public TrailRenderer trailRenderer;
+
+        public List<TrailRenderer> trailRenderers;
+        public bool isSlipping;
     }
 
 	public Transform centerOfMass;
@@ -37,8 +39,6 @@ public class OurCar : MonoBehaviour {
     private float throttle = 0;
 	private float brake = 0;
     private float steer = 0;
-
-    private TrailRenderer trailRender;
 
 	// Use this for initialization
 	void Start () {
@@ -126,18 +126,8 @@ public class OurCar : MonoBehaviour {
         // Move the wheel down according to the height of the suspension.
         wheelTransform.position += Vector3.down * suspensionDistance;
 
-        Transform trailRendererObject = wheelTransform.parent.FindChild("TrailRenderer");
-        if (trailRendererObject != null)
-        {
-            wheel.trailRenderer = trailRendererObject.gameObject.GetComponent<TrailRenderer>();
-            if (wheel.trailRenderer != null) {
-                wheel.trailRenderer.enabled = false;
-            }
-        }
-
-        if (wheel.trailRenderer == null) {
-            Debug.LogWarning(wheelTransform.name + " has no trailrenderer. This wheel will not draw skidmarks.");
-        }
+        wheel.trailRenderers = new List<TrailRenderer>();
+        wheel.isSlipping = false;
 
         return wheel;
     }
@@ -176,25 +166,38 @@ public class OurCar : MonoBehaviour {
         //wheel.transform.parent.localPosition
         //    = wheel.originalPosition + Vector3.down * a * wheel.collider.suspensionDistance;
 
+        // Update the skid marks for this wheel.
         WheelHit hit;
-        if (wheel.collider.GetGroundHit(out hit))
+        bool isWheelCurrentlySllpping = wheel.collider.GetGroundHit(out hit) && hit.sidewaysSlip > 0.5;
+
+        // If the wheel has now stopped slipping, move the trail renderer out of the car
+        // to stop drawing new skip marks.
+        if (wheel.isSlipping && !isWheelCurrentlySllpping)
         {
-            if (hit.forwardSlip > 0.5)
-            {
-                Debug.Log(wheel.transform.name + ": Forward slip!");
-            }
-            if (hit.sidewaysSlip > 0.5)
-            {
-                Debug.Log(wheel.transform.name + ": Sideways slip!");
-            }
-            if (wheel.trailRenderer != null) {
-                wheel.trailRenderer.enabled = hit.sidewaysSlip > 0.5;
-            }
+
+            wheel.trailRenderers[0].transform.parent = null;
+            wheel.isSlipping = false;
         }
-        //else
-        //{
-        //    Debug.Log("No hit.");
-        //}
+
+        // If the wheel has just started skidding, create a new trail renderer on a new
+        // game object as a child of the wheel.
+        else if (!wheel.isSlipping && isWheelCurrentlySllpping)
+        {
+
+            GameObject trailRendererObject = new GameObject("TrailRenderer");
+            trailRendererObject.transform.position = wheel.transform.position;
+            trailRendererObject.transform.parent = wheel.transform.parent;
+
+            // Setup the new trail renderer.
+            TrailRenderer trailRenderer = trailRendererObject.AddComponent<TrailRenderer>();
+            trailRenderer.time = 3; // Number of seconds each particle will be drawn.
+            trailRenderer.startWidth = 0.5f;
+            trailRenderer.endWidth = 0.5f;
+            trailRenderer.autodestruct = true;
+
+            wheel.trailRenderers.Insert(0, trailRenderer);
+            wheel.isSlipping = true;
+        }
     }
 
     public void SetThrottle(float value) {
