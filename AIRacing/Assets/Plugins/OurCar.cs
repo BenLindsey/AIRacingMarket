@@ -124,10 +124,7 @@ public class OurCar : MonoBehaviour {
         wheel.transform = wheelTransform;
         wheel.canSteer  = isFront;
         wheel.isPowered = isPowered;
-        wheel.originalPosition = wheelTransform.parent.localPosition;
-
-        // Move the wheel down according to the height of the suspension.
-        wheelTransform.position += Vector3.down * suspensionDistance;
+        wheel.originalPosition = wheelTransform.localPosition;
 
         return wheel;
     }
@@ -156,13 +153,13 @@ public class OurCar : MonoBehaviour {
 		// Magic number: rpm / 60 * 360 * fixedDeltaTime.
 		wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
 
-        //WheelHit hit;
-        //float a = (wheel.collider.GetGroundHit(out hit))
-        //    ? (-wheel.transform.InverseTransformPoint(hit.point).y - wheel.collider.radius)
-        //    : 1;
-        //// TODO: Update the position of the wheel according to the suspension.
-        //wheel.transform.parent.localPosition
-        //    = wheel.originalPosition + Vector3.down * a * wheel.collider.suspensionDistance;
+        // Update the vertical position of the wheel according to the suspension.
+        WheelHit hit;
+        float extension = (wheel.collider.GetGroundHit(out hit))
+            ? (-wheel.collider.transform.InverseTransformPoint(hit.point).y - wheel.collider.radius)
+            : wheel.collider.suspensionDistance;
+        wheel.transform.localPosition
+            = wheel.originalPosition + Vector3.down * extension;
 
         isSkidding = false;
         UpdateSkidmarks(wheel);
