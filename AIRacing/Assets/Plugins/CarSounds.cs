@@ -3,34 +3,36 @@ using System.Collections;
 
 public class CarSounds : MonoBehaviour {
 
-    public AudioClip engineSound;
-    public AudioClip skidSound;
+    public AudioClip engineDClip;
+    public AudioClip skidClip;
 
-    private AudioSource engineSource;
+    private AudioSource engineDSource;
     private AudioSource skidSource;
 
 	// Use this for initialization
 	void Start () {
 
-        engineSource = gameObject.AddComponent<AudioSource>();
-        engineSource.loop = true;
-        engineSource.clip = engineSound;
-        engineSource.volume = 0;
-        engineSource.Play();
-
-        skidSource = gameObject.AddComponent<AudioSource>();
-        skidSource.loop = true;
-        skidSource.clip = skidSound;
-        skidSource.volume = 0;
-        skidSource.Play();
+        engineDSource = CreateAudioSource(engineDClip);
+        skidSource = CreateAudioSource(skidClip);
 	}
+
+    private AudioSource CreateAudioSource(AudioClip clip) {
+
+        AudioSource source = gameObject.AddComponent<AudioSource>();
+        source.loop = true;
+        source.clip = clip;
+        source.volume = 0;
+        source.Play();
+
+        return source;
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
         // Increase engine noise with speed.
         // TODO: Divide by a meaningful number.
-        engineSource.volume = Mathf.Clamp01(rigidbody.velocity.magnitude / 200f);
+        engineDSource.volume = Mathf.Clamp01(rigidbody.velocity.magnitude / 200f);
 
         skidSource.volume = (isSkidding()) ? 1 : 0;
 	}
