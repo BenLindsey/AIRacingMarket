@@ -9,11 +9,15 @@ public class CarSounds : MonoBehaviour {
     private AudioSource engineDSource;
     private AudioSource skidSource;
 
+    private OurCar ourCar;
+
 	// Use this for initialization
 	void Start () {
 
         engineDSource = CreateAudioSource(engineDClip);
         skidSource = CreateAudioSource(skidClip);
+
+        ourCar = gameObject.GetComponent<OurCar>();
 	}
 
     private AudioSource CreateAudioSource(AudioClip clip) {
@@ -34,20 +38,6 @@ public class CarSounds : MonoBehaviour {
         // TODO: Divide by a meaningful number.
         engineDSource.volume = Mathf.Clamp01(rigidbody.velocity.magnitude / 200f);
 
-        skidSource.volume = (isSkidding()) ? 1 : 0;
+        skidSource.volume = (ourCar.IsSkidding) ? 1 : 0;
 	}
-
-    private bool isSkidding() {
-        foreach (WheelCollider collider
-            in gameObject.GetComponentsInChildren<WheelCollider>()) {
-
-            WheelHit hit;
-            if (collider.GetGroundHit(out hit)
-                && (hit.forwardSlip > 2 || hit.sidewaysSlip > 2)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

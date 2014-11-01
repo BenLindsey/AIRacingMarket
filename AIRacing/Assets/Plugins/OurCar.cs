@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class OurCar : MonoBehaviour {
 
@@ -9,6 +9,8 @@ public class OurCar : MonoBehaviour {
         public Vector3 originalPosition;
         public bool canSteer;
         public bool isPowered;
+
+        public TrailRenderer currentSkidmark;
     }
 
 	public Transform centerOfMass;
@@ -22,6 +24,9 @@ public class OurCar : MonoBehaviour {
     public AntiRollBar frontAntiRoll;
     public AntiRollBar rearAntiRoll;
 
+    public Material brakeLights;
+    public Material skidmark;
+
     // Physics variables.
     public float downwardsForce = 0;
     public float suspensionDistance = 0.1f;
@@ -29,13 +34,14 @@ public class OurCar : MonoBehaviour {
     public float suspensionRearForce = 900;
     public float suspensionDamper = 5;
 
+    private bool isSkidding = false;
+    public bool IsSkidding { get { return isSkidding; } }
+
     private Wheel[] wheels;
 
     private float throttle = 0;
 	private float brake = 0;
     private float steer = 0;
-
-	public Material brakeLights;
 
 	// Use this for initialization
 	void Start () {
@@ -63,6 +69,10 @@ public class OurCar : MonoBehaviour {
         foreach (Wheel wheel in wheels) {
             UpdateWheel(wheel);
         }
+
+        // Messy hack, force the car down on the road to reduce flips.
+        rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
+            centerOfMass.position);
     }
 
     // Adds a wheel collider for each wheel transform.
@@ -80,16 +90,16 @@ public class OurCar : MonoBehaviour {
     }
 
     // Creates the wheel object and its collider from the transform.
-    private Wheel SetupWheel(Transform wheelTransfrom, bool isPowered, bool isFront) {
+    private Wheel SetupWheel(Transform wheelTransform, bool isPowered, bool isFront) {
 
-        GameObject colliderObject = new GameObject(wheelTransfrom.name + " Collider");
-        colliderObject.transform.position = wheelTransfrom.position;
-        colliderObject.transform.parent = wheelTransfrom.parent.parent;
-        colliderObject.transform.rotation = wheelTransfrom.rotation;
+        GameObject colliderObject = new GameObject(wheelTransform.name + " Collider");
+        colliderObject.transform.position = wheelTransform.position;
+        colliderObject.transform.parent = wheelTransform.parent.parent;
+        colliderObject.transform.rotation = wheelTransform.rotation;
 
         // Create the collider and set the wheel's radius, friction and suspension.
         WheelCollider collider = colliderObject.AddComponent<WheelCollider>();
-        collider.radius = wheelTransfrom.GetComponentsInChildren<Transform>()[1]
+        collider.radius = wheelTransform.GetComponentsInChildren<Transform>()[1]
             .renderer.bounds.size.y / 2;
         collider.steerAngle = 0;
 
@@ -111,13 +121,13 @@ public class OurCar : MonoBehaviour {
 
         Wheel wheel = new Wheel();
         wheel.collider  = collider;
-        wheel.transform = wheelTransfrom;
+        wheel.transform = wheelTransform;
         wheel.canSteer  = isFront;
         wheel.isPowered = isPowered;
-        wheel.originalPosition = wheelTransfrom.parent.localPosition;
+        wheel.originalPosition = wheelTransform.parent.localPosition;
 
         // Move the wheel down according to the height of the suspension.
-        wheelTransfrom.position += Vector3.down * suspensionDistance;
+        wheelTransform.position += Vector3.down * suspensionDistance;
 
         return wheel;
     }
@@ -130,13 +140,11 @@ public class OurCar : MonoBehaviour {
         if (wheel.isPowered) {
 
             wheel.collider.motorTorque = throttle;
-            wheel.collider.motorTorque = throttle;
         }
 
         // Update the steering of the wheel.
         if (wheel.canSteer) {
 
-            wheel.collider.steerAngle = steer;
             wheel.collider.steerAngle = steer;
 
             // Rotate the front wheel around the y axis to show steering.
@@ -156,9 +164,46 @@ public class OurCar : MonoBehaviour {
         //wheel.transform.parent.localPosition
         //    = wheel.originalPosition + Vector3.down * a * wheel.collider.suspensionDistance;
 
-        // Messy hack, force the car down on the road to reduce flips.
-        rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
-            centerOfMass.position);
+        isSkidding = false;
+        UpdateSkidmarks(wheel);
+    }
+
+    private void UpdateSkidmarks(Wheel wheel) {
+
+        const float minSkidSpeed = 1.0f;
+
+        // Check if the wheel is on the ground and skidding enough to draw a skidmark.
+        WheelHit hit;
+        bool isWheelCurrentlySlipping = wheel.collider.GetGroundHit(out hit)
+            && (hit.sidewaysSlip > minSkidSpeed || hit.forwardSlip > minSkidSpeed);
+        isSkidding |= isWheelCurrentlySlipping;
+
+        // If the wheel has now stopped slipping, move the trail renderer out of the car
+        // to stop drawing new skidmarks.
+        if (wheel.currentSkidmark != null && !isWheelCurrentlySlipping) {
+
+            wheel.currentSkidmark.transform.parent = null;
+            wheel.currentSkidmark = null;
+        }
+
+        // If the wheel has just started skidding, create a new trail renderer on a new
+        // game object as a child of the wheel.
+        else if (wheel.currentSkidmark == null && isWheelCurrentlySlipping) {
+
+            // Create a new game object on the bottom of the wheel to hold the trail renderer.
+            GameObject trailRendererObject = new GameObject("Skidmark");
+            trailRendererObject.transform.position = new Vector3(wheel.transform.position.x,
+                wheel.transform.position.y - wheel.collider.radius / 2, wheel.transform.position.z);
+            trailRendererObject.transform.parent = wheel.transform.parent;
+
+            // Setup the new trail renderer.
+            wheel.currentSkidmark = trailRendererObject.AddComponent<TrailRenderer>();
+            wheel.currentSkidmark.time = 30;
+            wheel.currentSkidmark.startWidth = 0.3f;
+            wheel.currentSkidmark.endWidth = wheel.currentSkidmark.startWidth;
+            wheel.currentSkidmark.material = skidmark;
+            wheel.currentSkidmark.autodestruct = true; // Remove the game object when it stops drawing.
+        }
     }
 
     public void SetThrottle(float value) {
