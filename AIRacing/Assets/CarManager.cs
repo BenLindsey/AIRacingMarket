@@ -55,6 +55,13 @@ public class CarManager : MonoBehaviour {
         cars[cars.Count - 1].SetActive(false);
     }
 
+    public void SetCarModel(string carName) {
+        CarModelSelector carModelSelector = new CarModelSelector();
+        foreach (GameObject car in cars) {
+            carModelSelector.createCar(carName, car);
+        }
+    }
+
 	public void StartRace(string arg) {
         Debug.Log("Race started with " + cars.Count + " racers!");
 
