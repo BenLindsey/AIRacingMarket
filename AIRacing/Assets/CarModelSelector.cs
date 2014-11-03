@@ -32,8 +32,28 @@ public class CarModelSelector {
 
         // Modify suspension.
         car.suspensionDistance = 1;
+        car.suspensionFrontForce = 180;
+        car.suspensionRearForce = 90;
 
-        // TODO: Modify wheel size.
+        // Modify wheel size.
+        List<Transform> wheels = new List<Transform>();
+        getWheels(carObject.transform, wheels);
 
+        foreach (Transform wheel in wheels) {
+            wheel.localScale = new Vector3(3, 2, 2);
+        }
+
+    }
+
+    // Retrieves the wheels from the car object (actually the disc brakes).
+    private void getWheels(Transform current, List<Transform> currentWheels) {
+        if (current.name.Contains("DiscBrake")) {
+            Debug.Log("Found wheel: " + current.name);
+            currentWheels.Add(current);
+        }
+
+        foreach (Transform child in current) {
+            getWheels(child, currentWheels);
+        }
     }
 }
