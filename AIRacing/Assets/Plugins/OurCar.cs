@@ -66,6 +66,7 @@ public class OurCar : MonoBehaviour {
 
         brakeLights.SetFloat("_Intensity", Mathf.Abs(maxBrakeForce / 100f));
 
+        isSkidding = false;
         foreach (Wheel wheel in wheels) {
             UpdateWheel(wheel);
         }
@@ -161,13 +162,12 @@ public class OurCar : MonoBehaviour {
         wheel.transform.localPosition
             = wheel.originalPosition + Vector3.down * extension;
 
-        isSkidding = false;
         UpdateSkidmarks(wheel);
     }
 
     private void UpdateSkidmarks(Wheel wheel) {
 
-        const float minSkidSpeed = 1.0f;
+        const float minSkidSpeed = 3.0f;
 
         // Check if the wheel is on the ground and skidding enough to draw a skidmark.
         WheelHit hit;
