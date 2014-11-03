@@ -42,6 +42,7 @@ public class OurCar : MonoBehaviour {
     private float throttle = 0;
 	private float brake = 0;
     private float steer = 0;
+    private const int NUM_WHEELS = 4;
 
 	// Use this for initialization
 	void Start () {
@@ -228,4 +229,5 @@ public class OurCar : MonoBehaviour {
 	    float speedIndex = 1 - (speed / (topSpeed / 2));
 	    return minimumTurn + speedIndex * (maximumTurn - minimumTurn);
     }
+
 }

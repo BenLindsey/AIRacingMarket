@@ -23,7 +23,7 @@ public class CarManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Application.ExternalCall("RequestScripts");
+        Application.ExternalCall("RequestGameInfo");
 	}
 	
 	// Update is called once per frame
@@ -56,6 +56,7 @@ public class CarManager : MonoBehaviour {
     }
 
     public void SetCarModel(string carName) {
+        Debug.Log("Setting car models...");
         CarModelSelector carModelSelector = new CarModelSelector();
         foreach (GameObject car in cars) {
             carModelSelector.createCar(carName, car);

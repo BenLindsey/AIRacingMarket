@@ -1,27 +1,39 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
-public class CarModelSelector : MonoBehaviour {
+public class CarModelSelector {
 
-    private IDictionary<string, Func<GameObject, Void>> carModels = new Dictionary<string, Func<GameObject, Void>>();
+    private delegate void createCarDelegate();
+    private IDictionary<string, createCarDelegate> carModels = new Dictionary<string, createCarDelegate>();
+    private GameObject carObject;
+    private OurCar car;
 
     public CarModelSelector() {
-        carModels.add("Catamount",     createCatamount);
-        carModels.add("Monster Truck", createMonsterTruck);
+        carModels.Add("Catamount", createCatamount);
+        carModels.Add("Monster Truck", createMonsterTruck);
     }
 
-    public void createCar(string carModel, out GameObject car) {
-        carModels[carmodel](car);
+    public void createCar(string carModel, GameObject carObject) {
+        this.carObject = carObject;
+        car = carObject.GetComponentsInChildren<OurCar>(true)[0];
+        carModels[carModel]();
     }
 
-    private void createCatamount(GameObject car) {
-        Debug.log("Car set to catamount");
+    private void createCatamount() {
+        Debug.Log("Car set to catamount");
         // Do nothing - default car.
     }
 
-    private void createMonsterTruck(GameObject car) {
-        Debug.log("Car set to monster truck");
-        GameObject actualCar = car.transform.FindChild("OurCar");
-        // Do stuff here.
+    private void createMonsterTruck() {
+        Debug.Log("Car set to monster truck");
+
+        // Modify suspension.
+        car.suspensionDistance = 1;
+
+        // TODO: Modify wheel size.
+
     }
 }
