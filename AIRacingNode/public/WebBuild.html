@@ -71,6 +71,11 @@
 
 			    u.getUnity().SendMessage("StartingGrid", "StartRace", "");
 			}
+
+			function RequestLevel() {
+				console.log("Setting level to " + levelname);
+				u.getUnity().SendMessage("LevelSelector", "SetLevel", levelname);
+			}
 		-->
 		</script>
 		<style type="text/css">
