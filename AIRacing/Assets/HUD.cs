@@ -17,10 +17,14 @@ public class HUD : MonoBehaviour {
     public GameObject checkpointsContainer;
     private GameObject[] checkpoints;
 
+    private GUIStyle style = new GUIStyle();
+
 	// Use this for initialization
 	public void Start () {
 
         checkpoints = LoadCheckpoints();
+
+        style.fontSize = 15;
 	}
 
     public void Update() {
@@ -42,9 +46,9 @@ public class HUD : MonoBehaviour {
         CarState currentState = carStates[carManager.cameraManager.ActiveCamera];
 
         int y = 10;
-        GUI.Label(new Rect(10, y, 200, 100), "Lap " + (currentState.lap + 1));
+        GUI.Label(new Rect(10, y, 200, 100), "Lap " + (currentState.lap + 1), style);
         GUI.Label(new Rect(10, y += 20, 200, 100), "Position " + GetPosition(currentState)
-            + " / " + checkpoints.Length);
+            + " / " + checkpoints.Length, style);
     }
 
     public void TriggerEnter(int checkpoint, Collider car) {
