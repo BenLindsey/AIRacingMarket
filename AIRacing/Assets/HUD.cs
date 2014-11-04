@@ -13,15 +13,14 @@ public class HUD : MonoBehaviour {
     public CarManager carManager;
 
     private CarState[] carStates;
-    private int checkpointCount = 4; // TODO: Magic number.
 
     public GameObject checkpointsContainer;
-    //private GameObject[] checkpoints;
+    private GameObject[] checkpoints;
 
 	// Use this for initialization
 	public void Start () {
 
-        //checkpoints = LoadCheckpoints();
+        checkpoints = LoadCheckpoints();
 	}
 
     public void Update() {
@@ -31,7 +30,7 @@ public class HUD : MonoBehaviour {
 
             carStates = new CarState[carManager.Cars.Count];
             for (int i = 0; i < carStates.Length; i++) {
-                carStates[i].carObject = carManager.Cars[i];
+                carStates[i].carObject = carManager.Cars[i].GetComponentInChildren<OurCar>().gameObject;
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
             }
@@ -42,7 +41,10 @@ public class HUD : MonoBehaviour {
 
         CarState currentState = carStates[carManager.cameraManager.ActiveCamera];
 
-        GUI.Label(new Rect(10, 10, 100, 100), "Lap " + (currentState.lap + 1));
+        int y = 10;
+        GUI.Label(new Rect(10, y, 200, 100), "Lap " + (currentState.lap + 1));
+        GUI.Label(new Rect(10, y += 20, 200, 100), "Position " + GetPosition(currentState)
+            + " / " + checkpoints.Length);
     }
 
     public void TriggerEnter(int checkpoint, Collider car) {
@@ -58,17 +60,12 @@ public class HUD : MonoBehaviour {
 
         // If the car just completed the next stage of the lap.
         if (carStates[carIndex].stage == checkpointIndex) {
-            carStates[carIndex].stage++;
+            carStates[carIndex].stage = (carStates[carIndex].stage + 1) % checkpoints.Length;
 
-            Debug.Log("Car " + carIndex + " completed stage " + checkpointIndex);
-        }
-
-        // If the car just completed a lap.
-        else if (carStates[carIndex].stage == checkpointCount && checkpointIndex == 0) {
-            carStates[carIndex].stage = 0;
-            carStates[carIndex].lap++;
-
-            Debug.Log("Car " + carIndex + " completed lap " + carStates[carIndex].lap);
+            // If the car just completed a lap.
+            if (carStates[carIndex].stage == 0) {
+                carStates[carIndex].lap++;
+            }
         }
 
         // Otherwise, the car went through the wrong checkpoint. This is not
@@ -88,37 +85,49 @@ public class HUD : MonoBehaviour {
         return -1;
     }
 
-    //private int GetCheckpointIndexFromGameObject(GameObject checkpoint) {
+    private int GetPosition(CarState car) {
+        int position = 1;
+        foreach (CarState other in carStates) {
+            // Increment the position each time we find a car which is in front
+            // of the given car.
+            if (other.carObject != car.carObject && !IsCarInFront(car, other)) {
+                position++;
+            }
+        }
 
-    //    for (int i = 0; i < checkpoints.Length; i++) {
-    //        if (checkpoint == checkpoints[i]) {
-    //            return i;
-    //        }
-    //    }
+        return position;
+    }
 
-    //    Debug.LogWarning("The checkpoint " + checkpoint + " is not a child of "
-    //        + checkpointsContainer.name);
-    //    return -1;
-    //}
+    private bool IsCarInFront(CarState car, CarState other) {
+        return (car.lap > other.lap)
+            || (car.lap == other.lap && car.stage > other.stage)
+            || (car.lap == other.lap && car.stage == other.stage
+                && DistanceToCheckpoint(car) < DistanceToCheckpoint(other));
+    }
 
-    //private GameObject[] LoadCheckpoints() {
+    private float DistanceToCheckpoint(CarState car) {
+        return Vector3.Distance(car.carObject.transform.position,
+            checkpoints[car.stage].transform.position);
+    }
 
-    //    List<GameObject> children = new List<GameObject>();
-    //    for (int i = 0; i < checkpointsContainer.transform.GetChildCount(); i++) {
+    private GameObject[] LoadCheckpoints() {
 
-    //        Transform child = checkpointsContainer.transform.GetChild(i);
-    //        BoxCollider collider = child.GetComponent<BoxCollider>();
+        GameObject[] children = new GameObject[checkpointsContainer.transform.childCount];
+        for (int i = 0; i < children.Length; i++) {
 
-    //        if (collider != null && collider.isTrigger) {
-    //            children.Add(child.gameObject);
-    //            Debug.Log("Found checkpoint " + child);
-    //        }
-    //        else {
-    //            Debug.LogWarning("Child " + i + " of " + checkpointsContainer.name
-    //                + " must have a trigger box collider to be a checkpoint.");
-    //        }
-    //    }
+            Transform child = checkpointsContainer.transform.GetChild(i);
+            BoxCollider collider = child.GetComponent<BoxCollider>();
+            Checkpoint checkpoint = collider.GetComponent<Checkpoint>(); // TODO: Fix case when collider is null.
 
-    //    return children.ToArray();
-    //}
+            if (collider != null && collider.isTrigger && checkpoint != null) {
+                children[checkpoint.checkpointNumber] = child.gameObject;
+                Debug.Log("Found checkpoint " + child);
+            } else {
+                Debug.LogWarning("Child " + i + " of " + checkpointsContainer.name
+                    + " must have a trigger box collider to be a checkpoint.");
+            }
+        }
+
+        return children;
+    }
 }
