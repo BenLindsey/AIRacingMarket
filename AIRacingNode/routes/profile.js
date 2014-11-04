@@ -16,7 +16,8 @@ router.get('/', isLoggedIn, function(req, res) {
             scores.push({
                 time       : timeDoc.time,
                 scriptName : timeDoc.scriptName,
-                levelName  : scriptDoc.levelName
+                levelName  : scriptDoc.levelName,
+                carName    : scriptDoc.carName
             });
         });
     });

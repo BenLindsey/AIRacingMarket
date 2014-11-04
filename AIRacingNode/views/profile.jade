@@ -10,6 +10,7 @@ block content
           thead
               tr
                   th Level Name
+                  th Car Model
                   th Script Name
                   th Time
               tbody
@@ -17,6 +18,7 @@ block content
               each entry, i in scores
                   tr
                       td= entry.levelName
+                      td= entry.carName
                       td= entry.scriptName
                       td= entry.time
               - }

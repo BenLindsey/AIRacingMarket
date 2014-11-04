@@ -4,6 +4,7 @@ using System.IO;
 public class LocalRaceStarter : MonoBehaviour {
 
 	public string[] scriptsToRace;
+    public string carModel;
 
 	// Use this for initialization
 	void Start () {
@@ -13,6 +14,7 @@ public class LocalRaceStarter : MonoBehaviour {
             script.contents = GetScript(Directory.GetCurrentDirectory() + "\\Assets\\Racing Scripts\\" + scriptName);
 			GetComponent<CarManager>().AddScriptByName(script.name);
             GetComponent<CarManager>().AddScriptContent(script.contents);
+            GetComponent<CarManager>().SetCarModel(carModel);
 		}
 		GetComponent<CarManager>().StartRace("");
 	}

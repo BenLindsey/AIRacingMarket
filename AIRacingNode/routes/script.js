@@ -28,7 +28,8 @@ router.post('/', isLoggedIn, function(req, res) {
         "email"      : req.user.local.email,
         "scriptName" : req.body.scriptname,
         "script"     : req.body.script,
-        "levelName"  : req.body.levelname
+        "levelName"  : req.body.levelname,
+        "carName"    : req.body.carname
     }, function (err, doc) {
         if (err) {
             res.send("There was a problem adding the information to the database.");
@@ -36,6 +37,7 @@ router.post('/', isLoggedIn, function(req, res) {
         else {
             // Build the inputs to unity
             var url = "/webbuild?levelname=" + req.body.levelname
+                             +"&carname="    + req.body.carname
                              +"&scripts[A]=" + req.body.scriptname;
 
             console.log("Redirecting user to: " + url);

@@ -60,14 +60,17 @@
 				u.initPlugin(jQuery("#unityPlayer")[0], "WebBuild.unity3d");
 			});
 
-			function RequestScripts() {
-			    console.log("Scripts Requested!");
+			function RequestGameInfo() {
+			    console.log("Game info requested!");
 
 			    for (var i = 0; i < scripts.length; i++) {
                     console.log(scripts[i]);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
 			    }
+
+				console.log("Car model set to " + carname);
+				u.getUnity().SendMessage("StartingGrid", "SetCarModel", carname)
 
 			    u.getUnity().SendMessage("StartingGrid", "StartRace", "");
 			}
