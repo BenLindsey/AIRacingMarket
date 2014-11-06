@@ -3,14 +3,23 @@
 var api : AiApi;
 
 var scriptName;
-var scriptContents;
+
+var startScript;
+var updateScript;
+
+var data : Hashtable;
 
 function Start () {
+    data = new Hashtable ();
+
+    if (startScript) {
+		eval(startScript);
+	}
 }
 
-function FixedUpdate () {
-	if (scriptContents) {
-		eval(scriptContents);
+function FixedUpdate () {   
+    if (updateScript) {
+		eval(updateScript);
 	}
 }
 
@@ -22,5 +31,6 @@ function SetScriptName(name) {
 
 function SetScriptContent(contents) {
     Debug.Log("Added script: " + contents);
-    scriptContents = contents;
+    startScript = contents + "Init();";
+    updateScript = contents + "PhysicsUpdate();";
 }

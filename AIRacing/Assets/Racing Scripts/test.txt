@@ -1,14 +1,18 @@
-var maxSpeed = 20f;
-var dist = Mathf.Max(api.GetDistanceToEdge(0), api.GetDistanceToCar(0));
+var Init = function() {
+	data["speed"] = 20;
+	Debug.Log(data);
+};
 
-if (dist < 50) {
-	maxSpeed = 15f;
-}
+var PhysicsUpdate = function() {
+	api.SteerToLeft();
 
-api.SteerToLeft();
+	data["speed"] = data["speed"] - 0.01;
 
-if (api.GetSpeed() > maxSpeed) { 
-	api.SetThrottle(0f);
-} else {
-	api.SetThrottle(65f);
-}
+	Debug.Log(data["speed"]);
+
+	if (api.GetSpeed() > data["speed"]) { 
+		api.SetThrottle(0f);
+	} else {
+		api.SetThrottle(70f);
+	}
+};
