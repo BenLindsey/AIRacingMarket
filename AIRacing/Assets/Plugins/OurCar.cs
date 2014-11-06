@@ -77,6 +77,11 @@ public class OurCar : MonoBehaviour {
             centerOfMass.position);
     }
 
+    public void SetCenterOfMass(Vector3 com) {
+        rigidbody.centerOfMass = com;
+        centerOfMass.localPosition = com;
+    }
+
     // Adds a wheel collider for each wheel transform.
     private void SetupWheels() {
 
