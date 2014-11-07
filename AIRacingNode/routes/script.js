@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var ace = require('../public/arc-src/ace');
 
 /* GET the form used to create a script. */
 router.get('/', isLoggedIn, function(req, res) {

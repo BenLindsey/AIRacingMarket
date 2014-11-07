@@ -19,6 +19,8 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(configDB.url);
 
+var ace = require('/public/ace-src/ace.js');
+
 var routes = require('./routes/index');
 var script = require('./routes/script');
 var multiplayer = require('./routes/multiplayer');
