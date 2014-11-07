@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var ace = require('../public/src-min/ace');
 
 var editor = ace.edit("inputScript");
 var textarea = $('textarea[name="inputScript"]').hide();
