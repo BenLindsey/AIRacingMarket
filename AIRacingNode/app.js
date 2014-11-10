@@ -8,7 +8,6 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
 var mongoose = require('mongoose');
-
 var configDB = require('./config/database.js');
 
 mongoose.connect(configDB.url); // connect to our database
@@ -18,8 +17,6 @@ require('./config/passport')(passport); // pass passport for configuration
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk(configDB.url);
-
-var ace = require('ace-src');
 
 var routes = require('./routes/index');
 var script = require('./routes/script');

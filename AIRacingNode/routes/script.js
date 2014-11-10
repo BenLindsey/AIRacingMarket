@@ -1,16 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET the form used to create a script. */
 router.get('/', isLoggedIn, function(req, res) {
     res.render('script', { title: 'Add New Script' });
-
-    var editor = ace.edit("inputScript");
-    var textarea = $('textarea[name="inputScript"]').hide();
-    editor.getSession().setValue(textarea.val());
-    editor.getSession().on('change', function(){
-        textarea.val(editor.getSession().getValue());
-    });
 });
 
 /* GET the contents of a script by name */

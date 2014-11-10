@@ -15,7 +15,7 @@ block content
             .form-group
               label.col-lg-2.control-label(for='inputScript') Script
               .col-lg-8
-                textarea#inputScript(name='inputScript')
+                textarea#inputScript(name='inputScript', data-editor="javascript",  rows="10") Enter Script 
             .form-group
               label.col-lg-2.control-label(for='inputLevelName') Level
               .col-lg-8
@@ -33,3 +33,34 @@ block content
                 .btn-group
                   button.btn.btn-default(type='reset') Reset
                   button.btn.btn-primary(type='submit') Submit
+
+    script(src="//d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js")
+    script(type='text/javascript').
+      $(document).ready(function () {
+        $('textarea[data-editor]').each(function () {
+          var textarea = $(this);
+          var mode = textarea.data('editor');
+
+          var editDiv = $('<div>', {
+            position:'absolute',
+            width:textarea.parent().width(),
+            height:textarea.height(),
+            'class':textarea.attr('class')
+          }).insertBefore(textarea);
+
+          textarea.css('visibility', 'hidden');
+
+          var editor = ace.edit(editDiv[0]);
+          editor.renderer.setShowGutter(true);
+          editor.selection.getCursor();
+          editor.getSession().setValue(textarea.val());
+          editor.getSession().setMode("ace/mode/" + mode);
+          editor.setTheme("ace/theme/merbivore");
+
+          document.getElementById('editor').style.fontSize='20px';
+
+          textarea.closest('form').submit(function () {
+            textarea.val(editor.getSession().getValue());
+          });
+        });
+      });
