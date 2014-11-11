@@ -1,14 +1,26 @@
-var maxSpeed = 25f;
-var dist = Mathf.Max(api.GetDistanceToEdge(0), api.GetDistanceToCar(0));
+// The vehicle can be controlled by calling functions on the api object
+// e.g. api.SetThrottle()
 
-if (dist < 50) {
-	maxSpeed = 20f;
-}
+// Global state can be stored in the global data object
+// e.g. data["count"] = 10;
+//      data["count"] = data["count"] - 1; 
 
-api.SteerToLeft();
+// Called once when the script is loaded
+var Init = function() {
 
-if (api.GetSpeed() > maxSpeed) { 
-	api.SetThrottle(0f);
-} else {
-	api.SetThrottle(65f);
-}
+};
+
+// Called repeatedly as the game is running
+var PhysicsUpdate = function() {
+
+	var maxSpeed = 25f;
+
+	api.SteerToLeft();
+
+	if (api.GetSpeed() > maxSpeed) { 
+		api.SetThrottle(0f);
+	} else {
+		api.SetThrottle(65f);
+	}
+
+};
