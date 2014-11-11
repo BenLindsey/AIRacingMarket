@@ -15,7 +15,7 @@ block content
             .form-group
               label.col-lg-2.control-label(for='inputScript') Script
               .col-lg-8
-                textarea#inputScript(name='inputScript', data-editor="javascript",  rows="10") Enter Script 
+                textarea#inputScript(name='inputScript', data-editor="javascript",  rows="10") 
             .form-group
               label.col-lg-2.control-label(for='inputLevelName') Level
               .col-lg-8
@@ -52,11 +52,13 @@ block content
           textarea.css('display', 'none');
 
           var editor = ace.edit(editDiv[0]);
-          editor.getSession().setValue(textarea.val());
+          editor.getSession().setValue(
+            "Enter preset code here Fin"
+          );
           editor.getSession().setMode("ace/mode/" + mode);
           editor.renderer.setShowGutter(true);
           editor.setFontSize("16px");
-          editor.setTheme("ace/theme/merbivore");
+          editor.setTheme("ace/theme/dawn");
           editor.setEnableBasicAutocompletion(true);
 
           textarea.closest('form').submit(function () {
