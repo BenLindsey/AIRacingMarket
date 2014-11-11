@@ -34,6 +34,7 @@ router.post('/', isLoggedIn, function(req, res) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
+         /* 
             // Build the inputs to unity
             var url = "/webbuild?levelname=" + req.body.levelname
                              +"&carname="    + req.body.carname
@@ -44,6 +45,8 @@ router.post('/', isLoggedIn, function(req, res) {
             res.location(url);
             // And forward to success page
             res.redirect(url);
+          */
+          res.redirect('/profile');
         }
     });
 });

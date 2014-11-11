@@ -4,7 +4,7 @@ block content
   h1.
     Create your Racing Script
 
-  .col-lg-6
+  .col-lg-8
     div.well.bs-component
       form#newScriptForm.form-horizontal(method='post')
         fieldset
@@ -15,7 +15,7 @@ block content
             .form-group
               label.col-lg-2.control-label(for='inputScript') Script
               .col-lg-8
-                textarea#inputScript(name='inputScript', data-editor="javascript",  rows="10") 
+                textarea#inputScript(name='script', data-editor="javascript",  rows="20") 
             .form-group
               label.col-lg-2.control-label(for='inputLevelName') Level
               .col-lg-8
@@ -52,6 +52,11 @@ block content
           textarea.css('display', 'none');
 
           var editor = ace.edit(editDiv[0]);
+
+          editor.getSession().on('change', function(){
+            textarea.val(editor.getSession().getValue());
+          });
+
           editor.getSession().setValue(
             "// The vehicle can be controlled by calling functions on the api object\n" +
             "// e.g. api.SetThrottle()\n" +
@@ -73,11 +78,7 @@ block content
           editor.getSession().setMode("ace/mode/" + mode);
           editor.renderer.setShowGutter(true);
           editor.setFontSize("16px");
-          editor.setTheme("ace/theme/dawn");
+          editor.setTheme("ace/theme/solarized_light");
           editor.setEnableBasicAutocompletion(true);
-
-          textarea.closest('form').submit(function () {
-            textarea.val(editor.getSession().getValue());
-          });
         });
       });

@@ -3,22 +3,32 @@ include ./basic_navigator.jade
 block content
   h1=title
 
-  p
-    | Welcome #{user.local.email}
-  div
-      table.table.table-striped.table-hover
-          thead
-              tr
-                  th Level Name
-                  th Car Model
-                  th Script Name
-                  th Time
-              tbody
-              - if (scores.length) {
-              each entry, i in scores
-                  tr
-                      td= entry.levelName
-                      td= entry.carName
-                      td= entry.scriptName
-                      td= entry.time
-              - }
+  if submitted
+    .div.col-lg-4
+    .div.col-lg-3
+      .alert.alert-dismissable.alert-success
+        button.close(type='button', data-dismiss='alert') ×
+        strong Well done! 
+        | You successfully submitted a script.
+    .div.col-lg-5
+
+  .div.col-lg-12
+    p
+      | Welcome #{user.local.email}
+    div
+        table.table.table-striped.table-hover
+            thead
+                tr
+                    th Level Name
+                    th Car Model
+                    th Script Name
+                    th Time
+                tbody
+                - if (scores.length) {
+                each entry, i in scores
+                    tr
+                        td= entry.levelName
+                        td= entry.carName
+                        td= entry.scriptName
+                        td= entry.time
+                - }
