@@ -1,6 +1,62 @@
 include ./basic_navigator.jade
 
 block content
-  div
-    h1= title
-    br
+  .splash
+    .container
+      .row
+        .col-lg-2
+          img(src='GResearchLogo.png', alt='Logo')
+          h1.
+            AI Racing Market 
+          h4.
+            Race your friends
+        .col-lg-1
+        .col-lg-6
+          h3.
+            Simple scripting!
+          br
+          .div
+            textarea#demo(name='demo', rows="12", data-editor="javascript")
+        .col-lg-2
+        .col-lg-1
+          h2.
+            GIF Placeholder
+
+  script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
+  script(type='text/javascript').
+    $(document).ready(function () {
+    $('textarea[data-editor]').each(function () {
+          var textarea = $(this);
+          var mode = textarea.data('editor');
+
+          var editDiv = $('<div>', {
+            position:'absolute',
+            width:textarea.parent().width(),
+            height:textarea.height(),
+          }).insertBefore(textarea);
+
+          textarea.css('display', 'none');
+
+          var editor = ace.edit(editDiv[0]);
+          editor.setReadOnly(true);
+          editor.getSession().setUseWorker(false);
+          editor.renderer.setShowGutter(false);
+          editor.getSession().setValue(
+          "// The vehicle can be controlled by calling functions\n" +
+          "// on the api object e.g. api.SetThrottle()\n" +
+          "\n" +
+          "// Global state can be stored in the global data object\n" +
+          "// e.g. data[\"count\"] = 10;\n" +
+          "//      data[\"count\"] = data[\"count\"] - 1;\n" +
+          "\n" +
+          "// Called once when the script is loaded\n" +
+          "var Init = function() { ... };\n" +
+          "\n" +
+          "// Called repeatedly as the game is running\n" +
+          "var PhysicsUpdate = function() { ... };"
+           );
+          editor.getSession().setMode("ace/mode/" + mode);
+          editor.setFontSize("18px");
+          editor.setTheme("ace/theme/solarized_light");
+        });
+      });

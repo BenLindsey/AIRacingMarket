@@ -43,6 +43,9 @@ public class CarModelSelector {
             wheel.localScale = new Vector3(3, 2, 2);
         }
 
+        Vector3 com = car.transform.FindChild("CenterOfMass").localPosition;
+        com.y = -2;
+        car.SetCenterOfMass(com);
     }
 
     // Retrieves the wheels from the car object (actually the disc brakes).

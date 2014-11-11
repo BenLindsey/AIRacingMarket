@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET the form used to create a script. */
 router.get('/', isLoggedIn, function(req, res) {
     res.render('script', { title: 'Add New Script' });
 });
@@ -35,6 +34,7 @@ router.post('/', isLoggedIn, function(req, res) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
+         /* 
             // Build the inputs to unity
             var url = "/multiplayer";
 
@@ -43,6 +43,8 @@ router.post('/', isLoggedIn, function(req, res) {
             res.location(url);
             // And forward to success page
             res.redirect(url);
+          */
+          res.redirect('/profile');
         }
     });
 });

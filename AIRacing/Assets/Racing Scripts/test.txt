@@ -1,14 +1,47 @@
-var maxSpeed = 20f;
-var dist = Mathf.Max(api.GetDistanceToEdge(0), api.GetDistanceToCar(0));
+var counter = "counter";
+var lane = "lane";
 
-if (dist < 50) {
-	maxSpeed = 15f;
-}
+var Init = function() {
+	data[counter] = 0;
+	data[lane] = 0;
+};
 
-api.SteerToLeft();
+var PhysicsUpdate = function() {
 
-if (api.GetSpeed() > maxSpeed) { 
-	api.SetThrottle(0f);
-} else {
-	api.SetThrottle(65f);
-}
+	data[counter] = data[counter] - 1;
+
+	if (data[counter]  < 0) {
+		if ((api.CarInFront() || api.CarOnLeft()) && !api.CarOnRight() && data[lane] < 2) {
+			data[lane] = data[lane] + 1;
+			data[counter] = 250;
+			Debug.Log("Shift up!");
+		} else if (data[lane] > 0) {
+			data[lane] = data[lane] - 1;
+			data[counter] = 250;
+			Debug.Log("Shift down!");
+		}
+	}
+
+	Debug.Log(data[lane]);
+
+
+	var maxSpeed;
+
+	if (data[lane] == 0) {
+		api.SteerToLeft();
+		maxSpeed = 19;
+	} else if (data[lane] == 1) {
+		api.SteerToMiddle();
+		maxSpeed = 22;
+	} else {
+		api.SteerToRight();
+		maxSpeed = 25;
+	}
+
+
+	if (api.GetSpeed() > maxSpeed) { 
+		api.SetThrottle(0f);
+	} else {
+		api.SetThrottle(75f);
+	}
+};
