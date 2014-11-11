@@ -4,15 +4,43 @@ block content
   .splash
     .container
       .row
-        .divider
+        .col-lg-2
+          img(src='GResearchLogo.png', alt='Logo')
+          h1.
+            AI Racing Market 
+          h4.
+            Race your friends
+        .col-lg-1
         .col-lg-6
-            img(src='GResearchLogo.png', alt='Logo')
-            h1.
-              AI Racing Market
-            small.
-              Ra
-
-        .divider
-        .col-lg-6
+          textarea#demo(name='demo', rows="14")
+        .col-lg-3
           p.
-             GIF Placeholder
+            GIF Placeholder
+
+  script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
+  script(type='text/javascript').
+    $(document).ready(function () {
+      var editor = ace.edit("demo");
+      var textarea = $('textarea[name="demo"]').hide();
+
+      editor.getSession().setValue(
+        "// Basic vehicle control by calling functions \n" +
+        "// on the api object, e.g. api.SetThrottle() \n" +
+        "\n" +
+        "// Global state can be stored in the global data object\n" +
+        "// e.g. data[\"count\"] = 10;\n" +
+        "//      data[\"count\"] = data[\"count\"] - 1;\n" +
+        "\n" +
+        "// Called once when the script is loaded\n" +
+        "var Init = function() { ... };\n" +
+        "\n" +
+        "// Called repeatedly as the game is running\n" +
+        "var PhysicsUpdate = function() { ... };" 
+      );
+
+      editor.getSession().setMode("ace/mode/javascript");
+      editor.renderer.setShowGutter(true);
+      editor.setFontSize("20px");
+      editor.setTheme("ace/theme/solarized_light");
+      editor.setReadOnly(true);
+    });
