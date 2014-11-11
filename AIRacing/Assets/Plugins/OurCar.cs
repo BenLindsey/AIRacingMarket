@@ -43,7 +43,8 @@ public class OurCar : MonoBehaviour {
 	private float brake = 0;
     private float steer = 0;
 
-    public string name;
+    private string name = ":(";
+    public string Name { get { return name; } }
 
 	// Use this for initialization
 	void Start () {
@@ -216,6 +217,10 @@ public class OurCar : MonoBehaviour {
 	public void SetBrake(float value) {
 		brake = Mathf.Max(value, 0);
 	}
+
+    public void SetScriptName(string name) {
+        this.name = name;
+    }
     
     private float GetMaxSteeringAngle(float speed) {
 

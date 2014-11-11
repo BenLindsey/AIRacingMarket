@@ -26,6 +26,7 @@ public class HUD : MonoBehaviour {
         checkpoints = LoadCheckpoints();
 
         style.fontSize = 15;
+        style.normal.textColor = Color.yellow;
 	}
 
     public void Update() {
@@ -34,11 +35,22 @@ public class HUD : MonoBehaviour {
         if (carStates == null && carManager.IsRaceStarted) {
 
             carStates = new CarState[carManager.Cars.Count];
+            Dictionary<string, int> nameFrequencies = new Dictionary<string, int>();
+
             for (int i = 0; i < carStates.Length; i++) {
-                carStates[i].carObject = carManager.Cars[i].GetComponentInChildren<OurCar>().gameObject;
+
+                OurCar ourCar = carManager.Cars[i].GetComponentInChildren<OurCar>();
+                carStates[i].carObject = ourCar.gameObject;
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
-                carStates[i].name = ((char)('A' + i)).ToString();
+
+                // If there are multiple cars with the same name, then add the
+                // occurence number onto the end of the name.
+                int nameFrequency = nameFrequencies.ContainsKey(ourCar.name)
+                    ? nameFrequencies[ourCar.name] : 0;
+                carStates[i].name = ourCar.Name + ((nameFrequency == 0)
+                    ? "" : " " + (nameFrequency + 1));
+                nameFrequencies[ourCar.name] = nameFrequency + 1;
             }
         }
     }
@@ -49,8 +61,7 @@ public class HUD : MonoBehaviour {
 
         int y = 10;
         GUI.Label(new Rect(10, y, 200, 100), "Lap " + (currentState.lap + 1), style);
-        GUI.Label(new Rect(10, y += 20, 200, 100), "Position " + GetPosition(currentState)
-            + " / " + checkpoints.Length, style);
+        y += 20;
 
         // Find the active camera to convert 3D coordinates to screen coordinates.
         Camera carCamera = currentState.carObject.transform.parent.GetComponentInChildren<Camera>();
@@ -62,11 +73,12 @@ public class HUD : MonoBehaviour {
             GUI.Label(new Rect(10, y + 20 * position, 200, 100),
                 position + ": " + carStates[i].name, style);
 
-            // Draw the car's name over its model if it is in front of the camera.
+            // Draw the car's name over its model if it's in front of the camera.
             Vector3 screenPosition = carCamera.WorldToScreenPoint(
                 carStates[i].carObject.transform.position + 2.5f * Vector3.up);
             if (screenPosition.z > 0) {
-                GUI.Label(new Rect(screenPosition.x, carCamera.pixelHeight - screenPosition.y,
+                float xOffset = style.CalcSize(new GUIContent(carStates[i].name)).x / 2;
+                GUI.Label(new Rect(screenPosition.x - xOffset, carCamera.pixelHeight - screenPosition.y,
                     200, 100), carStates[i].name, style);
             }
         }
