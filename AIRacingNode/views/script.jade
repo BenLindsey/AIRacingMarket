@@ -34,10 +34,11 @@ block content
                   button.btn.btn-default(type='reset') Reset
                   button.btn.btn-primary(type='submit') Submit
 
-    script(src="//d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js")
+    script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
     script(type='text/javascript').
       $(document).ready(function () {
         $('textarea[data-editor]').each(function () {
+
           var textarea = $(this);
           var mode = textarea.data('editor');
 
@@ -48,16 +49,15 @@ block content
             'class':textarea.attr('class')
           }).insertBefore(textarea);
 
-          textarea.css('visibility', 'hidden');
+          textarea.css('display', 'none');
 
           var editor = ace.edit(editDiv[0]);
-          editor.renderer.setShowGutter(true);
-          editor.selection.getCursor();
           editor.getSession().setValue(textarea.val());
           editor.getSession().setMode("ace/mode/" + mode);
+          editor.renderer.setShowGutter(true);
+          editor.setFontSize("16px");
           editor.setTheme("ace/theme/merbivore");
-
-          document.getElementById('editor').style.fontSize='20px';
+          editor.setEnableBasicAutocompletion(true);
 
           textarea.closest('form').submit(function () {
             textarea.val(editor.getSession().getValue());
