@@ -15,7 +15,7 @@ block content
             .form-group
               label.col-lg-2.control-label(for='inputScript') Script
               .col-lg-8
-                textarea#inputScript.form-control(placeholder='Enter your Script', rows='5', name="script")
+                textarea#inputScript(name='inputScript', data-editor="javascript",  rows="10") Enter Script 
             .form-group
               label.col-lg-2.control-label(for='inputLevelName') Level
               .col-lg-8
@@ -33,3 +33,34 @@ block content
                 .btn-group
                   button.btn.btn-default(type='reset') Reset
                   button.btn.btn-primary(type='submit') Submit
+
+    script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
+    script(type='text/javascript').
+      $(document).ready(function () {
+        $('textarea[data-editor]').each(function () {
+
+          var textarea = $(this);
+          var mode = textarea.data('editor');
+
+          var editDiv = $('<div>', {
+            position:'absolute',
+            width:textarea.parent().width(),
+            height:textarea.height(),
+            'class':textarea.attr('class')
+          }).insertBefore(textarea);
+
+          textarea.css('display', 'none');
+
+          var editor = ace.edit(editDiv[0]);
+          editor.getSession().setValue(textarea.val());
+          editor.getSession().setMode("ace/mode/" + mode);
+          editor.renderer.setShowGutter(true);
+          editor.setFontSize("16px");
+          editor.setTheme("ace/theme/merbivore");
+          editor.setEnableBasicAutocompletion(true);
+
+          textarea.closest('form').submit(function () {
+            textarea.val(editor.getSession().getValue());
+          });
+        });
+      });

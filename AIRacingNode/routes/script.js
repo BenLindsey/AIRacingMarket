@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET the form used to create a script. */
 router.get('/', isLoggedIn, function(req, res) {
     res.render('script', { title: 'Add New Script' });
 });
