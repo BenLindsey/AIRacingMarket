@@ -43,6 +43,8 @@ public class OurCar : MonoBehaviour {
 	private float brake = 0;
     private float steer = 0;
 
+    public string name;
+
 	// Use this for initialization
 	void Start () {
 

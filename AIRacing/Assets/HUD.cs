@@ -8,6 +8,7 @@ public class HUD : MonoBehaviour {
         public GameObject carObject;
         public int lap;
         public int stage;
+        public string name;
     }
 
     public CarManager carManager;
@@ -37,6 +38,8 @@ public class HUD : MonoBehaviour {
                 carStates[i].carObject = carManager.Cars[i].GetComponentInChildren<OurCar>().gameObject;
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
+                carStates[i].name = ((char)('A' + i)).ToString();
+                Debug.Log("Found car " + carStates[i].name);
             }
         }
     }
@@ -49,25 +52,33 @@ public class HUD : MonoBehaviour {
         GUI.Label(new Rect(10, y, 200, 100), "Lap " + (currentState.lap + 1), style);
         GUI.Label(new Rect(10, y += 20, 200, 100), "Position " + GetPosition(currentState)
             + " / " + checkpoints.Length, style);
+
+        for (int i = 0; i < carStates.Length; i++) {
+            int position = GetPosition(carStates[i]);
+
+            // Draw the car's row on the leaderboard.
+            GUI.Label(new Rect(10, y + 20 * position, 200, 100), position + ": " + carStates[i].name);
+        }
+        y += 20 * carStates.Length;
     }
 
     public void TriggerEnter(int checkpoint, Collider car) {
 
         //int checkpointIndex = GetCheckpointIndexFromGameObject(checkpoint);
-        int checkpointIndex = checkpoint;
         int carIndex = GetCarIndexFromCollider(car);
 
         // Something bad happened, and a warning has already been logged, so just return.
-        if (checkpointIndex == -1 || carIndex == -1) {
+        if (checkpoint == -1 || carIndex == -1) {
             return;
         }
 
         // If the car just completed the next stage of the lap.
-        if (carStates[carIndex].stage == checkpointIndex) {
-            carStates[carIndex].stage = (carStates[carIndex].stage + 1) % checkpoints.Length;
+        if (carStates[carIndex].stage == checkpoint) {
+            carStates[carIndex].stage++;
 
             // If the car just completed a lap.
-            if (carStates[carIndex].stage == 0) {
+            if (carStates[carIndex].stage == checkpoints.Length) {
+                carStates[carIndex].stage = 0;
                 carStates[carIndex].lap++;
             }
         }
