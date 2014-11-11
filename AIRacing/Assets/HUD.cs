@@ -39,7 +39,6 @@ public class HUD : MonoBehaviour {
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
                 carStates[i].name = ((char)('A' + i)).ToString();
-                Debug.Log("Found car " + carStates[i].name);
             }
         }
     }
@@ -53,11 +52,23 @@ public class HUD : MonoBehaviour {
         GUI.Label(new Rect(10, y += 20, 200, 100), "Position " + GetPosition(currentState)
             + " / " + checkpoints.Length, style);
 
+        // Find the active camera to convert 3D coordinates to screen coordinates.
+        Camera carCamera = currentState.carObject.transform.parent.GetComponentInChildren<Camera>();
+
         for (int i = 0; i < carStates.Length; i++) {
             int position = GetPosition(carStates[i]);
 
             // Draw the car's row on the leaderboard.
-            GUI.Label(new Rect(10, y + 20 * position, 200, 100), position + ": " + carStates[i].name);
+            GUI.Label(new Rect(10, y + 20 * position, 200, 100),
+                position + ": " + carStates[i].name, style);
+
+            // Draw the car's name over its model if it is in front of the camera.
+            Vector3 screenPosition = carCamera.WorldToScreenPoint(
+                carStates[i].carObject.transform.position + 2.5f * Vector3.up);
+            if (screenPosition.z > 0) {
+                GUI.Label(new Rect(screenPosition.x, carCamera.pixelHeight - screenPosition.y,
+                    200, 100), carStates[i].name, style);
+            }
         }
         y += 20 * carStates.Length;
     }
