@@ -2,7 +2,7 @@ include ./basic_navigator.jade
 
 block content
     h1.
-        Create your Racing Script
+        Edit your Racing Script
 
     div.well.bs-component
         form#newScriptForm.form-horizontal(method='post')
@@ -12,7 +12,7 @@ block content
                     .form-group
                       label.col-lg-2.control-label(for='inputScriptName') Script Name
                       .col-lg-8
-                        input#inputScriptName.form-control(placeholder=!{JSON.stringify(scriptName)}, type='text', name="scriptname", readonly="true")
+                        input#inputScriptName.form-control(placeholder=scriptName, type='text', name="scriptname", readonly="true")
                     .form-group
                       label.col-lg-2.control-label(for='inputScript') Script
                       .col-lg-8
