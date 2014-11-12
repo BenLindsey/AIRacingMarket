@@ -1,6 +1,41 @@
 ﻿using UnityEngine;
 using System;
+using System.Text;
 using System.Collections.Generic;
+
+class EndOfRaceObject {
+    private string[] names;
+    private int carsFinished = 0;
+
+    public EndOfRaceObject(int carCount) {
+        names = new string[carCount];
+    }
+
+    public void Finish(string scriptName) {
+        if (carsFinished < names.Length) {
+            names[carsFinished++] = scriptName;
+
+            if (carsFinished == names.Length) {
+                Send();
+            }
+        }
+    }
+
+    private void Send() {
+
+        int port = 3026;
+;
+        WWWForm form = new WWWForm();
+        string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
+        for (int i = 0; i < names.Length; i++) {
+            form.AddField(fieldNames[i], names[i]);
+        }
+
+        Debug.Log("Race has finished. Sending '" + form.ToString()
+            + "' to port " + port + ".");
+        WWW www = new WWW("http://146.169.47.15:" + port + "/score/", form);
+    }
+}
 
 public class HUD : MonoBehaviour {
 
@@ -19,6 +54,9 @@ public class HUD : MonoBehaviour {
     private GameObject[] checkpoints;
 
     private GUIStyle style = new GUIStyle();
+
+    private const int LAPS_IN_RACE = 1;
+    private EndOfRaceObject endOfRaceObject;
 
 	// Use this for initialization
 	public void Start () {
@@ -52,6 +90,8 @@ public class HUD : MonoBehaviour {
                     ? "" : " " + (nameFrequency + 1));
                 nameFrequencies[ourCar.name] = nameFrequency + 1;
             }
+
+            endOfRaceObject = new EndOfRaceObject(carStates.Length);
         }
     }
 
@@ -103,6 +143,11 @@ public class HUD : MonoBehaviour {
             if (carStates[carIndex].stage == checkpoints.Length) {
                 carStates[carIndex].stage = 0;
                 carStates[carIndex].lap++;
+
+                // Update the JSON object if this car just finished the race.
+                if (carStates[carIndex].lap == LAPS_IN_RACE) {
+                    endOfRaceObject.Finish(carStates[carIndex].name);
+                }
             }
         }
 
