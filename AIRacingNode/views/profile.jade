@@ -1,7 +1,7 @@
 include ./basic_navigator.jade
 
 block content
-  h1=title
+  h1=Profile
 
   if submitted
     .div.col-lg-4
@@ -21,11 +21,8 @@ block content
                 tr
                     th Script Name
                 tbody
-                - if (scores.length) {
-                each entry, i in scores
+                - if (scripts.length) {
+                each entry, i in scripts
                     tr
-                        td= entry.levelName
-                        td= entry.carName
                         td= entry.scriptName
-                        td= entry.time
                 - }
