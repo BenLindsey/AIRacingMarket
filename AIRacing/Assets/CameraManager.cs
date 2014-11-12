@@ -4,7 +4,9 @@ using System.Collections.Generic;
 public class CameraManager : MonoBehaviour {
 
     private List<Camera> cameras = new List<Camera>();
+
     private int activeCamera = 0;
+    public int ActiveCamera { get { return activeCamera; } }
 
 	// Use this for initialization
 	void Start () {

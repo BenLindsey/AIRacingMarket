@@ -16,10 +16,14 @@ public class CarManager : MonoBehaviour {
 	public Transform[] startPositions;
 
 	private List<GameObject> cars = new List<GameObject>();
+    public List<GameObject> Cars { get { return cars; } }
 
 	public GameObject original;
 
     public CameraManager cameraManager;
+
+    private bool isRaceStarted = false;
+    public bool IsRaceStarted { get { return isRaceStarted; } }
 
 	// Use this for initialization
 	void Start () {
@@ -74,5 +78,7 @@ public class CarManager : MonoBehaviour {
         foreach (Transform t in startPositions) {
             t.gameObject.SetActive(false);
         }
+
+        isRaceStarted = true;
 	}
 }
