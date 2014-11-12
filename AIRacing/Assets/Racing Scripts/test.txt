@@ -1,9 +1,9 @@
 var counter = "counter";
-var lane = "lane";
+var speed = "speed";
 
 var Init = function() {
 	data[counter] = 0;
-	data[lane] = 0;
+	data[speed] = 20;
 };
 
 var PhysicsUpdate = function() {
@@ -11,35 +11,17 @@ var PhysicsUpdate = function() {
 	data[counter] = data[counter] - 1;
 
 	if (data[counter]  < 0) {
-		if ((api.CarInFront() || api.CarOnLeft()) && !api.CarOnRight() && data[lane] < 2) {
-			data[lane] = data[lane] + 1;
+		if ((api.CarInFront() || api.CarOnLeft()) && !api.CarOnRight()) {
 			data[counter] = 250;
-			Debug.Log("Shift up!");
-		} else if (data[lane] > 0) {
-			data[lane] = data[lane] - 1;
-			data[counter] = 250;
-			Debug.Log("Shift down!");
+			api.ChangeLaneRight();
+			data[speed] = 25;
+		} else {
+			api.ChangeLaneLeft();
+			data[speed] = 20;
 		}
 	}
 
-	Debug.Log(data[lane]);
-
-
-	var maxSpeed;
-
-	if (data[lane] == 0) {
-		api.SteerToLeft();
-		maxSpeed = 19;
-	} else if (data[lane] == 1) {
-		api.SteerToMiddle();
-		maxSpeed = 22;
-	} else {
-		api.SteerToRight();
-		maxSpeed = 25;
-	}
-
-
-	if (api.GetSpeed() > maxSpeed) { 
+	if (api.GetSpeed() > data[speed]) { 
 		api.SetThrottle(0f);
 	} else {
 		api.SetThrottle(75f);

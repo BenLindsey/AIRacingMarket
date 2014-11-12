@@ -31,7 +31,7 @@ public class AiApi : MonoBehaviour {
             targetPoint = centerLane.GetPoint(targetAmountAlongSpline % 1);
 
             Vector3 splineDirection = centerLane.GetVelocity(targetAmountAlongSpline % 1);
-            Vector3 right = Vector3.Cross(splineDirection, Vector3.up).normalized;
+            Vector3 right = Vector3.Cross(Vector3.up, splineDirection).normalized;
 
             targetPoint += right * lane * laneWidth;
         }
