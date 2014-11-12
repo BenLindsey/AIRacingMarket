@@ -7,9 +7,9 @@ router.get('/edit/:name', isLoggedIn, function(req, res) {
     var collection = db.get('scriptcollection');
 
     collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
-        res.render('script', { 
-          script: doc.script,
-          notLoggedIn: false
+        res.render('edit', {
+          script : doc.script,
+          scriptName : req.params.name
         });
     });
 });
@@ -32,7 +32,7 @@ router.get('/', function(req, res) {
         "var PhysicsUpdate = function() {\n" +
         "\n" +
         "};",
-        notLoggedIn: !req.isAuthenticated()
+        notLoggedIn : !req.isAuthenticated()
     });
 });
 
