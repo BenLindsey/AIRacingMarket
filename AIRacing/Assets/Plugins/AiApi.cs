@@ -6,7 +6,9 @@ public class AiApi : MonoBehaviour {
     public LayerMask walls;
     public LayerMask cars;
 
-    public BezierSpline[] lanes;
+    public BezierSpline centerLane;
+    public int numOfLanesWideFromCenter = 1;
+    public float laneWidth = 6;
 
     int lane = 1;
     float targetAmountAlongSpline = 0.01f;
@@ -16,20 +18,22 @@ public class AiApi : MonoBehaviour {
 
 	OurCar car;
 
-    public GameObject debugOb;
-
 	// Use this for initialization
 	void Start () {
 		car = GetComponent<OurCar>();
 		detector = transform.FindChild("Detector");
-        targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
+        targetPoint = centerLane.GetPoint(targetAmountAlongSpline % 1);
 	}
 
     void FixedUpdate() {
         if (Vector3.Distance(transform.position, targetPoint) < 15) {
-            targetAmountAlongSpline += 0.001f;
-            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
-            debugOb.transform.position = targetPoint;
+            targetAmountAlongSpline += 0.003f;
+            targetPoint = centerLane.GetPoint(targetAmountAlongSpline % 1);
+
+            Vector3 splineDirection = centerLane.GetVelocity(targetAmountAlongSpline % 1);
+            Vector3 right = Vector3.Cross(splineDirection, Vector3.up).normalized;
+
+            targetPoint += right * lane * laneWidth;
         }
 
         Vector3 relativePosition = transform.InverseTransformPoint(targetPoint);
@@ -45,34 +49,28 @@ public class AiApi : MonoBehaviour {
         SetSteer(angle);
     }
 
-    public void SteerToMiddle() {
-        lane = 1;
-
-        while (Vector3.Distance(transform.position, targetPoint) < 15) {
-            targetAmountAlongSpline += 0.001f;
-            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
-            debugOb.transform.position = targetPoint;
+    public void ChangeLaneRight() {
+        if (++lane > numOfLanesWideFromCenter) {
+            lane--;
         }
+    }
+
+    public void ChangeLaneLeft() {
+        if (--lane < -numOfLanesWideFromCenter) {
+            lane++;
+        }   
+    }
+
+    public void SteerToMiddle() {
+        lane = 0;
     }
 
     public void SteerToLeft() {
-		lane = 0;
-
-        while (Vector3.Distance(transform.position, targetPoint) < 15) {
-            targetAmountAlongSpline += 0.001f;
-            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
-            debugOb.transform.position = targetPoint;
-        }
+		lane = -1;
     }
 
     public void SteerToRight() {
-        lane = 2;
-
-        while (Vector3.Distance(transform.position, targetPoint) < 15) {
-            targetAmountAlongSpline += 0.001f;
-            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
-            debugOb.transform.position = targetPoint;
-        }
+        lane = 1;
     }
 
 	public float GetDistanceToEdge(float deg) {
