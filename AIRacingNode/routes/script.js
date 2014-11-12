@@ -7,12 +7,15 @@ router.get('/edit/:name', isLoggedIn, function(req, res) {
     var collection = db.get('scriptcollection');
 
     collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
-        res.render('script', { script: doc.script });
+        res.render('script', { 
+          script: doc.script,
+          loggedIn: true
+        });
     });
 });
 
 router.get('/', function(req, res) {
-    res.render('script', { script:
+    res.render('script', { script : 
         "// The vehicle can be controlled by calling functions on the api object\n" +
         "// e.g. api.SetThrottle()\n" +
         "\n" +
@@ -28,7 +31,9 @@ router.get('/', function(req, res) {
         "// Called repeatedly as the game is running\n" +
         "var PhysicsUpdate = function() {\n" +
         "\n" +
-        "};" });
+        "};",
+         loggedIn: false
+    });
 });
 
 /* GET the contents of a script by name */
