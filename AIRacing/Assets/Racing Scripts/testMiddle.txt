@@ -23,4 +23,6 @@ var PhysicsUpdate = function() {
 		api.SetThrottle(65f);
 	}
 
+		Debug.Log(api.GetCornerDirection());
+
 };

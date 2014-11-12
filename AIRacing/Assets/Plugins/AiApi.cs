@@ -10,13 +10,15 @@ public class AiApi : MonoBehaviour {
     public int numOfLanesWideFromCenter = 1;
     public float laneWidth = 6;
 
-    int lane = 1;
+    int lane = 0;
     float targetAmountAlongSpline = 0.01f;
     Vector3 targetPoint;
 
 	Transform detector;
 
 	OurCar car;
+
+    float lastSteer;
 
 	// Use this for initialization
 	void Start () {
@@ -47,6 +49,8 @@ public class AiApi : MonoBehaviour {
         };
 
         SetSteer(angle);
+
+        lastSteer = angle;
     }
 
     public void ChangeLaneRight() {
@@ -63,6 +67,24 @@ public class AiApi : MonoBehaviour {
 
     public float GetLane() {
         return lane;
+    }
+
+    public float GetCornerDirection() {
+
+        Vector3 splineDirection = centerLane.GetVelocity(targetAmountAlongSpline % 1);
+        Vector3 right = Vector3.Cross(Vector3.up, splineDirection).normalized;
+
+        Vector3 rightTarget = targetPoint + right * laneWidth;
+        Vector3 leftTarget = targetPoint - right * laneWidth;
+
+        float rightDistance = Vector3.Distance(transform.position, rightTarget);
+        float leftDistance = Vector3.Distance(transform.position, leftTarget);
+
+        if (Mathf.Abs(rightDistance - leftDistance) < 0.3f) {
+            return 0;
+        }
+
+        return Mathf.Sign(leftDistance - rightDistance);
     }
 
     public void SteerToMiddle() {
