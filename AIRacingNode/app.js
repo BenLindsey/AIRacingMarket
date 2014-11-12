@@ -28,7 +28,7 @@ var logout = require('./routes/logout');
 var signup = require('./routes/signup');
 var profile = require('./routes/profile');
 var webBuild = require('./routes/webbuild');
-var score = require('.routes/score');
+var score = require('./routes/score');
 
 var app = express();
 
