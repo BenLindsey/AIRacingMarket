@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/edit/:name', isLoggedIn, function(req, res) {
+router.get('/edit/:name', isLoggedInProfile, function(req, res) {
     var db = req.db;
 
     var collection = db.get('scriptcollection');
@@ -75,11 +75,11 @@ router.post('/', function(req, res) {
     });
 });
 
-router.post('/edit/:name', isLoggedIn, function(req, res) {
+router.post('/edit/:name', isLoggedInProfile, function(req, res) {
     var collection = req.db.get('scriptcollection');
 
-    console.log("user :" );
-    console.log(req.user);
+    console.log("Editing " + req.body.scriptname);
+    console.log("To" + req.body.script);
 
     collection.update({
         "scriptName" : req.body.scriptname
@@ -104,8 +104,19 @@ router.post('/edit/:name', isLoggedIn, function(req, res) {
 });
 
 function isLoggedIn(req, res, next) {
-
     req.session.redirect = '/script';
+
+    // if user is authenticated in the session, pass to GET/POST handlers
+    if (req.isAuthenticated()) {
+        return next();
+    }
+
+    // if they aren't redirect them to the login page
+    res.redirect('/login');
+}
+
+function isLoggedInProfile(req, res, next) {
+    req.session.redirect = '/profile';
 
     // if user is authenticated in the session, pass to GET/POST handlers
     if (req.isAuthenticated()) {

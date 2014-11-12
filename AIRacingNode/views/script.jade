@@ -67,15 +67,15 @@ block content
 
           var editor = ace.edit(editDiv[0]);
 
+          editor.getSession().on('change', function(){
+            textarea.val(editor.getSession().getValue());
+          });
+
           editor.getSession().setValue(!{JSON.stringify(script)});
           editor.getSession().setMode("ace/mode/" + mode);
           editor.renderer.setShowGutter(true);
           editor.setFontSize("16px");
           editor.setTheme("ace/theme/solarized_light");
           editor.setEnableBasicAutocompletion(true);
-
-          editor.getSession().on('change', function(){
-            textarea.val(editor.getSession().getValue());
-          });
         });
       });

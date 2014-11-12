@@ -12,7 +12,7 @@ block content
                     .form-group
                       label.col-lg-2.control-label(for='inputScriptName') Script Name
                       .col-lg-8
-                        input#inputScriptName.form-control(placeholder=scriptName, type='text', name="scriptname", readonly="true")
+                        input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
                     .form-group
                       label.col-lg-2.control-label(for='inputScript') Script
                       .col-lg-8
@@ -43,15 +43,15 @@ block content
 
           var editor = ace.edit(editDiv[0]);
 
+          editor.getSession().on('change', function(){
+            textarea.val(editor.getSession().getValue());
+          });
+
           editor.getSession().setValue(!{JSON.stringify(script)});
           editor.getSession().setMode("ace/mode/" + mode);
           editor.renderer.setShowGutter(true);
           editor.setFontSize("16px");
           editor.setTheme("ace/theme/solarized_light");
           editor.setEnableBasicAutocompletion(true);
-
-          editor.getSession().on('change', function(){
-            textarea.val(editor.getSession().getValue());
-          });
         });
       });
