@@ -22,17 +22,18 @@ class EndOfRaceObject {
     }
 
     private void Send() {
-        string jsonString
-            = "{ first:" + names[0]
-            + ", second:" + names[1]
-            + ", third:" + names[2]
-            + ", fourth:" + names[3]
-            + " }";
-        int port = 3026;
 
-        Debug.Log("Race has finished. Sending '" + jsonString
+        int port = 3026;
+;
+        WWWForm form = new WWWForm();
+        string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
+        for (int i = 0; i < names.Length; i++) {
+            form.AddField(fieldNames[i], names[i]);
+        }
+
+        Debug.Log("Race has finished. Sending '" + form.ToString()
             + "' to port " + port + ".");
-        WWW www = new WWW("http://146.169.47.15:" + port, new UTF8Encoding().GetBytes(jsonString));
+        WWW www = new WWW("http://146.169.47.15:" + port + "/score/", form);
     }
 }
 
