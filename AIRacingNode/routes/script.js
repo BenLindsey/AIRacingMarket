@@ -9,7 +9,7 @@ router.get('/edit/:name', isLoggedIn, function(req, res) {
     collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
         res.render('script', { 
           script: doc.script,
-          loggedIn: true
+          notLoggedIn: false
         });
     });
 });
@@ -32,7 +32,7 @@ router.get('/', function(req, res) {
         "var PhysicsUpdate = function() {\n" +
         "\n" +
         "};",
-         loggedIn: false
+        notLoggedIn: !req.isAuthenticated()
     });
 });
 
