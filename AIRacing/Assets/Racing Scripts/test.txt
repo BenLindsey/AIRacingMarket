@@ -3,7 +3,7 @@ var speed = "speed";
 
 var Init = function() {
 	data[counter] = 0;
-	data[speed] = 20;
+	data[speed] = 19;
 };
 
 var PhysicsUpdate = function() {
@@ -11,13 +11,15 @@ var PhysicsUpdate = function() {
 	data[counter] = data[counter] - 1;
 
 	if (data[counter]  < 0) {
-		if ((api.CarInFront() || api.CarOnLeft()) && !api.CarOnRight()) {
-			data[counter] = 250;
+		if ((api.CarInFront()) && !api.CarOnRight()) {
+			data[counter] = 300;
 			api.ChangeLaneRight();
 			data[speed] = 25;
-		} else {
+		} else if (!api.CarOnLeft()) {
 			api.ChangeLaneLeft();
-			data[speed] = 20;
+			data[speed] = 19;
+		} else {
+			data[counter] = 50;
 		}
 	}
 

@@ -61,6 +61,10 @@ public class AiApi : MonoBehaviour {
         }   
     }
 
+    public float GetLane() {
+        return lane;
+    }
+
     public void SteerToMiddle() {
         lane = 0;
     }
