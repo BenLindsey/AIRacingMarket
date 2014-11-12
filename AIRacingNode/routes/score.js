@@ -1,8 +1,8 @@
-var express = require ('express');
+var express = require('express');
 var router = express.Router();
 
 router.post('/', function (req, res) {
-    var collection = req.db.get('scorecollection');
+    var collection = req.db.get('scores');
 
     collection.insert({
         "first"  : req.body.first,
