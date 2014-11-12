@@ -12,8 +12,7 @@ block content
                     .form-group
                       label.col-lg-2.control-label(for='inputScriptName') Script Name
                       .col-lg-8
-                        input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname", readonly="true")
-                            !{JSON.stringify(scriptName)}
+                        input#inputScriptName.form-control(placeholder=!{JSON.stringify(scriptName)}, type='text', name="scriptname", readonly="true")
                     .form-group
                       label.col-lg-2.control-label(for='inputScript') Script
                       .col-lg-8
