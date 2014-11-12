@@ -2,25 +2,26 @@ include ./basic_navigator.jade
 
 block content
   .splash
-    .container
-      .row
-        .col-lg-1
-          .div(align='left')
-            img(src='GResearchLogo.png', alt='Logo')
-            h1.
-              AI Racing Market 
-        .col-lg-1
-        .col-lg-6
-          .div(align='center')
-            h3.
-              Simple scripting!
+    .row
+      .col-lg-1
+      .col-lg-1
+        .div(align='center')
+          br 
           br
-          .div
-            textarea#demo(name='demo', rows="12", data-editor="javascript")
-        .col-lg-1
-          .div(align='right')
-            img(src='racing.gif', alt='Logo')
-        .col-lg-3
+          img(src='GResearchLogo.png', alt='Logo')
+          h1.
+            AI Racing Market 
+      .col-lg-1
+      .col-lg-4
+        .div(align='center')
+          h3.
+            Simple scripting!
+        .div
+          textarea#demo(name='demo', rows="12", data-editor="javascript")
+      .col-lg-1
+      .col-lg-1
+        .div(align='right')
+          img(src='racing.gif', alt='Logo')
 
   //.div(align='center')
     //.btn.btn-info#getstarted(href='/script') GET STARTED
