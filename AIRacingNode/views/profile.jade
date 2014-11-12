@@ -24,5 +24,7 @@ block content
                 - if (scripts.length) {
                 each entry, i in scripts
                     tr
-                        td= entry.scriptName
+                        td
+                            a(href='/script/edit/' + entry.scriptName)
+                                =entry.scriptName
                 - }
