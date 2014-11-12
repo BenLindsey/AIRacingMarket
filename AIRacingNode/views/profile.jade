@@ -12,19 +12,59 @@ block content
         | You successfully submitted a script.
     .div.col-lg-5
 
-  .div.col-lg-12
-    p
-      | Welcome #{user.local.email}
-    div
-        table.table.table-striped.table-hover
-            thead
-                tr
-                    th Script Name
-                tbody
-                - if (scripts.length) {
-                each entry, i in scripts
-                    tr
-                        td
-                            a(href='/script/edit/' + entry.scriptName)
-                                =entry.scriptName
-                - }
+  h1.
+    Welcome #{user.local.email}
+  br
+  hr
+
+  .row
+    .div.col-lg-4
+      .div(align='center')
+        h3.
+          Scripts
+      table.table.table-striped.table-hover
+          thead
+              tr
+                  th Script Name
+              tbody
+              - if (scripts.length) {
+              each entry, i in scripts
+                  tr
+                      td
+                          a(href='/script/edit/' + entry.scriptName)
+                              =entry.scriptName
+              - }
+    .div.col-lg-2
+    .div.col-lg-5
+      div.well.bs-component
+        .div(align='center')
+          h3.
+            Update your Details
+        br
+
+        form#newScriptForm.form-horizontal(method='post')
+            fieldset
+              .form-group
+                  label.col-lg-2.control-label(for='inputEmailAddress') Email Address
+                  .col-lg-8
+                      input#inputEmailAddress.form-control(placeholder='Enter your Email Address', type='email', name="emailaddress")
+              .form-group
+                  label.col-lg-2.control-label(for='inputUniversityName') University Name
+                  .col-lg-8
+                      input#inputUniversityName.form-control(placeholder='Which University do you attend?', type='text', name="university")
+              .form-group
+                  label.col-lg-2.control-label(for='inputCourse') Course
+                  .col-lg-8
+                      input#inputCourse.form-control(placeholder='What do you study?', type='text', name="course")
+              .form-group
+                  label.col-lg-2.control-label(for='inputYearGroup') Year Group
+                  .col-lg-8
+                      select#inputYearGroup.form-control
+                          option 1st Year
+                          option 2nd Year
+                          option 3rd Year
+                          option 4th Year
+              .form-group
+                .col-lg-6.col-lg-offset-2
+                  .btn-group
+                    button.btn.btn-primary(type='submit') Update
