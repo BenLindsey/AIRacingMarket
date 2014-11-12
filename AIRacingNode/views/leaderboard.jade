@@ -11,7 +11,7 @@ block content
           th Script Name
           th Time
         tbody
-        - if (leaderboard.length) {
+        - if (userIsLogged) {
         each entry, i in leaderboard
           tr
             td= entry.levelName

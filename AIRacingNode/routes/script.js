@@ -1,8 +1,34 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', isLoggedIn, function(req, res) {
-    res.render('script', { title: 'Add New Script' });
+router.get('/edit/:name', isLoggedIn, function(req, res) {
+    var db = req.db;
+
+    var collection = db.get('scriptcollection');
+
+    collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
+        res.render('script', { script: doc.script });
+    });
+});
+
+router.get('/', function(req, res) {
+    res.render('script', { script:
+        "// The vehicle can be controlled by calling functions on the api object\n" +
+        "// e.g. api.SetThrottle()\n" +
+        "\n" +
+        "// Global state can be stored in the global data object\n" +
+        "// e.g. data[\"count\"] = 10;\n" +
+        "//      data[\"count\"] = data[\"count\"] - 1;\n" +
+        "\n" +
+        "// Called once when the script is loaded\n" +
+        "var Init = function() {\n" +
+        "\n" +
+        "};\n" +
+        "\n" +
+        "// Called repeatedly as the game is running\n" +
+        "var PhysicsUpdate = function() {\n" +
+        "\n" +
+        "};" });
 });
 
 /* GET the contents of a script by name */
@@ -17,34 +43,57 @@ router.get('/:name', function(req, res) {
 });
 
 /* POST to script service */
-router.post('/', isLoggedIn, function(req, res) {
+router.post('/', function(req, res) {
     var collection = req.db.get('scriptcollection');
 
+    //TODO CHECK IF USER LOGGED IN
     console.log("user :" );
     console.log(req.user);
 
     collection.insert({
         "email"      : req.user.local.email,
         "scriptName" : req.body.scriptname,
-        "script"     : req.body.script,
-        "levelName"  : req.body.levelname,
-        "carName"    : req.body.carname
+        "script"     : req.body.script
     }, function (err, doc) {
         if (err) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
-         /* 
-            // Build the inputs to unity
-            var url = "/multiplayer";
+            var url = "/profile";
 
             console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script
             res.location(url);
             // And forward to success page
             res.redirect(url);
-          */
-          res.redirect('/profile');
+        }
+    });
+});
+
+router.post('/edit/:name', isLoggedIn, function(req, res) {
+    var collection = req.db.get('scriptcollection');
+
+    console.log("user :" );
+    console.log(req.user);
+
+    collection.update({
+        "scriptName" : req.body.scriptname
+    }, {
+        "email"      : req.user.local.email,
+        "scriptName" : req.body.scriptname,
+        "script"     : req.body.script
+    }, function (err, doc) {
+        if (err) {
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            var url = "/profile";
+
+            console.log("Redirecting user to: " + url);
+            // If it worked, set the header so the address bar doesn't still say /script
+            res.location(url);
+            // And forward to success page
+            res.redirect(url);
         }
     });
 });
