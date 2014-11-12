@@ -11,7 +11,7 @@ console.log("Found branch " + branch);
 
 // Convert BRANCH to a port for the server to run on
 require('../config/branch')(db, branch, function(port) {
-    app.set('port', 2800);
+    app.set('port', port);
 
     var server = app.listen(app.get('port'), function() {
         console.log('Express server listening on port ' + server.address().port);
