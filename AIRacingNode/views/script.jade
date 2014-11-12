@@ -45,7 +45,7 @@ block content
             textarea.val(editor.getSession().getValue());
           });
 
-          editor.getSession().setValue(script);
+          editor.getSession().setValue(#{script});
           editor.getSession().setMode("ace/mode/" + mode);
           editor.renderer.setShowGutter(true);
           editor.setFontSize("16px");
