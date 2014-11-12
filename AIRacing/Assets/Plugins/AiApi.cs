@@ -6,50 +6,73 @@ public class AiApi : MonoBehaviour {
     public LayerMask walls;
     public LayerMask cars;
 
-    public BezierSpline middleLane;
+    public BezierSpline[] lanes;
+
+    int lane = 1;
+    float targetAmountAlongSpline = 0.01f;
+    Vector3 targetPoint;
+
 	Transform detector;
 
 	OurCar car;
+
+    public GameObject debugOb;
 
 	// Use this for initialization
 	void Start () {
 		car = GetComponent<OurCar>();
 		detector = transform.FindChild("Detector");
+        targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
 	}
 
-    public void SteerToMiddle() {
-        float rightDistance = GetDistanceToEdge(40);
-        float leftDistance = GetDistanceToEdge(-40);
-
-        if (rightDistance < 0 || leftDistance < 0) {
-            return;
+    void FixedUpdate() {
+        if (Vector3.Distance(transform.position, targetPoint) < 15) {
+            targetAmountAlongSpline += 0.001f;
+            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
+            debugOb.transform.position = targetPoint;
         }
 
-        float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
+        Vector3 relativePosition = transform.InverseTransformPoint(targetPoint);
 
-        SetSteer(position * 30f);
+        relativePosition.y = 0;
+
+        float angle = Vector3.Angle(Vector3.forward, relativePosition);
+
+        if (relativePosition.x < 0) {
+            angle = -angle;
+        };
+
+        SetSteer(angle);
+    }
+
+    public void SteerToMiddle() {
+        lane = 1;
+
+        while (Vector3.Distance(transform.position, targetPoint) < 15) {
+            targetAmountAlongSpline += 0.001f;
+            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
+            debugOb.transform.position = targetPoint;
+        }
     }
 
     public void SteerToLeft() {
-		float rightDistance = GetDistanceToEdge(40f);
-		float leftDistance = GetDistanceToEdge(-40f);
+		lane = 0;
 
-        float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
-
-        SetSteer((position - 0.8f) * 30f);
+        while (Vector3.Distance(transform.position, targetPoint) < 15) {
+            targetAmountAlongSpline += 0.001f;
+            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
+            debugOb.transform.position = targetPoint;
+        }
     }
 
     public void SteerToRight() {
-        float rightDistance = GetDistanceToEdge(40);
-        float leftDistance = GetDistanceToEdge(-40);
+        lane = 2;
 
-        if (rightDistance < 0 || leftDistance < 0) {
-            return;
+        while (Vector3.Distance(transform.position, targetPoint) < 15) {
+            targetAmountAlongSpline += 0.001f;
+            targetPoint = lanes[lane].GetPoint(targetAmountAlongSpline % 1);
+            debugOb.transform.position = targetPoint;
         }
-
-        float position = 2 * (rightDistance - leftDistance) / (rightDistance + leftDistance);
-
-        SetSteer((position + 0.8f) * 30f);
     }
 
 	public float GetDistanceToEdge(float deg) {
