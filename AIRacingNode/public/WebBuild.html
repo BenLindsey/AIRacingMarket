@@ -90,18 +90,21 @@
                                              "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
 
 				for(var i = 0; i < calls.length; i++) {
-				    var call = calls[i];
-				    api[call] = function(arg) { 
-				        commands.instructions = commands.instructions
+				    api[calls[i]] = function(call) {
+				        return function(arg) { 
+				            commands.instructions = commands.instructions
                                                 .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
-				    };
+				    	};
+				    }(calls[i]);
 				}
 
                                 // Convert the game state into Read api calls
 				for (var key in state) { 
-				    api[key] = function() {
-				        return state[key];
-				    }
+				    api[key] = function(key) {
+				    	return function() {
+				            return state[key];
+				    	};
+				    }(key);
 				}
 
 				console.log("Evaluating script for", state.car, " length ", scripts[state.car].content.length);
