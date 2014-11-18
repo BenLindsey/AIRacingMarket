@@ -66,6 +66,8 @@ router.post('/', function(req, res) {
         else {
             var url = "/profile";
 
+            req.session.submitted = true;
+
             console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script
             res.location(url);
@@ -93,6 +95,8 @@ router.post('/edit/:name', isLoggedInProfile, function(req, res) {
         }
         else {
             var url = "/profile";
+
+            req.session.submitted = true;
 
             console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script

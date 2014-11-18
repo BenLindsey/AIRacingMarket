@@ -3,17 +3,17 @@ include ./basic_navigator.jade
 block content
   h1=Profile
 
-  if submitted
+  .row
     .div.col-lg-4
+      h1 Welcome #{user.local.email}
     .div.col-lg-3
-      .alert.alert-dismissable.alert-success
-        button.close(type='button', data-dismiss='alert') ×
-        strong Well done! 
-        | You successfully submitted a script.
+      if submitted
+        .alert.alert-dismissable.alert-success
+          button.close(type='button', data-dismiss='alert') ×
+          strong Well done! 
+          | You successfully submitted a script.
     .div.col-lg-5
 
-  h1.
-    Welcome #{user.local.email}
   br
   hr
 
