@@ -1,0 +1,49 @@
+var counter = "counter";
+var speed = "speed";
+
+var cornerCounter = "cornerCounter";
+
+var Init = function() {
+	data[counter] = 0;
+	data[speed] = 20;
+
+	data[cornerCounter] = 0;
+};
+
+var PhysicsUpdate = function() {
+
+	data[counter] = data[counter] - 1;
+
+	if (data[counter]  < 0) {
+
+		data[cornerCounter] = data[cornerCounter] + api.GetCornerDirection();
+
+		if (data[cornerCounter] > 15 && !api.CarOnRight()) {
+			api.ChangeLaneRight();
+			data[cornerCounter] = 0;
+		} else if (data[cornerCounter] < -15 && !api.CarOnLeft()) {
+			api.ChangeLaneLeft();
+			data[cornerCounter] = 0;
+		}
+
+		if ((api.CarInFront())) {
+			if (!api.CarOnRight() && api.GetLane() < 1) {
+				api.ChangeLaneRight();
+				data[speed] = 22; 
+				data[counter] = 300;
+			} else if (!api.CarOnLeft() && api.GetLane() > -1) {
+				api.ChangeLaneLeft();
+				data[speed] = 26; 
+				data[counter] = 300;
+			}
+		} else {
+			data[speed] = 22;
+		}
+	} 
+
+	if (api.GetSpeed() > data[speed]) { 
+		api.SetThrottle(0f);
+	} else {
+		api.SetThrottle(75f);
+	}
+};

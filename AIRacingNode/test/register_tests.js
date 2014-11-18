@@ -2,6 +2,7 @@ var Browser = require("zombie");
 var assert = require("assert");
 var app = require("../app");
 
+/*
 describe('signup page', function() {
 
   before(function() {
@@ -54,3 +55,4 @@ describe('signup page', function() {
   });
 
 });
+*/

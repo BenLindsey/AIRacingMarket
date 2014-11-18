@@ -1,0 +1,28 @@
+// The vehicle can be controlled by calling functions on the api object
+// e.g. api.SetThrottle()
+
+// Global state can be stored in the global data object
+// e.g. data["count"] = 10;
+//      data["count"] = data["count"] - 1; 
+
+// Called once when the script is loaded
+var Init = function() {
+
+};
+
+// Called repeatedly as the game is running
+var PhysicsUpdate = function() {
+
+	var maxSpeed = 25f;
+
+	api.SteerToMiddle();
+
+	if (api.GetSpeed() > maxSpeed) { 
+		api.SetThrottle(0f);
+	} else {
+		api.SetThrottle(65f);
+	}
+
+		Debug.Log(api.GetCornerDirection());
+
+};
