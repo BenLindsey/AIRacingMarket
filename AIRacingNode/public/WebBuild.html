@@ -85,25 +85,25 @@
 				var api = {};
 				var commands = {car: state.car, instructions: ""};
 
-			    // Convert list of names into Write api calls
+			        // Convert list of names into Write api calls
 				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
                                              "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
 
-				for(call in calls) {
-				    api[call] = function(arg) { 
+				for(i in calls) {
+				    api[calls[i]] = function(arg) { 
 				        commands.instructions = commands.instructions
-                                                .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
+                                                .concat("api.", calls[i], "( ", (arg == undefined? "" : arg), ");"); 
 				    };
 				}
 
-                // Convert the game state into Read api calls
+                                // Convert the game state into Read api calls
 				for (var key in state) { 
 				    api[key] = function() {
 				        return state[key];
 				    }
 				}
 
-				console.log("Evaluating script for",state.car, " length ", scripts[state.car].content.length);
+				console.log("Evaluating script for", state.car, " length ", scripts[state.car].content.length);
 
                 		// Execute script
 				eval(scripts[state.car].content);
