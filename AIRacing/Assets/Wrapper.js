@@ -13,9 +13,9 @@ function FixedUpdate () {
     var state = '{ "car":' + car
               + ', "GetLane":'  + api.GetLane() 
               + ', "GetSpeed":' + api.GetSpeed()
-              + ', "CarInFront":' + api.CarInFront() 
-              + ', "CarOnRight":' + api.CarOnRight() 
-              + ', "CarOnLeft":'  + api.CarOnLeft()
+              + ', "CarInFront":' + (api.CarInFront() ? "true" : "false")
+              + ', "CarOnRight":' + (api.CarOnRight() ? "true" : "false") 
+              + ', "CarOnLeft":'  + (api.CarOnLeft() ? "true" : "false")
               + ', "GetCornerDirection":' + api.GetCornerDirection() 
               + '}';
 
