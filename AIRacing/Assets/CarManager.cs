@@ -71,7 +71,7 @@ public class CarManager : MonoBehaviour {
 
     public void ExecuteCommands(string commandJSON) {
 
-        JSONNode data = JSON.parse(commandJSON);
+        JSONNode data = JSON.Parse(commandJSON);
 
         cars[data["car"].AsInt].transform.FindChild("OurCar").SendMessage("ExecuteCommands", data["instructions"].Value);   
     }
