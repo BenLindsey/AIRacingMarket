@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using SimpleJSON;
 
 public struct Script
 {
@@ -68,16 +69,11 @@ public class CarManager : MonoBehaviour {
         }
     }
 
-    public void ExecuteCommands(string[] commands) {
-        Debug.Log(commands);
+    public void ExecuteCommands(string commandJSON) {
 
-        string headless = "";
+        JSONNode data = JSON.parse(commandJSON);
 
-        for (int i = 1; i < commands.Length; i++) {
-            headless += commands[i];
-        }
-
-        cars[int.Parse(commands[0])].transform.FindChild("OurCar").SendMessage("ExecuteCommands", headless);   
+        cars[data["car"].AsInt].transform.FindChild("OurCar").SendMessage("ExecuteCommands", data["instructions"].Value);   
     }
 
 	public void StartRace(string arg) {
