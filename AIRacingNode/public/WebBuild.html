@@ -65,6 +65,15 @@
                     console.log(scripts[i]);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
+                    		scripts[i].update = function() {
+                    		    // Execute the script, declaring globals as function variables
+                    		    eval(scripts[i].content);
+                    		    
+                    		    // Use lambda to pass these variables as if globals
+                    		    return function() {
+                    		    	PhysicsUpdate();	
+                    		    }
+                    		}();
 			    }
 
 				console.log("Car model set to " + carname);
@@ -107,11 +116,10 @@
 				    }(key);
 				}
 
-				console.log("Evaluating script for", state.car, " length ", scripts[state.car].content.length);
+				console.log("Evaluating script for", state.car);
 
                 		// Execute script
-				eval(scripts[state.car].content);
-				PhysicsUpdate();
+				scripts[state.car].update();
 
 				console.log("Evaluation complete, sending commands to Unity: ", JSON.stringify(commands));
 
