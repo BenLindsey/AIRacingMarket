@@ -89,8 +89,8 @@
 				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
                                              "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
 
-				for(var index in calls) {
-				    var call = calls[index];
+				for(var i = 0; i < calls.length; i++) {
+				    var call = calls[i];
 				    api[call] = function(arg) { 
 				        commands.instructions = commands.instructions
                                                 .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
