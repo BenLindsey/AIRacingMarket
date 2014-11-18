@@ -70,7 +70,7 @@
                     		    eval(scripts[i].content);
                     		    
                     		    // Use lambda to pass these variables as if globals
-                    		    return function() {
+                    		    return function(api) {
                     		    	PhysicsUpdate();	
                     		    }
                     		}();
@@ -119,7 +119,7 @@
 				console.log("Evaluating script for", state.car);
 
                 		// Execute script
-				scripts[state.car].update();
+				scripts[state.car].update(api);
 
 				console.log("Evaluation complete, sending commands to Unity: ", JSON.stringify(commands));
 
