@@ -80,13 +80,13 @@
 
 			function BuildCommands(car) {
 				var api = {};
-				var commands = [ car.toString() ];
+				var commands = {car: car, instructions: ""};
 
 				console.log("Building commands.");
 
 				api.SetThrottle = function(throttle) {
 					console.log("Call to set throttle in web api");
-					commands.push("api.SetThrottle(" + throttle + ");")
+					commands.instructions = commands.instructions.concat("api.SetThrottle(" + throttle + ");")
 				};
 
 				console.log("car: " + car);
@@ -96,7 +96,7 @@
 				PhysicsUpdate();
 				console.log("Called physics update");
 
-				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", commands);
+				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
 			}
 		-->
 		</script>
