@@ -3,7 +3,7 @@ var router = express.Router();
 
 router.post('/', function (req, res) {
     var collection = req.db.get('scores');
-    console.log("help");
+    console.log("\nHELP\n");
     collection.insert({
         "first"  : req.body.first,
         "second" : req.body.second
