@@ -80,7 +80,7 @@
 
 			function BuildCommands(car) {
 				var api = {};
-				var commands = [];
+				var commands = [ car.toString() ];
 
 				console.log("Building commands.");
 
@@ -94,7 +94,7 @@
 				PhysicsUpdate();
 				console.log("Called physics update");
 
-				u.getUnity().SendMessage("CarManager", "ExecuteCommands", car, commands);
+				u.getUnity().SendMessage("CarManager", "ExecuteCommands", commands);
 			}
 		-->
 		</script>

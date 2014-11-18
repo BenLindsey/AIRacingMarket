@@ -68,8 +68,16 @@ public class CarManager : MonoBehaviour {
         }
     }
 
-    public void ExecuteCommands(int car, string commands) {
-        cars[car].transform.FindChild("OurCar").SendMessage("ExecuteCommands", commands);   
+    public void ExecuteCommands(string[] commands) {
+        Debug.Log(commands);
+
+        string headless = "";
+
+        for (int i = 1; i < commands.Length; i++) {
+            headless += commands[i];
+        }
+
+        cars[int.Parse(commands[0])].transform.FindChild("OurCar").SendMessage("ExecuteCommands", headless);   
     }
 
 	public void StartRace(string arg) {
