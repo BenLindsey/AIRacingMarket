@@ -79,14 +79,14 @@
 			}
 
 			function BuildCommands(car) {
-				var api;
-				var commands;
+				var api = {};
+				var commands = [];
 
 				console.log("Building commands.");
 
 				api.SetThrottle = function(throttle) {
 					console.log("Call to set throttle in web api");
-					commands.append("api.SetThrottle(" + throttle + ");")
+					commands.push("api.SetThrottle(" + throttle + ");")
 				};
 
 				eval(scripts[i].content);
