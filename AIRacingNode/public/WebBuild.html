@@ -93,7 +93,7 @@
 				    api[calls[i]] = function(call) {
 				        return function(arg) { 
 				            commands.instructions = commands.instructions
-                                                .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
+                                                .concat("api.", call, "(", (arg == undefined? "" : arg), ");"); 
 				    	};
 				    }(calls[i]);
 				}
