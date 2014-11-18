@@ -80,7 +80,7 @@
 
 			function BuildCommands(state_string) {
 				console.log("Building commands", state_string);
-			    var state = JSON.parse(state_string);
+			        var state = JSON.parse(state_string);
 
 				var api = {};
 				var commands = {car: state.car, instructions: ""};
@@ -103,7 +103,7 @@
 				    }
 				}
 
-				console.log("Evaluating script for",state.car, " length ", scripts[state.car].content.length;
+				console.log("Evaluating script for",state.car, " length ", scripts[state.car].content.length);
 
                 		// Execute script
 				eval(scripts[state.car].content);
