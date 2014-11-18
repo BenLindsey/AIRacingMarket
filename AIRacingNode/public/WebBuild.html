@@ -103,13 +103,13 @@
 				    }
 				}
 
-				console.log("Evaluating script...");
+				console.log("Evaluating script for",state.car, " as ", scripts[state.car].content);
 
-                // Execute script
+                		// Execute script
 				eval(scripts[state.car].content);
 				PhysicsUpdate();
 
-				console.log("Evaluation complete, sending commands to Unity");
+				console.log("Evaluation complete, sending commands to Unity: ", JSON.stringify(commands));
 
                 // Post commands to unity
 				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
