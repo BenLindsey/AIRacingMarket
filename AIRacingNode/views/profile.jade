@@ -47,19 +47,19 @@ block content
               .form-group
                   label.col-lg-2.control-label(for='inputEmailAddress') Email Address
                   .col-lg-8
-                      input#inputEmailAddress.form-control(placeholder='Enter your Email Address', type='email', name="emailaddress")
+                      input#inputEmailAddress.form-control(value=userEmail, placeholder='Enter your Email Address', type='email', name="emailaddress", readonly="true")
               .form-group
                   label.col-lg-2.control-label(for='inputUniversityName') University Name
                   .col-lg-8
-                      input#inputUniversityName.form-control(placeholder='Which University do you attend?', type='text', name="university")
+                      input#inputUniversityName.form-control(value=userUni, placeholder='Which University do you attend?', type='text', name="university")
               .form-group
                   label.col-lg-2.control-label(for='inputCourse') Course
                   .col-lg-8
-                      input#inputCourse.form-control(placeholder='What do you study?', type='text', name="course")
+                      input#inputCourse.form-control(value=userDeg, placeholder='What do you study?', type='text', name="course")
               .form-group
-                  label.col-lg-2.control-label(for='inputYearGroup') Year Group
+                  label.col-lg-2.control-label(name="year", for='inputYearGroup') Year Group
                   .col-lg-8
-                      select#inputYearGroup.form-control
+                      select#inputYearGroup.form-control(value=userYear, name="year")
                           option 1st Year
                           option 2nd Year
                           option 3rd Year
