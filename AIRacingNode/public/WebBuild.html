@@ -84,27 +84,16 @@
 				var api = {};
 				var commands = {car: state.car, instructions: ""};
 
-                // Covert all the Write api calls to instruction appends
-				api.Write = function(instruction, arg) {
-				    commands.instructions = commands.instructions
-                        .concat("api.", instruction, "( ", (arg == undefined? "" : arg), ");");
+			    // Convert list of names into Write api calls
+				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
+                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+
+				for(call in calls) {
+				    api[call] = function(arg) { 
+				        commands.instructions = commands.instructions
+                            .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
+				    };
 				}
-
-				api.SetThrottle = function(throttle) { api.Write(SetThrottle, throttle); };
-
-				api.SetBrake = function(brake) { api.Write("SetBrake", brake); };
-
-				api.SetSteer = function(steer) { api.Write("SetSteer", steer); };
-
-				api.ChangeLaneRight = function() { api.Write("ChangeLaneRight"); }
-
-				api.ChangeLaneLeft  = function() { api.Write("ChangeLaneLeft"); }
-
-				api.SteerToMiddle   = function() { api.Write("SteerToMiddle"); }
-
-				api.SteerToLeft     = function() { api.Write("SteerToLeft"); }
-
-				api.SteerToRight    = function() { api.Write("SteerToRight"); }
 
                 // Convert the game state into Read api calls
 				for (var key in state) { 
