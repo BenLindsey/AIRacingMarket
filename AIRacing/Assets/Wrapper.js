@@ -3,34 +3,26 @@
 var api : AiApi;
 
 var scriptName;
-
-var startScript;
-var updateScript;
-
-var data : Hashtable;
+var car;
 
 function Start () {
-    data = new Hashtable ();
-
-    if (startScript) {
-		eval(startScript);
-	}
 }
 
 function FixedUpdate () {   
-    if (updateScript) {
-		eval(updateScript);
-	}
+    Application.ExternalCall("BuildCommands", car);
 }
 
 function SetScriptName(name) {
     scriptName = name;
-
-    Debug.Log("Script added with name: " + scriptName);
 }
 
 function SetScriptContent(contents) {
-    Debug.Log("Added script: " + contents);
-    startScript = contents + "Init();";
-    updateScript = contents + "PhysicsUpdate();";
+}
+
+function SetCar(carNo) {
+    car = carNo;
+}
+
+function ExecuteCommands(commands) {
+    eval(commands);
 }

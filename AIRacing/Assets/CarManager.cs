@@ -48,7 +48,7 @@ public class CarManager : MonoBehaviour {
 
         cars.Add(newCar);
 
-        newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", scriptName);
+        newCar.transform.FindChild("OurCar").SendMessage("SetCar", cars.Count);
 
         newCar.SetActive(false);
     }
@@ -66,6 +66,10 @@ public class CarManager : MonoBehaviour {
         foreach (GameObject car in cars) {
             carModelSelector.createCar(carName, car);
         }
+    }
+
+    public void ExecuteCommands(int car, string commands) {
+        cars[car].transform.FindChild("OurCar").SendMessage("ExecuteCommands", commands);   
     }
 
 	public void StartRace(string arg) {

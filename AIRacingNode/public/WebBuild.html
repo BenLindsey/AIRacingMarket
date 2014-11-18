@@ -77,6 +77,25 @@
 				console.log("Setting level to " + levelname);
 				u.getUnity().SendMessage("LevelSelector", "SetLevel", levelname);
 			}
+
+			function BuildCommands(car) {
+				var api;
+				var commands;
+
+				console.log("Building commands.");
+
+				api.SetThrottle = function(throttle) {
+					console.log("Call to set throttle in web api");
+					commands.append("api.SetThrottle(" + throttle + ");")
+				};
+
+				eval(scripts[i].content);
+				console.log("Evaluated script, trying to call physics update...");
+				PhysicsUpdate();
+				console.log("Called physics update");
+
+				u.getUnity().SendMessage("CarManager", "ExecuteCommands", car, commands);
+			}
 		-->
 		</script>
 		<style type="text/css">
