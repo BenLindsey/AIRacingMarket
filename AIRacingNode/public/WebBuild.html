@@ -79,6 +79,7 @@
 			}
 
 			function BuildCommands(state_string) {
+				console.log("Building commands");
 			    var state = JSON.parse(state_string);
 
 				var api = {};
@@ -102,9 +103,13 @@
 				    }
 				}
 
+				console.log("Evaluating script...");
+
                 // Execute script
 				eval(scripts[state.car].content);
 				PhysicsUpdate();
+
+				console.log("Evaluation complete, sending commands to Unity");
 
                 // Post commands to unity
 				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
