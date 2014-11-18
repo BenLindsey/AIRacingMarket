@@ -48,7 +48,7 @@ public class CarManager : MonoBehaviour {
 
         cars.Add(newCar);
 
-        newCar.transform.FindChild("OurCar").SendMessage("SetCar", cars.Count);
+        newCar.transform.FindChild("OurCar").SendMessage("SetCar", cars.Count - 1);
 
         newCar.SetActive(false);
     }
