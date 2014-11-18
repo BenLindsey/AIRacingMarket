@@ -79,7 +79,7 @@
 			}
 
 			function BuildCommands(state_string) {
-				console.log("Building commands");
+				console.log("Building commands", state_string);
 			    var state = JSON.parse(state_string);
 
 				var api = {};
@@ -87,12 +87,12 @@
 
 			    // Convert list of names into Write api calls
 				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
-                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
 
 				for(call in calls) {
 				    api[call] = function(arg) { 
 				        commands.instructions = commands.instructions
-                            .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
+                                                .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
 				    };
 				}
 
