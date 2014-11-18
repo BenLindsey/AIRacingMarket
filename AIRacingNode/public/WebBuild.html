@@ -78,24 +78,46 @@
 				u.getUnity().SendMessage("LevelSelector", "SetLevel", levelname);
 			}
 
-			function BuildCommands(car) {
+			function BuildCommands(state_string) {
+			    var state = JSON.parse(state_string);
+
 				var api = {};
-				var commands = {car: car, instructions: ""};
+				var commands = {car: state.car, instructions: ""};
 
-				console.log("Building commands.");
+                // Covert all the Write api calls to instruction appends
+				api.Write = function(instruction, arg) {
+				    commands.instructions = commands.instructions
+                        .concat("api.", instruction, "( ", (arg == undefined? "" : arg), ");");
+				}
 
-				api.SetThrottle = function(throttle) {
-					console.log("Call to set throttle in web api");
-					commands.instructions = commands.instructions.concat("api.SetThrottle(" + throttle + ");")
-				};
+				api.SetThrottle = function(throttle) { api.Write(SetThrottle, throttle); };
 
-				console.log("car: " + car);
+				api.SetBrake = function(brake) { api.Write("SetBrake", brake); };
 
-				eval(scripts[car].content);
-				console.log("Evaluated script, trying to call physics update...");
+				api.SetSteer = function(steer) { api.Write("SetSteer", steer); };
+
+				api.ChangeLaneRight = function() { api.Write("ChangeLaneRight"); }
+
+				api.ChangeLaneLeft  = function() { api.Write("ChangeLaneLeft"); }
+
+				api.SteerToMiddle   = function() { api.Write("SteerToMiddle"); }
+
+				api.SteerToLeft     = function() { api.Write("SteerToLeft"); }
+
+				api.SteerToRight    = function() { api.Write("SteerToRight"); }
+
+                // Convert the game state into Read api calls
+				for (var key in state) { 
+				    api[key] = function() {
+				        return state[key];
+				    }
+				}
+
+                // Execute script
+				eval(scripts[state.car].content);
 				PhysicsUpdate();
-				console.log("Called physics update");
 
+                // Post commands to unity
 				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
 			}
 		-->

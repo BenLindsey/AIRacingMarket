@@ -5,11 +5,21 @@ var api : AiApi;
 var scriptName;
 var car;
 
+
 function Start () {
 }
 
 function FixedUpdate () {   
-    Application.ExternalCall("BuildCommands", car);
+    var state = '{ "car":' + car
+              + ', "GetLane":'  + api.GetLane() 
+              + ', "GetSpeed":' + api.GetSpeed()
+              + ', "CarInFront":' + api.CarInFront() 
+              + ', "CarOnRight":' + api.CarOnRight() 
+              + ', "CarOnLeft":'  + api.CarOnLeft()
+              + ', "GetCornerDirection":' + api.GetCornerDirection() 
+              + '}';
+
+    Application.ExternalCall("BuildCommands", state);
 }
 
 function SetScriptName(name) {
