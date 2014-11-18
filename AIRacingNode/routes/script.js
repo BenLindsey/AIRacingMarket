@@ -19,17 +19,10 @@ router.get('/', function(req, res) {
         "// The vehicle can be controlled by calling functions on the api object\n" +
         "// e.g. api.SetThrottle()\n" +
         "\n" +
-        "// Global state can be stored in the global data object\n" +
-        "// e.g. data[\"count\"] = 10;\n" +
-        "//      data[\"count\"] = data[\"count\"] - 1;\n" +
+        "// Global state can be initialised here" +
         "\n" +
-        "// Called once when the script is loaded\n" +
-        "var Init = function() {\n" +
-        "\n" +
-        "};\n" +
-        "\n" +
-        "// Called repeatedly as the game is running\n" +
-        "var PhysicsUpdate = function() {\n" +
+        "// This is called repeatedly as the game is running\n" +
+        "var PhysicsUpdate = function(api) {\n" +
         "\n" +
         "};",
         notLoggedIn : !req.isAuthenticated()
