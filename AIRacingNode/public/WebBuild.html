@@ -89,7 +89,7 @@
 					commands.push("api.SetThrottle(" + throttle + ");")
 				};
 
-				eval(scripts[i].content);
+				eval(scripts[car].content);
 				console.log("Evaluated script, trying to call physics update...");
 				PhysicsUpdate();
 				console.log("Called physics update");
