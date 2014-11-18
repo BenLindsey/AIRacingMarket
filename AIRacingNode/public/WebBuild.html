@@ -78,24 +78,35 @@
 				u.getUnity().SendMessage("LevelSelector", "SetLevel", levelname);
 			}
 
-			function BuildCommands(car) {
+			function BuildCommands(state_string) {
+			    var state = JSON.parse(state_string);
+
 				var api = {};
-				var commands = {car: car, instructions: ""};
+				var commands = {car: state.car, instructions: ""};
 
-				console.log("Building commands.");
+			    // Convert list of names into Write api calls
+				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
+                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
 
-				api.SetThrottle = function(throttle) {
-					console.log("Call to set throttle in web api");
-					commands.instructions = commands.instructions.concat("api.SetThrottle(" + throttle + ");")
-				};
+				for(call in calls) {
+				    api[call] = function(arg) { 
+				        commands.instructions = commands.instructions
+                            .concat("api.", call, "( ", (arg == undefined? "" : arg), ");"); 
+				    };
+				}
 
-				console.log("car: " + car);
+                // Convert the game state into Read api calls
+				for (var key in state) { 
+				    api[key] = function() {
+				        return state[key];
+				    }
+				}
 
-				eval(scripts[car].content);
-				console.log("Evaluated script, trying to call physics update...");
+                // Execute script
+				eval(scripts[state.car].content);
 				PhysicsUpdate();
-				console.log("Called physics update");
 
+                // Post commands to unity
 				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
 			}
 		-->
