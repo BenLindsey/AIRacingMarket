@@ -19,7 +19,7 @@ router.get('/', function(req, res) {
         "// The vehicle can be controlled by calling functions on the api object\n" +
         "// e.g. api.SetThrottle()\n" +
         "\n" +
-        "// Global state can be initialised here" +
+        "// Global state can be initialised here\n" +
         "\n" +
         "// This is called repeatedly as the game is running\n" +
         "var PhysicsUpdate = function(api) {\n" +
