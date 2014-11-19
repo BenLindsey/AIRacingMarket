@@ -55,16 +55,16 @@ router.post('/', function(req, res) {
     console.log("user :" );
     console.log(req.user);
 
-    collection.insert({
-        "email"      : req.user.local.email,
-        "scriptName" : req.body.scriptname,
-        "script"     : req.body.script
-    }, function (err, doc) {
+    user_form = {"scriptName" : req.body.scriptname, "script" : req.body.script};
+    if (req.isAuthenticated()) {
+        user_form["email"] = req.user.local.email;
+    }
+    collection.insert(user_form, function (err, doc) {
         if (err) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
-            var url = "/profile";
+            var url = req.isAuthenticated() ? "/profile" : "/";
 
             req.session.submitted = true;
 
