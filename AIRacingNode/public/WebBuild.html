@@ -65,6 +65,15 @@
                     console.log(scripts[i]);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
+                    		scripts[i].update = function() {
+                    		    // Execute the script, declaring globals as function variables
+                    		    eval(scripts[i].content);
+                    		    
+                    		    // Use lambda to pass these variables as if globals
+                    		    return function(api) {
+                    		    	PhysicsUpdate(api);	
+                    		    }
+                    		}();
 			    }
 
 				console.log("Car model set to " + carname);
@@ -76,6 +85,46 @@
 			function RequestLevel() {
 				console.log("Setting level to " + levelname);
 				u.getUnity().SendMessage("LevelSelector", "SetLevel", levelname);
+			}
+
+			function BuildCommands(state_string) {
+				console.log("Building commands", state_string);
+			        var state = JSON.parse(state_string);
+
+				var api = {};
+				var commands = {car: state.car, instructions: ""};
+
+			        // Convert list of names into Write api calls
+				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
+                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+
+				for(var i = 0; i < calls.length; i++) {
+				    api[calls[i]] = function(call) {
+				        return function(arg) { 
+				            commands.instructions = commands.instructions
+                                                .concat("api.", call, "(", (arg == undefined? "" : arg), ");"); 
+				    	};
+				    }(calls[i]);
+				}
+
+                                // Convert the game state into Read api calls
+				for (var key in state) { 
+				    api[key] = function(key) {
+				    	return function() {
+				            return state[key];
+				    	};
+				    }(key);
+				}
+
+				console.log("Evaluating script for", state.car);
+
+                		// Execute script
+				scripts[state.car].update(api);
+
+				console.log("Evaluation complete, sending commands to Unity: ", JSON.stringify(commands));
+
+                // Post commands to unity
+				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
 			}
 		-->
 		</script>
