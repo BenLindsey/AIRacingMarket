@@ -195,22 +195,22 @@ public class HUD : MonoBehaviour {
     }
 
     private void Send() {
-        int port = 3026;
-
         WWWForm form = new WWWForm();
         string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
         for (int i = 0; i < names.Length; i++) {
             form.AddField(fieldNames[i], names[i]);
         }
 
-        Debug.Log("Race has finished. Sending '" + form.ToString()
-            + "' to port " + port + ".");
-        WWW www = new WWW("http://146.169.47.15:" + port + "/score/", form);
-        Debug.Log(www);
-        StartCoroutine(WaitForSend(www));
+        StartCoroutine(WaitForSend(form));
     }
 
-    private IEnumerator WaitForSend(WWW www) {
+    private IEnumerator WaitForSend(WWWForm form) {
+        int port = 3026;
+        string url = "http://146.169.47.15:" + port + "/score";
+
+        Debug.Log("Race has finished. Sending '" + form.ToString()
+            + "' to " + url + "...");
+        WWW www = new WWW(url, form);
 
         yield return www;
 
