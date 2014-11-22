@@ -7,10 +7,11 @@ using System.Collections;
 public class HUD : MonoBehaviour {
 
     private struct CarState {
-        public GameObject carObject;
+        public OurCar car;
         public int lap;
         public int stage;
         public string name;
+        public float flipStartTime;
     }
 
     public CarManager carManager;
@@ -23,6 +24,7 @@ public class HUD : MonoBehaviour {
     private GUIStyle style = new GUIStyle();
 
     private const int LAPS_IN_RACE = 1;
+    private const int MAX_FLIP_TIME = 3;
     private EndOfRaceObject endOfRaceObject;
 
 	// Use this for initialization
@@ -46,9 +48,10 @@ public class HUD : MonoBehaviour {
             for (int i = 0; i < carStates.Length; i++) {
 
                 OurCar ourCar = carManager.Cars[i].GetComponentInChildren<OurCar>();
-                carStates[i].carObject = ourCar.gameObject;
+                carStates[i].car = ourCar;
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
+                carStates[i].flipStartTime = -1;
 
                 // If there are multiple cars with the same name, then add the
                 // occurence number onto the end of the name.
@@ -58,8 +61,27 @@ public class HUD : MonoBehaviour {
                     ? "" : " " + (nameFrequency + 1));
                 nameFrequencies[ourCar.name] = nameFrequency + 1;
 
-                // TESTING ONLY: End the race as soon as all car are loaded.
-                endOfRaceObject.Finish(carStates[i].name);
+                // TESTING ONLY: End the race as soon as all cars are loaded.
+                //endOfRaceObject.Finish(carStates[i].name);
+            }
+        }
+
+        // Check if any cars are have flipped.
+        if (carStates != null) {
+            for (int i = 0; i < carStates.Length; i++) {
+                // Remove the car if it is flipped over for too long.
+                if (carStates[i].car.IsFlipped) {
+                    if (carStates[i].flipStartTime == -1) {
+                        carStates[i].flipStartTime = Time.time;
+                    } else if (Time.time - carStates[i].flipStartTime >= MAX_FLIP_TIME) {
+                        endOfRaceObject.RemoveFromRace(carStates[i].name);
+                    }
+                }
+                
+                // Reset the timeout otherwise.
+                else if (carStates[i].flipStartTime != -1) {
+                    carStates[i].flipStartTime = -1;
+                }
             }
         }
     }
@@ -73,7 +95,7 @@ public class HUD : MonoBehaviour {
         y += 20;
 
         // Find the active camera to convert 3D coordinates to screen coordinates.
-        Camera carCamera = currentState.carObject.transform.parent.GetComponentInChildren<Camera>();
+        Camera carCamera = currentState.car.transform.parent.GetComponentInChildren<Camera>();
 
         for (int i = 0; i < carStates.Length; i++) {
             int position = GetPosition(carStates[i]);
@@ -84,7 +106,7 @@ public class HUD : MonoBehaviour {
 
             // Draw the car's name over its model if it's in front of the camera.
             Vector3 screenPosition = carCamera.WorldToScreenPoint(
-                carStates[i].carObject.transform.position + 2.5f * Vector3.up);
+                carStates[i].car.transform.position + 2.5f * Vector3.up);
             if (screenPosition.z > 0) {
                 float xOffset = style.CalcSize(new GUIContent(carStates[i].name)).x / 2;
                 GUI.Label(new Rect(screenPosition.x - xOffset, carCamera.pixelHeight - screenPosition.y,
@@ -113,7 +135,7 @@ public class HUD : MonoBehaviour {
                 carStates[carIndex].stage = 0;
                 carStates[carIndex].lap++;
 
-                // Update the JSON object if this car just finished the race.
+                // Update the WWW form if this car just finished the race.
                 if (carStates[carIndex].lap == LAPS_IN_RACE) {
                     endOfRaceObject.Finish(carStates[carIndex].name);
                 }
@@ -125,9 +147,8 @@ public class HUD : MonoBehaviour {
     }
 
     private int GetCarIndexFromCollider(Collider collider) {
-
         for (int i = 0; i < carStates.Length; i++) {
-            if (collider.transform.IsChildOf(carStates[i].carObject.transform)) {
+            if (collider.transform.IsChildOf(carStates[i].car.transform)) {
                 return i;
             }
         }
@@ -142,7 +163,7 @@ public class HUD : MonoBehaviour {
         foreach (CarState other in carStates) {
             // Increment the position each time we find a car which is in front
             // of the given car.
-            if (other.carObject != car.carObject && !IsCarInFront(car, other)) {
+            if (other.car != car.car && !IsCarInFront(car, other)) {
                 position++;
             }
         }
@@ -158,12 +179,11 @@ public class HUD : MonoBehaviour {
     }
 
     private float DistanceToCheckpoint(CarState car) {
-        return Vector3.Distance(car.carObject.transform.position,
+        return Vector3.Distance(car.car.transform.position,
             checkpoints[car.stage].transform.position);
     }
 
     private GameObject[] LoadCheckpoints() {
-
         GameObject[] children = new GameObject[checkpointsContainer.transform.childCount];
         for (int i = 0; i < children.Length; i++) {
 
@@ -186,19 +206,40 @@ public class HUD : MonoBehaviour {
     private class EndOfRaceObject {
         private MonoBehaviour outerClass;
 
-        private string[] names;
-        private int carsFinished = 0;
+        private int carsRacing;
+        private Queue<string> carsFinished = new Queue<string>();
+        private Stack<string> carsRemoved = new Stack<string>();
+
+        private HashSet<string> carsSeen = new HashSet<string>();
 
         public EndOfRaceObject(MonoBehaviour outerClass, int carCount) {
             this.outerClass = outerClass;
-            names = new string[carCount];
+            carsRacing = carCount;
         }
 
         public void Finish(string scriptName) {
-            if (carsFinished < names.Length) {
-                names[carsFinished++] = scriptName;
+            if (carsRacing > 0 && !carsSeen.Contains(scriptName)) {
+                carsFinished.Enqueue(scriptName);
+                carsSeen.Add(scriptName);
+                carsRacing--;
 
-                if (carsFinished == names.Length) {
+                Debug.Log(scriptName + " has finished the race!");
+
+                if (carsRacing == 0) {
+                    Send();
+                }
+            }
+        }
+
+        public void RemoveFromRace(string scriptName) {
+            if (carsRacing > 0 && !carsSeen.Contains(scriptName)) {
+                carsRemoved.Push(scriptName);
+                carsSeen.Add(scriptName);
+                carsRacing--;
+
+                Debug.Log(scriptName + " was removed from the race!");
+
+                if (carsRacing == 0) {
                     Send();
                 }
             }
@@ -207,8 +248,21 @@ public class HUD : MonoBehaviour {
         private void Send() {
             WWWForm form = new WWWForm();
             string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
-            for (int i = 0; i < names.Length; i++) {
-                form.AddField(fieldNames[i], names[i]);
+            int index = 0;
+
+            Debug.Log("Race has finished!");
+            while (carsFinished.Count > 0) {
+                Debug.Log("Position " + index + ": " + carsFinished.Peek());
+
+                form.AddField(fieldNames[index], carsFinished.Dequeue());
+                index++;
+            }
+
+            while (carsRemoved.Count > 0) {
+                Debug.Log("Position " + index + ": " + carsRemoved.Peek());
+
+                form.AddField(fieldNames[index], carsRemoved.Pop());
+                index++;
             }
 
             outerClass.StartCoroutine(WaitForSend(form));
@@ -218,8 +272,7 @@ public class HUD : MonoBehaviour {
             int port = 3026;
             string url = "http://146.169.47.15:" + port + "/score";
 
-            Debug.Log("Race has finished. Sending '" + form.ToString()
-                + "' to " + url + "...");
+            Debug.Log("Sending data to '" + url + "' ...");
             WWW www = new WWW(url, form);
 
             yield return www;

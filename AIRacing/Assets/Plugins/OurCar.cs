@@ -37,6 +37,12 @@ public class OurCar : MonoBehaviour {
     private bool isSkidding = false;
     public bool IsSkidding { get { return isSkidding; } }
 
+    private bool isGrounded = false;
+    public bool IsGrounded { get { return isGrounded; } }
+
+    public bool IsFlipped { get { return 135 <= transform.eulerAngles.z
+        && transform.eulerAngles.z <= 225; } }
+
     private Wheel[] wheels;
 
     private float throttle = 0;
@@ -71,6 +77,7 @@ public class OurCar : MonoBehaviour {
         brakeLights.SetFloat("_Intensity", Mathf.Abs(maxBrakeForce / 100f));
 
         isSkidding = false;
+        isGrounded = false;
         foreach (Wheel wheel in wheels) {
             UpdateWheel(wheel);
         }
@@ -165,22 +172,24 @@ public class OurCar : MonoBehaviour {
 
         // Update the vertical position of the wheel according to the suspension.
         WheelHit hit;
-        float extension = (wheel.collider.GetGroundHit(out hit))
+        bool isTouchingGround = wheel.collider.GetGroundHit(out hit);
+        float extension = (isTouchingGround)
             ? (-wheel.collider.transform.InverseTransformPoint(hit.point).y - wheel.collider.radius)
             : wheel.collider.suspensionDistance;
         wheel.transform.localPosition
             = wheel.originalPosition + Vector3.down * extension;
 
-        UpdateSkidmarks(wheel);
+        isGrounded |= isTouchingGround;
+
+        UpdateSkidmarks(wheel, isTouchingGround, hit);
     }
 
-    private void UpdateSkidmarks(Wheel wheel) {
+    private void UpdateSkidmarks(Wheel wheel, bool isTouchingGround, WheelHit hit) {
 
         const float minSkidSpeed = 3.0f;
 
         // Check if the wheel is on the ground and skidding enough to draw a skidmark.
-        WheelHit hit;
-        bool isWheelCurrentlySlipping = wheel.collider.GetGroundHit(out hit)
+        bool isWheelCurrentlySlipping = isTouchingGround
             && (hit.sidewaysSlip > minSkidSpeed || hit.forwardSlip > minSkidSpeed);
         isSkidding |= isWheelCurrentlySlipping;
 
