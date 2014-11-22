@@ -23,9 +23,7 @@ public class HUD : MonoBehaviour {
     private GUIStyle style = new GUIStyle();
 
     private const int LAPS_IN_RACE = 1;
-
-    private string[] names;
-    private int carsFinished = 0;
+    private EndOfRaceObject endOfRaceObject;
 
 	// Use this for initialization
 	public void Start () {
@@ -43,7 +41,7 @@ public class HUD : MonoBehaviour {
 
             carStates = new CarState[carManager.Cars.Count];
             Dictionary<string, int> nameFrequencies = new Dictionary<string, int>();
-            names = new string[carStates.Length];
+            endOfRaceObject = new EndOfRaceObject(this, carStates.Length);
 
             for (int i = 0; i < carStates.Length; i++) {
 
@@ -60,7 +58,8 @@ public class HUD : MonoBehaviour {
                     ? "" : " " + (nameFrequency + 1));
                 nameFrequencies[ourCar.name] = nameFrequency + 1;
 
-                Finish(carStates[i].name);
+                // TESTING ONLY: End the race as soon as all car are loaded.
+                endOfRaceObject.Finish(carStates[i].name);
             }
         }
     }
@@ -116,7 +115,7 @@ public class HUD : MonoBehaviour {
 
                 // Update the JSON object if this car just finished the race.
                 if (carStates[carIndex].lap == LAPS_IN_RACE) {
-                    Finish(carStates[carIndex].name);
+                    endOfRaceObject.Finish(carStates[carIndex].name);
                 }
             }
         }
@@ -184,41 +183,53 @@ public class HUD : MonoBehaviour {
         return children;
     }
 
-    public void Finish(string scriptName) {
-        if (carsFinished < names.Length) {
-            names[carsFinished++] = scriptName;
+    private class EndOfRaceObject {
+        private MonoBehaviour outerClass;
 
-            if (carsFinished == names.Length) {
-                Send();
+        private string[] names;
+        private int carsFinished = 0;
+
+        public EndOfRaceObject(MonoBehaviour outerClass, int carCount) {
+            this.outerClass = outerClass;
+            names = new string[carCount];
+        }
+
+        public void Finish(string scriptName) {
+            if (carsFinished < names.Length) {
+                names[carsFinished++] = scriptName;
+
+                if (carsFinished == names.Length) {
+                    Send();
+                }
             }
         }
-    }
 
-    private void Send() {
-        WWWForm form = new WWWForm();
-        string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
-        for (int i = 0; i < names.Length; i++) {
-            form.AddField(fieldNames[i], names[i]);
+        private void Send() {
+            WWWForm form = new WWWForm();
+            string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
+            for (int i = 0; i < names.Length; i++) {
+                form.AddField(fieldNames[i], names[i]);
+            }
+
+            outerClass.StartCoroutine(WaitForSend(form));
         }
 
-        StartCoroutine(WaitForSend(form));
-    }
+        private IEnumerator WaitForSend(WWWForm form) {
+            int port = 3026;
+            string url = "http://146.169.47.15:" + port + "/score";
 
-    private IEnumerator WaitForSend(WWWForm form) {
-        int port = 3026;
-        string url = "http://146.169.47.15:" + port + "/score";
+            Debug.Log("Race has finished. Sending '" + form.ToString()
+                + "' to " + url + "...");
+            WWW www = new WWW(url, form);
 
-        Debug.Log("Race has finished. Sending '" + form.ToString()
-            + "' to " + url + "...");
-        WWW www = new WWW(url, form);
+            yield return www;
 
-        yield return www;
-
-        if (www.error == null) {
-            Debug.Log("End of race object sent!");
-        }
-        else {
-            Debug.Log("Error sending: " + www.error);
+            if (www.error == null) {
+                Debug.Log("End of race object sent!");
+            }
+            else {
+                Debug.Log("Error sending: " + www.error);
+            }
         }
     }
 }
