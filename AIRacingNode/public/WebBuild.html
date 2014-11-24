@@ -66,13 +66,94 @@
                     u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
                     		scripts[i].update = function() {
-                    		    // Execute the script, declaring globals as function variables
-                    		    eval(scripts[i].content);
-                    		    
-                    		    // Use lambda to pass these variables as if globals
-                    		    return function(api) {
-                    		    	PhysicsUpdate(api);	
-                    		    }
+					var When = {events : []};
+					
+					When.If = function (func) {
+					    this.events[this.events.length - 1]
+					        = function(previous, func) {
+					            return function(api) {
+					                if(func(api)) { return previous(api); }
+					            };
+					    }(this.events[this.events.length - 1], func);
+					    
+					    return this;
+					};
+					
+					When.After = function (time, multipleTriggers) {
+					    this.events[this.events.length - 1]
+					        = function(previous, index, offset, multipleTriggers) {
+					            var triggerTimes = [];
+					            
+					            return function(api) {                              
+					                if(previous(api) 
+					                && (multipleTriggers === true  
+					                    || triggerTimes.length == 0)) {
+					                    triggerTimes.push(api.GetTime() + offset);
+					                }
+					                
+					                if(triggerTimes.length > 0 
+					                && triggerTimes[0] <= api.GetTime()) {
+					                    triggerTimes.pop();
+					                    return true;
+					                } else {
+					                    return false;
+					                }
+					            };
+					    }(this.events[this.events.length - 1], 
+					      this.events.length - 1, time, multipleTriggers);   
+					    
+					    return this;
+					};
+					
+					//Build events TODO Add api gets
+					var events = ["CarOnRight", "CarOnLeft"];
+					for(var i = 0; i < events.length; i++) {
+					    When[events[i]] = function(event) {
+					        return function() {
+					            this.events.push(function(api) {
+					                return api[event]();
+					            });
+					            
+					            return this;
+					        };
+					    }(events[i]);
+					}
+					
+					//Build actions
+					var actions = ["SetSteer", "SetBrake", "SetThrottle", 
+						       "ChangeLaneRight",  "ChangeLaneLeft", 
+						       "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+					for(var i = 0; i < actions.length; i++) {
+					    When[actions[i]] = function(action) {
+					        return function(arg) {
+					            this.events[this.events.length - 1]
+					                = function(previous) {
+					                    return function(api) {
+					                        if(previous(api)) { 
+					                            api[action](arg); 
+					                            return true; 
+					                        } else { 
+					                            return false;   
+					                        }
+					                    };
+					            }(this.events[this.events.length - 1]);   
+					            
+					            return this;
+					        };
+					    }(actions[i]);
+					}
+                    			
+	                    		// Execute the script, declaring globals as function variables
+	                    		eval(scripts[i].content);
+	                    		    
+	                    		// Use lambda to pass these variables as if globals
+	                    		return function(api) {
+	                    			PhysicsUpdate(api);
+	                    		    	
+	                    		    	for(var i = 0; i < When.events.length; i++) {
+						        When.events[i](api);
+					  	}
+	                    		}
                     		}();
 			    }
 
@@ -116,8 +197,13 @@
 				    }(key);
 				}
 
-				console.log("Evaluating script for", state.car);
+				//Todo Api needs GetTime function
+				api.GetTime = function () {
+					return 1;
+				}
 
+				console.log("Evaluating script for", state.car);
+			
                 		// Execute script
 				scripts[state.car].update(api);
 
