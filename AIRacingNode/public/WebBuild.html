@@ -66,8 +66,10 @@
                     u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
                     u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
                     		scripts[i].update = function() {
+                    			console.log("Building update");
 					var When = {events : []};
 					
+					console.log("Building If");
 					When.If = function (func) {
 					    this.events[this.events.length - 1]
 					        = function(previous, func) {
@@ -79,6 +81,7 @@
 					    return this;
 					};
 					
+					console.log("Building After");
 					When.After = function (time, multipleTriggers) {
 					    this.events[this.events.length - 1]
 					        = function(previous, index, offset, multipleTriggers) {
@@ -106,6 +109,7 @@
 					};
 					
 					//Build events TODO Add api gets
+					console.log("Building events");
 					var events = ["CarOnRight", "CarOnLeft"];
 					for(var i = 0; i < events.length; i++) {
 					    When[events[i]] = function(event) {
@@ -120,6 +124,7 @@
 					}
 					
 					//Build actions
+					console.log("Building actions");
 					var actions = ["SetSteer", "SetBrake", "SetThrottle", 
 						       "ChangeLaneRight",  "ChangeLaneLeft", 
 						       "SteerToMiddle", "SteerToLeft", "SteerToRight"];
@@ -142,7 +147,8 @@
 					        };
 					    }(actions[i]);
 					}
-                    			
+					
+                    			console.log("Evaling script " + i);
 	                    		// Execute the script, declaring globals as function variables
 	                    		eval(scripts[i].content);
 	                    		    
@@ -153,7 +159,7 @@
 	                    		    	for(var i = 0; i < When.events.length; i++) {
 						        When.events[i](api);
 					  	}
-	                    		}
+	                    		};
                     		}();
 			    }
 
@@ -200,7 +206,7 @@
 				//Todo Api needs GetTime function
 				api.GetTime = function () {
 					return 1;
-				}
+				};
 
 				console.log("Evaluating script for", state.car);
 			
