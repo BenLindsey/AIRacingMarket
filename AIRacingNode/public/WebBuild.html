@@ -111,8 +111,8 @@
 					//Build events TODO Add api gets
 					console.log("Building events");
 					var events = ["CarOnRight", "CarOnLeft"];
-					for(var i = 0; i < events.length; i++) {
-					    When[events[i]] = function(event) {
+					for(var j = 0; j < events.length; j++) {
+					    When[events[j]] = function(event) {
 					        return function() {
 					            this.events.push(function(api) {
 					                return api[event]();
@@ -120,7 +120,7 @@
 					            
 					            return this;
 					        };
-					    }(events[i]);
+					    }(events[j]);
 					}
 					
 					//Build actions
@@ -128,8 +128,8 @@
 					var actions = ["SetSteer", "SetBrake", "SetThrottle", 
 						       "ChangeLaneRight",  "ChangeLaneLeft", 
 						       "SteerToMiddle", "SteerToLeft", "SteerToRight"];
-					for(var i = 0; i < actions.length; i++) {
-					    When[actions[i]] = function(action) {
+					for(var j = 0; j < actions.length; j++) {
+					    When[actions[j]] = function(action) {
 					        return function(arg) {
 					            this.events[this.events.length - 1]
 					                = function(previous) {
@@ -145,19 +145,20 @@
 					            
 					            return this;
 					        };
-					    }(actions[i]);
+					    }(actions[j]);
 					}
 					
                     			console.log("Evaling script " + i);
 	                    		// Execute the script, declaring globals as function variables
 	                    		eval(scripts[i].content);
 	                    		    
+	                    		console.log("Returning");
 	                    		// Use lambda to pass these variables as if globals
 	                    		return function(api) {
 	                    			PhysicsUpdate(api);
 	                    		    	
-	                    		    	for(var i = 0; i < When.events.length; i++) {
-						        When.events[i](api);
+	                    		    	for(var eventI = 0; eventI < When.events.length; eventI++) {
+						        When.events[eventI](api);
 					  	}
 	                    		};
                     		}();
