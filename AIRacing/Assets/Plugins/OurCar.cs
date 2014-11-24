@@ -225,7 +225,7 @@ public class OurCar : MonoBehaviour {
 	}
 
     public void SetScriptName(string name) {
-        Debug.Log("Our is setting name to: \"" + name + "\"");
+        Debug.Log("OurCar is setting name to: \"" + name + "\"");
         this.name = name;
     }
     

@@ -19,7 +19,7 @@ function FixedUpdate () {
               + ', "GetCornerDirection":' + api.GetCornerDirection() 
               + '}';
 
-    Debug.Log("Requesting browser to build commands");
+    //Debug.Log("Requesting browser to build commands");
     Application.ExternalCall("BuildCommands", state);
 }
 
