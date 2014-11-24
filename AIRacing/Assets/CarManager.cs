@@ -50,6 +50,7 @@ public class CarManager : MonoBehaviour {
         cars.Add(newCar);
 
         newCar.transform.FindChild("OurCar").SendMessage("SetCar", cars.Count - 1);
+        newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", scriptName);
 
         newCar.SetActive(false);
     }
