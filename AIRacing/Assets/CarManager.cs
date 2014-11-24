@@ -36,7 +36,10 @@ public class CarManager : MonoBehaviour {
 	}
 
     public void AddScriptByName(string scriptName) {
+        Debug.Log("Adding script: " + scriptName);
         if (cars.Count == startPositions.Length) {
+            Debug.Log("Too many cars added. (Count is " + cars.Count + ", max is "
+                + startPositions.Length + ")");
             return;
         }
 
@@ -71,12 +74,12 @@ public class CarManager : MonoBehaviour {
     }
 
     public void ExecuteCommands(string commandJSON) {
-        Debug.Log("Received execute command request");
+        //Debug.Log("Received execute command request");
 
         JSONNode data = JSON.Parse(commandJSON);
 
-        Debug.Log("Car: " + data["car"]);
-        Debug.Log("Instructions: " + data["instructions"]);
+        //Debug.Log("Car: " + data["car"]);
+        //Debug.Log("Instructions: " + data["instructions"]);
 
         cars[data["car"].AsInt].transform.FindChild("OurCar").SendMessage("ExecuteCommands", data["instructions"].Value);   
     }

@@ -35,6 +35,6 @@ function SetCar(carNo) {
 }
 
 function ExecuteCommands(commands) {
-    Debug.Log("Executing built commands");
+    // Debug.Log("Executing built commands");
     eval(commands);
 }
