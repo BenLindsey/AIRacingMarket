@@ -84,19 +84,19 @@
 					    return this;
 					};
 					
-					//UNTIL executes the right chain if func has stayed false since previous was true
-					//E.g. When.EVENT.UNTIL(func).ACTION -> Run ACTION if EVENT occurs & func false
-					//  OR EVENT occured previously and func has since always returned false
-					When.Until = function (func) {
+					//WHILE executes the right chain if func has stayed true since left chain true
+					//E.g. When.EVENT.WHILE(func).ACTION -> Run ACTION if EVENT occurs & func true
+					//  OR EVENT occured previously and func has since always returned true
+					When.While = function (func) {
 					    this.events[this.events.length - 1]
 					        = function(previous, func) {
 					            var triggered = false;
 					            return function(api) {
 					            	if(triggered) {
 					            	    previous(api);
-					            	    triggered = !func(api);
+					            	    triggered = func(api);
 					            	} else {
-					                    triggered = !func(api) && previous(api);
+					                    triggered = previous(api) && func(api);
 					            	}
 					            	
 					            	return triggered;
