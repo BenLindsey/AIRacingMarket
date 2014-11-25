@@ -140,6 +140,22 @@
 					    return this;
 					}
 					
+					When.Then = function (func) {
+					    this.events[this.events.length - 1]
+					        = function(previous, func) {
+					            return function(api) {
+					                if(previous(api)) {
+					                    func(api);
+					                    return true;
+					                } else {
+					                    return false
+					                }
+					            };
+					    }(this.events[this.events.length - 1], func);
+					    
+					    return this;
+					};
+					
 					//Build events TODO Add api gets
 					console.log("Building events");
 					var events = ["CarOnRight", "CarOnLeft", "CarInFront"];
