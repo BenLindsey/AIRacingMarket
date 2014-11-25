@@ -135,16 +135,28 @@
 					    return this;
 					};
 					
+					When.Not = function () {
+					    this.invert = true;
+					    return this;
+					}
+					
 					//Build events TODO Add api gets
 					console.log("Building events");
 					var events = ["CarOnRight", "CarOnLeft", "CarInFront"];
 					for(var j = 0; j < events.length; j++) {
 					    When[events[j]] = function(event) {
 					        return function() {
-					            this.events.push(function(api) {
-					                return api[event]();
-					            });
+					            if(this.invert) {  	
+						        this.events.push(function(api) {
+						            return !api[event]();
+						        });
+					            } else {
+					            	this.events.push(function(api) {
+						            return api[event]();
+						        });
+					            }
 					            
+					            this.invert = false;
 					            return this;
 					        };
 					    }(events[j]);
