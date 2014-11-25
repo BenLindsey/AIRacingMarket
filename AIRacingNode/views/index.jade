@@ -20,8 +20,7 @@ block content
           textarea#demo(name='demo', rows="12", data-editor="javascript")
       .col-lg-1
       .col-lg-1
-        .div(align='right')
-           img(class='fixed',src='racing.gif', alt='Logo')
+           img(class='alignright',src='racing.gif', alt='Logo', height='100%')
 
   //.div(align='center')
     //.btn.btn-info#getstarted(href='/script') GET STARTED
@@ -49,15 +48,10 @@ block content
           "// The vehicle can be controlled by calling functions\n" +
           "// on the api object e.g. api.SetThrottle()\n" +
           "\n" +
-          "// Global state can be stored in the global data object\n" +
-          "// e.g. data[\"count\"] = 10;\n" +
-          "//      data[\"count\"] = data[\"count\"] - 1;\n" +
+          "// Global state can be initialised here\n" +
           "\n" +
-          "// Called once when the script is loaded\n" +
-          "var Init = function() { ... };\n" +
-          "\n" +
-          "// Called repeatedly as the game is running\n" +
-          "var PhysicsUpdate = function() { ... };"
+          "// This is called repeatedly as the game is running\n" +
+          "var PhysicsUpdate = function(api) { ... };"
            );
           editor.getSession().setMode("ace/mode/" + mode);
           editor.setFontSize("16px");

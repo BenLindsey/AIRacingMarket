@@ -10,7 +10,7 @@ router.get('/', isLoggedIn, function(req, res) {
       var submitted_recently = req.session.submitted;
       req.session.submitted = false;
       res.render('profile', {
-          "scripts" : docs,
+          "scripts"   : docs,
           "submitted" : submitted_recently,
           "userYear"  : req.user.local.year,
           "userEmail" : req.user.local.email,
@@ -57,9 +57,6 @@ router.post('/', function(req, res) {
       console.log("No user found");
     }
   });
-  // Refresh page
-  var url = "/profile";
-  res.redirect(url);
 });
 
 function isLoggedIn(req, res, next) {
