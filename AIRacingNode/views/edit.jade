@@ -1,9 +1,6 @@
 include ./basic_navigator.jade
 
 block content
-    h1.
-        Edit your Racing Script
-    
     script.
         var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}}];
         var levelname = "OvalTrack";
@@ -11,6 +8,8 @@ block content
 
     div(style='width: 100%;')
         div(style='float: left; width: 60%;', align='left')
+            h1.
+                Edit your Racing Script
             div.well.bs-component
                 form#newScriptForm.form-horizontal(method='post')
                     fieldset
@@ -18,11 +17,11 @@ block content
                           .col-lg-7
                             .form-group
                               label.col-lg-2.control-label(for='inputScriptName') Script Name
-                              .col-lg-8
+                              .col-lg-12
                                 input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
                             .form-group
                               label.col-lg-2.control-label(for='inputScript') Script
-                              .col-lg-8
+                              .col-lg-12
                                 textarea#inputScript(name='script', data-editor="javascript", rows="20")
                             .form-group
                               .col-lg-6.col-lg-offset-2
