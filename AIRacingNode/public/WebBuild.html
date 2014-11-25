@@ -106,6 +106,27 @@
 					    return this;
 					};
 					
+					//When pauses the right chain until func returns true 
+					When.When = function (func) {
+					    this.events[this.events.length - 1]
+					        = function(previous, func) {
+					            var triggered = false;
+					            return function(api) {
+					            	var previous_res = previous(api);
+
+					            	if((previous_res || triggered) && func(api)) {
+					            	    triggered = false
+					            	    return true;
+					            	} else {
+					                    triggered = triggered || previous_res;
+					                    return false;
+					            	}
+					            };
+					    }(this.events[this.events.length - 1], func);
+					    
+					    return this;
+					};
+					
 					console.log("Building After");
 					When.After = function (time, multipleTriggers) {
 					    this.events[this.events.length - 1]
