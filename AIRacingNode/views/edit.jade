@@ -10,7 +10,7 @@ block content
         var carname = "Catamount";
 
     div(style='width: 100%;')
-        div(style='float: left; width: 60%;')
+        div(style='float: left; width: 60%;', align='left')
             div.well.bs-component
                 form#newScriptForm.form-horizontal(method='post')
                     fieldset
@@ -29,7 +29,6 @@ block content
                                 .btn-group
                                   button.btn.btn-default(type='reset') Reset
                                   button.btn.btn-primary(type='submit') Submit
-                          .col-lg-4    
           div(style='float: right;')
             include ../public/WebBuild.html
         div(style='clear: both;')
