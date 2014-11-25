@@ -64,9 +64,14 @@ router.post('/', function(req, res) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
-            var url = req.isAuthenticated() ? "/profile" : "/";
-
-            req.session.submitted = true;
+            var url;
+            if (req.isAuthenticated()) {
+              url = "/profile";
+              req.session.submitted = true;
+            }
+            else {
+              url = "/";
+            }
 
             console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script
