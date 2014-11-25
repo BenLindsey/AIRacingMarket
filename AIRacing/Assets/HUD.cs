@@ -62,7 +62,7 @@ public class HUD : MonoBehaviour {
                 nameFrequencies[ourCar.Name] = nameFrequency + 1;
 
                 // TESTING ONLY: End the race as soon as all cars are loaded.
-                //endOfRaceObject.Finish(carStates[i].name);
+                endOfRaceObject.Finish(carStates[i].name);
             }
         }
 
