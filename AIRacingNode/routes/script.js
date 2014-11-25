@@ -19,17 +19,10 @@ router.get('/', function(req, res) {
         "// The vehicle can be controlled by calling functions on the api object\n" +
         "// e.g. api.SetThrottle()\n" +
         "\n" +
-        "// Global state can be stored in the global data object\n" +
-        "// e.g. data[\"count\"] = 10;\n" +
-        "//      data[\"count\"] = data[\"count\"] - 1;\n" +
+        "// Global state can be initialised here\n" +
         "\n" +
-        "// Called once when the script is loaded\n" +
-        "var Init = function() {\n" +
-        "\n" +
-        "};\n" +
-        "\n" +
-        "// Called repeatedly as the game is running\n" +
-        "var PhysicsUpdate = function() {\n" +
+        "// This is called repeatedly as the game is running\n" +
+        "var PhysicsUpdate = function(api) {\n" +
         "\n" +
         "};",
         notLoggedIn : !req.isAuthenticated()
@@ -55,16 +48,23 @@ router.post('/', function(req, res) {
     console.log("user :" );
     console.log(req.user);
 
-    collection.insert({
-        "email"      : req.user.local.email,
-        "scriptName" : req.body.scriptname,
-        "script"     : req.body.script
-    }, function (err, doc) {
+    user_form = {"scriptName" : req.body.scriptname, "script" : req.body.script};
+    if (req.isAuthenticated()) {
+        user_form["email"] = req.user.local.email;
+    }
+    collection.insert(user_form, function (err, doc) {
         if (err) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
-            var url = "/profile";
+            var url;
+            if (req.isAuthenticated()) {
+              url = "/profile";
+              req.session.submitted = true;
+            }
+            else {
+              url = "/";
+            }
 
             console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script
@@ -93,6 +93,8 @@ router.post('/edit/:name', isLoggedInProfile, function(req, res) {
         }
         else {
             var url = "/profile";
+
+            req.session.submitted = true;
 
             console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script

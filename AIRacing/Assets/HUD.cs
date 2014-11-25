@@ -55,11 +55,11 @@ public class HUD : MonoBehaviour {
 
                 // If there are multiple cars with the same name, then add the
                 // occurence number onto the end of the name.
-                int nameFrequency = nameFrequencies.ContainsKey(ourCar.name)
-                    ? nameFrequencies[ourCar.name] : 0;
+                int nameFrequency = nameFrequencies.ContainsKey(ourCar.Name)
+                    ? nameFrequencies[ourCar.Name] : 0;
                 carStates[i].name = ourCar.Name + ((nameFrequency == 0)
                     ? "" : " " + (nameFrequency + 1));
-                nameFrequencies[ourCar.name] = nameFrequency + 1;
+                nameFrequencies[ourCar.Name] = nameFrequency + 1;
 
                 // TESTING ONLY: End the race as soon as all cars are loaded.
                 //endOfRaceObject.Finish(carStates[i].name);

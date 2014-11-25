@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using SimpleJSON;
 
 public struct Script
 {
@@ -35,7 +36,10 @@ public class CarManager : MonoBehaviour {
 	}
 
     public void AddScriptByName(string scriptName) {
+        Debug.Log("Adding script: " + scriptName);
         if (cars.Count == startPositions.Length) {
+            Debug.Log("Too many cars added. (Count is " + cars.Count + ", max is "
+                + startPositions.Length + ")");
             return;
         }
 
@@ -48,6 +52,8 @@ public class CarManager : MonoBehaviour {
 
         cars.Add(newCar);
 
+        newCar.transform.FindChild("OurCar").SendMessage("SetCar", cars.Count - 1);
+        // Do not remove this line! The hud will be sad otherwise.
         newCar.transform.FindChild("OurCar").SendMessage("SetScriptName", scriptName);
 
         newCar.SetActive(false);
@@ -66,6 +72,17 @@ public class CarManager : MonoBehaviour {
         foreach (GameObject car in cars) {
             carModelSelector.createCar(carName, car);
         }
+    }
+
+    public void ExecuteCommands(string commandJSON) {
+        //Debug.Log("Received execute command request");
+
+        JSONNode data = JSON.Parse(commandJSON);
+
+        //Debug.Log("Car: " + data["car"]);
+        //Debug.Log("Instructions: " + data["instructions"]);
+
+        cars[data["car"].AsInt].transform.FindChild("OurCar").SendMessage("ExecuteCommands", data["instructions"].Value);   
     }
 
 	public void StartRace(string arg) {

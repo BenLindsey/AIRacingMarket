@@ -4,49 +4,50 @@ block content
     h1.
         Create your Racing Script
 
-    div.well.bs-component
-        form#newScriptForm.form-horizontal(method='post')
-            fieldset
-                .row
-                  .col-lg-7
+    form#newScriptForm.form-horizontal(method='post')
+        fieldset
+          .row
+            .col-lg-7
+              div.well.bs-component
+                .form-group
+                  label.col-lg-2.control-label(for='inputScriptName') Script Name
+                  .col-lg-8
+                    input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
+                .form-group
+                  label.col-lg-2.control-label(for='inputScript') Script
+                  .col-lg-8
+                    textarea#inputScript(name='script', data-editor="javascript",  rows="20") 
+                .form-group
+                  .col-lg-6.col-lg-offset-2
+                    .btn-group
+                      button.btn.btn-default(type='reset') Reset
+                      button.btn.btn-primary(type='submit') Submit
+            .col-lg-4
+              if notLoggedIn
+                div.well.bs-component
+                    h2.
+                      Optional Details :
+                    br
                     .form-group
-                      label.col-lg-2.control-label(for='inputScriptName') Script Name
+                      label.col-lg-2.control-label(for='inputEmailAddress') Email Address
                       .col-lg-8
-                        input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
+                        input#inputEmailAddress.form-control(placeholder='Enter your Email Address', type='email', name="emailaddress")
                     .form-group
-                      label.col-lg-2.control-label(for='inputScript') Script
+                      label.col-lg-2.control-label(for='inputUniversityName') University Name
                       .col-lg-8
-                        textarea#inputScript(name='script', data-editor="javascript",  rows="20") 
+                        input#inputUniversityName.form-control(placeholder='Which University do you attend?', type='text', name="university")
                     .form-group
-                      .col-lg-6.col-lg-offset-2
-                        .btn-group
-                          button.btn.btn-default(type='reset') Reset
-                          button.btn.btn-primary(type='submit') Submit
-                  .col-lg-4
-                      if notLoggedIn
-                          h2.
-                            Optional Details :
-                          br
-                          .form-group
-                              label.col-lg-2.control-label(for='inputEmailAddress') Email Address
-                              .col-lg-8
-                                  input#inputEmailAddress.form-control(placeholder='Enter your Email Address', type='email', name="emailaddress")
-                          .form-group
-                              label.col-lg-2.control-label(for='inputUniversityName') University Name
-                              .col-lg-8
-                                  input#inputUniversityName.form-control(placeholder='Which University do you attend?', type='text', name="university")
-                          .form-group
-                              label.col-lg-2.control-label(for='inputCourse') Course
-                              .col-lg-8
-                                  input#inputCourse.form-control(placeholder='What do you study?', type='text', name="course")
-                          .form-group
-                              label.col-lg-2.control-label(for='inputYearGroup') Year Group
-                              .col-lg-8
-                                  select#inputYearGroup.form-control
-                                      option 1st Year
-                                      option 2nd Year
-                                      option 3rd Year
-                                      option 4th Year
+                      label.col-lg-2.control-label(for='inputCourse') Course
+                      .col-lg-8
+                        input#inputCourse.form-control(placeholder='What do you study?', type='text', name="course")
+                    .form-group
+                      label.col-lg-2.control-label(for='inputYearGroup') Year Group
+                      .col-lg-8
+                        select#inputYearGroup.form-control
+                            option 1st Year
+                            option 2nd Year
+                            option 3rd Year
+                            option 4th 
 
     script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
     script(type='text/javascript').
