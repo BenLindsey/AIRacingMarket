@@ -12,7 +12,7 @@ block content
           th University
           th Year
         tbody
-        - if (users.length) {
+        - if (users && users.length) {
         each entry, i in users
           tr
             td= entry.email

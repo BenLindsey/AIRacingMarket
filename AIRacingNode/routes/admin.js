@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
 
 /* GET user profile. */
 router.get('/', [isLoggedIn, isAdmin], function(req, res) {
-    User.find({}, {sort : { email : 1 }}, function(e, docs) {
+    var collection = req.db.get('users');
+
+    collection.find({}, {sort : { email : 1 }}, function(e, docs) {
         res.render('admin', {
             "users" : docs
         });
