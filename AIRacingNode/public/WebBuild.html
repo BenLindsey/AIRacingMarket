@@ -116,12 +116,8 @@
 				    }(key);
 				}
 
-				console.log("Evaluating script for", state.car);
-
                 		// Execute script
 				scripts[state.car].update(api);
-
-				console.log("Evaluation complete, sending commands to Unity: ", JSON.stringify(commands));
 
                 // Post commands to unity
 				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
