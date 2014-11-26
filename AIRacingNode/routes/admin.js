@@ -18,12 +18,10 @@ function isLoggedIn(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-    if (req.user && req.user.local.admin === true) {
-        next();
-    }
-    else {
-        res.send(401, 'Unauthorized');
-    }
+    if (req.user && req.user.local.admin)
+        return next();
+
+    res.send(401, 'Unauthorized');
 }
 
 module.exports = router;
