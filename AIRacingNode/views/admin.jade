@@ -15,8 +15,8 @@ block content
         - if (users && users.length) {
         each entry, i in users
           tr
-            td= entry.email
-            td= entry.degree
-            td= entry.university
-            td= entry.year
+            td= entry.local.email
+            td= entry.local.degree
+            td= entry.local.university
+            td= entry.local.year
         - }
