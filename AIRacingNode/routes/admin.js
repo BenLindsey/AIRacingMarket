@@ -4,7 +4,11 @@ var User = require('../models/user');
 
 /* GET user profile. */
 router.get('/', [isLoggedIn, isAdmin], function(req, res) {
-    res.render('admin');
+    User.find({}, {sort : { email : 1 }}, function(e, docs) {
+        res.render('admin', {
+            "users" : docs
+        });
+    });
 });
 
 function isLoggedIn(req, res, next) {

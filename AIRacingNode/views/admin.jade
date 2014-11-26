@@ -1,4 +1,22 @@
 include ./basic_navigator.jade
 
 block content
-  h1=Admin
+  h1.
+    User Details
+  div
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th Email
+          th Degree
+          th University
+          th Year
+        tbody
+        - if (users.length) {
+        each entry, i in users
+          tr
+            td= entry.email
+            td= entry.degree
+            td= entry.university
+            td= entry.year
+        - }
