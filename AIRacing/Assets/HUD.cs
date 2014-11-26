@@ -269,7 +269,7 @@ public class HUD : MonoBehaviour {
         }
 
         private IEnumerator WaitForSend(WWWForm form) {
-            int port = 3026;
+            int port = 3000;
             string url = "http://146.169.47.15:" + port + "/score";
 
             Debug.Log("Sending data to '" + url + "' ...");
