@@ -19,7 +19,6 @@ function FixedUpdate () {
               + ', "GetCornerDirection":' + api.GetCornerDirection() 
               + '}';
 
-    //Debug.Log("Requesting browser to build commands");
     Application.ExternalCall("BuildCommands", state);
 }
 
@@ -35,6 +34,5 @@ function SetCar(carNo) {
 }
 
 function ExecuteCommands(commands) {
-    // Debug.Log("Executing built commands");
     eval(commands);
 }

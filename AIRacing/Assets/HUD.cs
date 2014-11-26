@@ -269,8 +269,8 @@ public class HUD : MonoBehaviour {
         }
 
         private IEnumerator WaitForSend(WWWForm form) {
-            int port = 3000;
-            string url = "http://146.169.47.15:" + port + "/score";
+            int port = 3026;
+            string url = "http://146.169.47.15:" + port + "/score/";
 
             Debug.Log("Sending data to '" + url + "' ...");
             WWW www = new WWW(url, form);
@@ -278,7 +278,7 @@ public class HUD : MonoBehaviour {
             yield return www;
 
             if (www.error == null) {
-                Debug.Log("End of race object sent!");
+                Debug.Log("End of race object sent! " + www.text);
             }
             else {
                 Debug.Log("Error sending: " + www.error);
