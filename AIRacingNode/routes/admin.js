@@ -18,7 +18,7 @@ function isLoggedIn(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-    if (req.user && req.user.admin === true) {
+    if (req.user && req.user.local.admin === true) {
         next();
     }
     else {
