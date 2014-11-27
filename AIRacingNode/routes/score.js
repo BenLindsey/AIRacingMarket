@@ -37,10 +37,10 @@ router.post('/', function (req, res) {
             rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]));
         }
         collection.update({
-           name: req.body.i
+           "name": req.body.i
         },
         {
-           rating: rxs[i]
+           "rating": rxs[i]
         },
         { upsert: true },
         function (err, doc) {
