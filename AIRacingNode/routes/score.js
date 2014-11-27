@@ -27,8 +27,8 @@ router.post('/', function (req, res) {
     var rxs = [];
     var j = 0;
     for (i = 0; i < req.body.players; i++) {
-        collecion.findOne( { "name": req.body[i] }, function(player) {
-            function(e,doc) {
+        collection.findOne( { "name": req.body[i] }, function (player) {
+            function (e,doc) {
               if (!doc) {
                   rolds[player] = 1400;
                   rxs[player] = 1400;
@@ -66,8 +66,7 @@ router.post('/', function (req, res) {
             }
         } 
       }(i));
-  }
-        
+  }        
 });
 
 module.exports = router; 
