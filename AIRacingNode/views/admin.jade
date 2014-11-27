@@ -1,0 +1,22 @@
+include ./basic_navigator.jade
+
+block content
+  h1.
+    User Details
+  div
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th Email
+          th Degree
+          th University
+          th Year
+        tbody
+        - if (users && users.length) {
+        each entry, i in users
+          tr
+            td= entry.local.email
+            td= entry.local.degree
+            td= entry.local.university
+            td= entry.local.year
+        - }

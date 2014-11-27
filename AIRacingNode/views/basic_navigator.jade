@@ -2,6 +2,7 @@ extends layout
 
 block head
     -var menu = {'Submit Script' : '/script', 'Multiplayer' : '/multiplayer', 'Leaderboard' : '/leaderboard', 'Profile' : '/profile'};
+    - if (user && user.local.admin) menu['Admin'] = '/admin';
 
     div.navbar.navbar-default.navbar-fixed-top
       div.container
