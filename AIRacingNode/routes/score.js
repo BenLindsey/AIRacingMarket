@@ -42,7 +42,7 @@ router.post('/', function (req, res) {
                   for (x = 0; x < req.body.players; x++) {
                     for (y = 0; y < req.body.players; y++) {
                       if (x==y) continue;
-                      console.log("x: " + x + " ranking: " rxs[x] + " " + rolds[x]);
+                      console.log("x: " + x + " ranking: " + rxs[x] + " " + rolds[x]);
                        rxs[x] = rX(rxs[x], calcW(x, y), eX(rolds[x], rolds[y]));
                       }
                     collection.update({
