@@ -1,4 +1,4 @@
-var buildUpdate function(script) {
+var buildUpdate = function(script) {
   console.log("Building update");
   var When = {events : []};
   
@@ -166,7 +166,7 @@ var buildUpdate function(script) {
     PhysicsUpdate(api);
                 		    	
     for(var eventI = 0; eventI < When.events.length; eventI++) {
-		  When.events[eventI](api);
-		}
+      When.events[eventI](api);
+    }
   };
 };
