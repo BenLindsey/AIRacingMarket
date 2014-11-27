@@ -33,16 +33,14 @@ router.post('/', function (req, res) {
                   rolds[player] = 1400;
                   rxs[player] = 1400;
               } else {
-                  rolds[player] = doc.ranking;
-                  rxs[player] = doc.ranking;
-                  console.log("player: " + player + "ranking: " + rolds[player]);
+                  rolds[player] = doc.rating;
+                  rxs[player] = doc.rating;
               }
               j++; 
               if (j==req.body.players) {
                   for (x = 0; x < req.body.players; x++) {
                     for (y = 0; y < req.body.players; y++) {
                       if (x==y) continue;
-                      console.log("x: " + x + " ranking: " + rxs[x] + " " + rolds[x]);
                        rxs[x] = rX(rxs[x], calcW(x, y), eX(rolds[x], rolds[y]));
                       }
                     collection.update({
