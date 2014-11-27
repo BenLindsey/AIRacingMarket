@@ -14,7 +14,7 @@ block content
                     console.log("Set content to " + s.content);
                     s.update = function() {
                         // Execute the script, declaring globals as function variables
-                        // eval(s.content);
+                        eval(s.content);
 
                         // Use lambda to pass these variables as if globals
                         return function(api) {
