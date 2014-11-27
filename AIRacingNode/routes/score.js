@@ -56,24 +56,8 @@ router.post('/', function (req, res) {
         });
     }
 
-    res.location("login");
-    res.redirect("login");
-    
-/*
-    collection.insert({
-        "first"  : req.body.first,
-        "second" : req.body.second
-    }, function (err, doc) {
-        if (err) {
-            // If it failed, return error
-            res.send("It broke dingus");
-        }
-        else {
-            // If it worked, idk
-            res.location("login");
-            res.redirect("login");
-        }
-    });*/
-}
+    res.location("leaderboard");
+    res.redirect("leaderboard");    
+});
 
 module.exports = router; 
