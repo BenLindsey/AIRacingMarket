@@ -36,7 +36,7 @@ router.post('/', function (req, res) {
             console.log(i + " " + rxs[i]);
         }
         collection.update({
-           "name": req.body.i
+           "name": req.body[i]
         },
         {
            "rating": rxs[i]
