@@ -28,7 +28,7 @@ router.post('/', function (req, res) {
     var j = 0;
     for (i = 0; i < req.body.players; i++) {
         collection.findOne( { "name": req.body[i] }, function (player) {
-            function (e,doc) {
+            return function (e,doc) {
               if (!doc) {
                   rolds[player] = 1400;
                   rxs[player] = 1400;
