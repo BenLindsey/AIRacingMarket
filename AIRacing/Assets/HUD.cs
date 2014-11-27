@@ -62,7 +62,7 @@ public class HUD : MonoBehaviour {
                 nameFrequencies[ourCar.Name] = nameFrequency + 1;
 
                 // TESTING ONLY: End the race as soon as all cars are loaded.
-                //endOfRaceObject.Finish(carStates[i].name);
+                endOfRaceObject.Finish(carStates[i].name);
             }
         }
 
@@ -270,7 +270,7 @@ public class HUD : MonoBehaviour {
 
         private IEnumerator WaitForSend(WWWForm form) {
             int port = 3026;
-            string url = "http://146.169.47.15:" + port + "/score";
+            string url = "http://146.169.47.15:" + port + "/score/";
 
             Debug.Log("Sending data to '" + url + "' ...");
             WWW www = new WWW(url, form);
@@ -278,7 +278,7 @@ public class HUD : MonoBehaviour {
             yield return www;
 
             if (www.error == null) {
-                Debug.Log("End of race object sent!");
+                Debug.Log("End of race object sent! " + www.text);
             }
             else {
                 Debug.Log("Error sending: " + www.error);
