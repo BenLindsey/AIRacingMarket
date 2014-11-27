@@ -20,7 +20,7 @@ router.get('/', isLoggedIn, function(req, res) {
             scripts.push({name : doc.scriptName, content : doc.script});
 
             if(scripts.length >= count) {
-                res.render('webbuild', {scripts : scripts, levelname : req.query.levelname, carname: req.query.carname});
+                res.render('edit', {scripts : scripts, levelname : req.query.levelname, carname: req.query.carname});
             }
         });
     }
