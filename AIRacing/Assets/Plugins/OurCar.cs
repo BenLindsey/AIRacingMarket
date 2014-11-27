@@ -230,8 +230,7 @@ public class OurCar : MonoBehaviour {
     }
 
     public void Boost() {
-        rigidbody.AddForceAtPosition(Vector3.forward * 100,
-            centerOfMass.position);
+        rigidbody.velocity *= 5;
     }
     
     private float GetMaxSteeringAngle(float speed) {
