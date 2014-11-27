@@ -4,7 +4,7 @@ var k = 32;
 
 // Calculate the probabilty a player with rank ra beat a player with rank rb.
 function eX(ra, rb) {
-    return 1/(1+10^((rb-ra)/400));
+    return 1/(1 + Math.pow(10,(rb-ra)/400));
 }
 
 // Calculate the new ranking of a player, based on match result and probability of winning.
@@ -27,12 +27,13 @@ router.post('/', function (req, res) {
     var rxs = [];
     rolds[0] = 1400;
     rolds[1] = 1400;
-    rxs[0] = rolds[0];
-    rxs[1] = rolds[1];
+    rxs[0] = 1400;
+    rxs[1] = 1400;
     for (i = 0; i < req.body.players; i++) {
         for (j = 0; j < req.body.players; j++) {
             if (i==j) continue;
             rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]));
+            console.log(eX(rolds[i], rolds[j]);
             console.log(i + " " + rxs[i]);
         }
         collection.update({
