@@ -8,9 +8,11 @@ public class HUD : MonoBehaviour {
 
     private struct CarState {
         public OurCar car;
+        public int position;
         public int lap;
         public int stage;
         public string name;
+
         public float flipStartTime;
         public float lastCheckpointTime;
     }
@@ -26,7 +28,7 @@ public class HUD : MonoBehaviour {
 
     private const int LAPS_IN_RACE = 1;
     private const int MAX_FLIP_TIME = 3;
-    private const int MAX_CHECKPOINT_TIME = 2; // Number of seconds to complete a checkpoint.
+    private const int MAX_CHECKPOINT_TIME = 30; // Number of seconds to complete a checkpoint.
     private EndOfRaceObject endOfRaceObject;
 
 	// Use this for initialization
@@ -50,6 +52,7 @@ public class HUD : MonoBehaviour {
 
                 OurCar ourCar = carManager.Cars[i].GetComponentInChildren<OurCar>();
                 carStates[i].car = ourCar;
+                carStates[i].position = i;
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
                 carStates[i].flipStartTime = -1;
@@ -71,6 +74,14 @@ public class HUD : MonoBehaviour {
         // Check if all cars have finished or have stalled.
         if (carStates != null) {
             endOfRaceObject.CheckRaceOver(carStates);
+
+            UpdateCarPositions();
+        }
+    }
+
+    private void UpdateCarPositions() {
+        for (int i = 0; i < carStates.Length; i++) {
+            carStates[i].position = GetPosition(carStates[i]);
         }
     }
 
@@ -86,7 +97,7 @@ public class HUD : MonoBehaviour {
         Camera carCamera = currentState.car.transform.parent.GetComponentInChildren<Camera>();
 
         for (int i = 0; i < carStates.Length; i++) {
-            int position = GetPosition(carStates[i]);
+            int position = carStates[i].position + 1;
 
             // Draw the car's row on the leaderboard.
             GUI.Label(new Rect(10, y + 20 * position, 200, 100),
@@ -148,7 +159,7 @@ public class HUD : MonoBehaviour {
     }
 
     private int GetPosition(CarState car) {
-        int position = 1;
+        int position = 0;
         foreach (CarState other in carStates) {
             // Increment the position each time we find a car which is in front
             // of the given car.
@@ -222,38 +233,51 @@ public class HUD : MonoBehaviour {
             // stopped, either because of a bad script or if the car has flipped over.
             bool isRaceOver = true;
             foreach (CarState car in states) {
-                isRaceOver &= finishedCars.Contains(car.name) || !HasCarStopped(car);
+                isRaceOver &= finishedCars.Contains(car.name) || HasCarStopped(car);
             }
 
             if (isRaceOver) {
-                Send();
+                Send(states);
             }
 
             return isRaceOver;
         }
 
         private bool HasCarStopped(CarState car) {
-            Debug.Log("Time diff is :" + (Time.time - car.lastCheckpointTime));
             return Time.time - car.lastCheckpointTime > MAX_CHECKPOINT_TIME;
         }
 
-        private void Send() {
+        private void Send(CarState[] states) {
             if (hasSentObject) {
                 return;
             }
 
             hasSentObject = true; // This function may only be called once.
 
-            WWWForm form = new WWWForm();
-            string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
+            string[] carNames = new string[states.Length];
             int index = 0;
 
             Debug.Log("Race has finished!");
-            while (carsFinished.Count > 0) {
-                Debug.Log("Position " + index + ": " + carsFinished.Peek());
 
-                form.AddField(fieldNames[index], carsFinished.Dequeue());
-                index++;
+            // Add the cars which have finished the race to the top of the list.
+            while (carsFinished.Count > 0) {
+                Debug.Log("Finished with position " + index + ": " + carsFinished.Peek());
+                carNames[index++] = carsFinished.Dequeue();
+            }
+
+            // Add the remaining cars.
+            foreach (CarState car in states) {
+                if (!carsFinished.Contains(car.name)) {
+                    Debug.Log("Stalled with position " + car.position + ": " + car.name);
+                    carNames[car.position] = car.name;
+                }
+            }
+
+            // Finally, create the form.
+            WWWForm form = new WWWForm();
+            string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
+            for (int i = 0; i < states.Length; i++) {
+                form.AddField(fieldNames[i], carNames[i]);
             }
 
             outerClass.StartCoroutine(WaitForSend(form));
@@ -263,7 +287,8 @@ public class HUD : MonoBehaviour {
             int port = 3026;
             string url = "http://146.169.47.15:" + port + "/score";
 
-            Debug.Log("Sending data to '" + url + "' ...");
+            Debug.Log("Sending \"" + System.Text.Encoding.Default.GetString(form.data)
+                + "\" to '" + url + "' ...");
             WWW www = new WWW(url, form);
 
             yield return www;
