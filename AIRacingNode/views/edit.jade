@@ -1,6 +1,7 @@
 include ./basic_navigator.jade
 
 block content
+    script(type='text/javascript', src='/events.js')
     script.
         var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}}];
         var levelname = "OvalTrack";
@@ -13,19 +14,7 @@ block content
                     s.content = document.getElementById('newScriptForm').elements["inputScript"].value;
                     console.log("Set content to " + s.content);
 
-
-
-
-
-                    s.update = function() {
-                        // Execute the script, declaring globals as function variables
-                        eval(s.content);
-
-                        // Use lambda to pass these variables as if globals
-                        return function(api) {
-                            PhysicsUpdate(api);
-                        }
-                    }();
+                    s.update = buildUpdate(s.content);
                 }
 
                 return s;
