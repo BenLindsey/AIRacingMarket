@@ -24,14 +24,17 @@ router.post('/', function (req, res) {
     console.log("\nHELP\n");
     var collection = req.db.get('scores');
     
-    /*Get the Elo of all scripts. If the script is not in the DB, give it a rx of 1400.
+    /*Get the Elo of all scripts. If the script is not in the DB, give it a rx of 1400.*/
     var rolds = [];
     var rxs = [];
-    fill up rolds and rx;
+    rolds[0] = 1400;
+    rolds[1] = 1400;
+    rxs[0] = rolds[0];
+    rxs[1] = rolds[1];
     for (i = 0; i < req.body.players; i++) {
         for (j = 0; j < req.body.players; j++) {
             if (i==j) continue;
-            rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]);
+            rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]));
         }
         collection.update({
            name: req.body.i;
@@ -53,10 +56,10 @@ router.post('/', function (req, res) {
         });
     }
 
-    res.location(POSTGAMESCREEN);
-    res.redirect(POSTGAMESCREEN);
-    */
-
+    res.location("login");
+    res.redirect("login");
+    
+/*
     collection.insert({
         "first"  : req.body.first,
         "second" : req.body.second
@@ -67,10 +70,10 @@ router.post('/', function (req, res) {
         }
         else {
             // If it worked, idk
-            res.location("leaderboard");
-            res.redirect("leaderboard");
+            res.location("login");
+            res.redirect("login");
         }
-    });
-});
+    });*/
+}
 
 module.exports = router; 
