@@ -47,6 +47,9 @@ public class OurCar : MonoBehaviour {
     private string name = ":(";
     public string Name { get { return name; } }
 
+    private int boostCountdown = 0;
+    private const int MAX_BOOST = 300;
+
 	// Use this for initialization
 	void Start () {
 
@@ -78,6 +81,10 @@ public class OurCar : MonoBehaviour {
         // Messy hack, force the car down on the road to reduce flips.
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
             centerOfMass.position);
+
+        if (boostCountdown < MAX_BOOST) {
+            boostCountdown++;
+        }
     }
 
     public void SetCenterOfMass(Vector3 com) {
@@ -231,7 +238,12 @@ public class OurCar : MonoBehaviour {
 
     public void Boost() {
         Debug.Log("Velocity before: " + rigidbody.velocity);
-        rigidbody.velocity *= 5;
+
+        if (boostCountdown == MAX_BOOST) {
+            rigidbody.velocity = rigidbody.velocity.normalized * 500;
+            boostCountdown = 0;
+        }
+        
         Debug.Log("Velocity after: " + rigidbody.velocity);
     }
     
