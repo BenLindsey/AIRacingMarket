@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
     /*Get the Elo of all scripts. If the script is not in the DB, give it a rx of 1400.*/
     var rolds = [];
     var rxs = [];
-    int j = 0;
+    var j = 0;
     for (i = 0; i < req.body.players; i++) {
         collecion.findOne( { "name": req.body[i] }, function(player) {
             function(e,doc) {
@@ -44,11 +44,11 @@ router.post('/', function (req, res) {
                        rxs[x] = rX(rxs[x], calcW(x, y), eX(rolds[x], rolds[y]));
                       }
                     collection.update({
-                      "name": req.body[i]
+                      "name": req.body[x]
                     },
                     {
-                      "name": req.body[i],
-                      "rating": rxs[i]
+                      "name": req.body[x],
+                      "rating": rxs[x]
                     },
                     { upsert: true },
                     function (err, doc) {
