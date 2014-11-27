@@ -33,7 +33,7 @@ router.post('/', function (req, res) {
         for (j = 0; j < req.body.players; j++) {
             if (i==j) continue;
             rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]));
-            console.log(eX(rolds[i], rolds[j]);
+            console.log(eX(rolds[i], rolds[j]));
             console.log(i + " " + rxs[i]);
         }
         collection.update({
