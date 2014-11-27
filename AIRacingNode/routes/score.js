@@ -4,7 +4,7 @@ var k = 32;
 
 // Calculate the probabilty a player with rank ra beat a player with rank rb.
 function eX(ra, rb) {
-    return 1/(1+10*((rb-ra)/400));
+    return 1/(1+10^((rb-ra)/400));
 }
 
 // Calculate the new ranking of a player, based on match result and probability of winning.
@@ -39,6 +39,7 @@ router.post('/', function (req, res) {
            "name": req.body[i]
         },
         {
+           "name": req.body[i]
            "rating": rxs[i]
         },
         { upsert: true },
