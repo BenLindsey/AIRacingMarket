@@ -21,9 +21,7 @@ function calcW(i, j) {
 }
 
 router.post('/', function (req, res) {
-    console.log("\nHELP\n");
     var collection = req.db.get('scores');
-    
     /*Get the Elo of all scripts. If the script is not in the DB, give it a rx of 1400.*/
     var rolds = [];
     var rxs = [];
@@ -35,6 +33,7 @@ router.post('/', function (req, res) {
         for (j = 0; j < req.body.players; j++) {
             if (i==j) continue;
             rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]));
+            console.log(i + " " + rxs[i]);
         }
         collection.update({
            "name": req.body.i
