@@ -12,16 +12,15 @@ block content
                 if(s.name == !{JSON.stringify(scriptName)}) {
                     s.content = document.getElementById('newScriptForm').elements["inputScript"].value;
                     console.log("Set content to " + s.content);
+                    s.update = function() {
+                        // Execute the script, declaring globals as function variables
+                        // eval(s.content);
 
-                    s.update = function() { 
-		      // Execute the script, declaring globals as function variables 
-		      eval(s.content); 
-		     
-		      // Use lambda to pass these variables as if globals 
-		      return function(api) { 
-			  PhysicsUpdate(api);      
-		      } 
-		    }();
+                        // Use lambda to pass these variables as if globals
+                        return function(api) {
+                            PhysicsUpdate(api);
+                        }
+                    }();
                 }
 
                 return s;
