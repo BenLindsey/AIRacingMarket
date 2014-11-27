@@ -37,7 +37,7 @@ router.post('/', function (req, res) {
             rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]));
         }
         collection.update({
-           name: req.body.i;
+           name: req.body.i
         },
         {
            name: req.body.i,
