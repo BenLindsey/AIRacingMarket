@@ -43,6 +43,10 @@ public class OurCar : MonoBehaviour {
     public bool IsFlipped { get { return 135 <= transform.eulerAngles.z
         && transform.eulerAngles.z <= 225; } }
 
+    private Vector3 lastPosition;
+    private bool isMoving = false;
+    public bool IsMoving { get { return isMoving; } }
+
     private Wheel[] wheels;
 
     private float throttle = 0;
@@ -81,6 +85,10 @@ public class OurCar : MonoBehaviour {
         foreach (Wheel wheel in wheels) {
             UpdateWheel(wheel);
         }
+
+        // Update the moving flag so the HUD can check if this vehicle is active.
+        isMoving = rigidbody.position != lastPosition;
+        lastPosition = rigidbody.position;
 
         // Messy hack, force the car down on the road to reduce flips.
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,

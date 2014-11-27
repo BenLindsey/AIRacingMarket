@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour {
         public int stage;
         public string name;
         public float flipStartTime;
+        public float lastCheckpointTime;
     }
 
     public CarManager carManager;
@@ -25,11 +26,11 @@ public class HUD : MonoBehaviour {
 
     private const int LAPS_IN_RACE = 1;
     private const int MAX_FLIP_TIME = 3;
+    private const int MAX_CHECKPOINT_TIME = 2; // Number of seconds to complete a checkpoint.
     private EndOfRaceObject endOfRaceObject;
 
 	// Use this for initialization
 	public void Start () {
-
         checkpoints = LoadCheckpoints();
 
         style.fontSize = 15;
@@ -43,7 +44,7 @@ public class HUD : MonoBehaviour {
 
             carStates = new CarState[carManager.Cars.Count];
             Dictionary<string, int> nameFrequencies = new Dictionary<string, int>();
-            endOfRaceObject = new EndOfRaceObject(this, carStates.Length);
+            endOfRaceObject = new EndOfRaceObject(this);
 
             for (int i = 0; i < carStates.Length; i++) {
 
@@ -52,6 +53,7 @@ public class HUD : MonoBehaviour {
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
                 carStates[i].flipStartTime = -1;
+                carStates[i].lastCheckpointTime = Time.time;
 
                 // If there are multiple cars with the same name, then add the
                 // occurence number onto the end of the name.
@@ -62,27 +64,13 @@ public class HUD : MonoBehaviour {
                 nameFrequencies[ourCar.Name] = nameFrequency + 1;
 
                 // TESTING ONLY: End the race as soon as all cars are loaded.
-                endOfRaceObject.Finish(carStates[i].name);
+                //endOfRaceObject.Finish(carStates[i].name);
             }
         }
 
-        // Check if any cars are have flipped.
+        // Check if all cars have finished or have stalled.
         if (carStates != null) {
-            for (int i = 0; i < carStates.Length; i++) {
-                // Remove the car if it is flipped over for too long.
-                if (carStates[i].car.IsFlipped) {
-                    if (carStates[i].flipStartTime == -1) {
-                        carStates[i].flipStartTime = Time.time;
-                    } else if (Time.time - carStates[i].flipStartTime >= MAX_FLIP_TIME) {
-                        endOfRaceObject.RemoveFromRace(carStates[i].name);
-                    }
-                }
-                
-                // Reset the timeout otherwise.
-                else if (carStates[i].flipStartTime != -1) {
-                    carStates[i].flipStartTime = -1;
-                }
-            }
+            endOfRaceObject.CheckRaceOver(carStates);
         }
     }
 
@@ -129,6 +117,7 @@ public class HUD : MonoBehaviour {
         // If the car just completed the next stage of the lap.
         if (carStates[carIndex].stage == checkpoint) {
             carStates[carIndex].stage++;
+            carStates[carIndex].lastCheckpointTime = Time.time;
 
             // If the car just completed a lap.
             if (carStates[carIndex].stage == checkpoints.Length) {
@@ -206,46 +195,55 @@ public class HUD : MonoBehaviour {
     private class EndOfRaceObject {
         private MonoBehaviour outerClass;
 
-        private int carsRacing;
         private Queue<string> carsFinished = new Queue<string>();
-        private Stack<string> carsRemoved = new Stack<string>();
+        private HashSet<string> finishedCars = new HashSet<string>();
 
-        private HashSet<string> carsSeen = new HashSet<string>();
+        private bool hasSentObject = false;
 
-        public EndOfRaceObject(MonoBehaviour outerClass, int carCount) {
+        public EndOfRaceObject(MonoBehaviour outerClass) {
             this.outerClass = outerClass;
-            carsRacing = carCount;
         }
 
         public void Finish(string scriptName) {
-            if (carsRacing > 0 && !carsSeen.Contains(scriptName)) {
+            if (!finishedCars.Contains(scriptName)) {
                 carsFinished.Enqueue(scriptName);
-                carsSeen.Add(scriptName);
-                carsRacing--;
+                finishedCars.Add(scriptName);
 
                 Debug.Log(scriptName + " has finished the race!");
-
-                if (carsRacing == 0) {
-                    Send();
-                }
             }
         }
 
-        public void RemoveFromRace(string scriptName) {
-            if (carsRacing > 0 && !carsSeen.Contains(scriptName)) {
-                carsRemoved.Push(scriptName);
-                carsSeen.Add(scriptName);
-                carsRacing--;
-
-                Debug.Log(scriptName + " was removed from the race!");
-
-                if (carsRacing == 0) {
-                    Send();
-                }
+        public bool CheckRaceOver(CarState[] states) {
+            if (hasSentObject) {
+                return true;
             }
+
+            // The race is over only if all cars have finished the race or have
+            // stopped, either because of a bad script or if the car has flipped over.
+            bool isRaceOver = true;
+            foreach (CarState car in states) {
+                isRaceOver &= finishedCars.Contains(car.name) || !HasCarStopped(car);
+            }
+
+            if (isRaceOver) {
+                Send();
+            }
+
+            return isRaceOver;
+        }
+
+        private bool HasCarStopped(CarState car) {
+            Debug.Log("Time diff is :" + (Time.time - car.lastCheckpointTime));
+            return Time.time - car.lastCheckpointTime > MAX_CHECKPOINT_TIME;
         }
 
         private void Send() {
+            if (hasSentObject) {
+                return;
+            }
+
+            hasSentObject = true; // This function may only be called once.
+
             WWWForm form = new WWWForm();
             string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
             int index = 0;
@@ -258,19 +256,12 @@ public class HUD : MonoBehaviour {
                 index++;
             }
 
-            while (carsRemoved.Count > 0) {
-                Debug.Log("Position " + index + ": " + carsRemoved.Peek());
-
-                form.AddField(fieldNames[index], carsRemoved.Pop());
-                index++;
-            }
-
             outerClass.StartCoroutine(WaitForSend(form));
         }
 
         private IEnumerator WaitForSend(WWWForm form) {
             int port = 3026;
-            string url = "http://146.169.47.15:" + port + "/score/";
+            string url = "http://146.169.47.15:" + port + "/score";
 
             Debug.Log("Sending data to '" + url + "' ...");
             WWW www = new WWW(url, form);
