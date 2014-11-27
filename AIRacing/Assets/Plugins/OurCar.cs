@@ -48,7 +48,7 @@ public class OurCar : MonoBehaviour {
     public string Name { get { return name; } }
 
     private int boostCountdown = 0;
-    private const int MAX_BOOST = 300;
+    private const int MAX_BOOST = 1000;
 
 	// Use this for initialization
 	void Start () {
@@ -240,7 +240,7 @@ public class OurCar : MonoBehaviour {
         Debug.Log("Velocity before: " + rigidbody.velocity);
 
         if (boostCountdown == MAX_BOOST) {
-            rigidbody.velocity = rigidbody.velocity.normalized * 500;
+            rigidbody.velocity = rigidbody.velocity.normalized * 50;
             boostCountdown = 0;
         }
         
