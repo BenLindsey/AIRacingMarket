@@ -228,6 +228,11 @@ public class OurCar : MonoBehaviour {
         Debug.Log("OurCar is setting name to: \"" + name + "\"");
         this.name = name;
     }
+
+    public void Boost() {
+        rigidbody.AddForceAtPosition(Vector3.forward * 100,
+            centerOfMass.position);
+    }
     
     private float GetMaxSteeringAngle(float speed) {
 
