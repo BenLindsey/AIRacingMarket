@@ -39,7 +39,7 @@ router.post('/', function (req, res) {
            "name": req.body[i]
         },
         {
-           "name": req.body[i]
+           "name": req.body[i],
            "rating": rxs[i]
         },
         { upsert: true },
