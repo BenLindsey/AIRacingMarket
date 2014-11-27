@@ -230,7 +230,9 @@ public class OurCar : MonoBehaviour {
     }
 
     public void Boost() {
+        Debug.Log("Velocity before: " + rigidbody.velocity);
         rigidbody.velocity *= 5;
+        Debug.Log("Velocity after: " + rigidbody.velocity);
     }
     
     private float GetMaxSteeringAngle(float speed) {
