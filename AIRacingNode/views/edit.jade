@@ -12,6 +12,11 @@ block content
                 if(s.name == !{JSON.stringify(scriptName)}) {
                     s.content = document.getElementById('newScriptForm').elements["inputScript"].value;
                     console.log("Set content to " + s.content);
+
+
+
+
+
                     s.update = function() {
                         // Execute the script, declaring globals as function variables
                         eval(s.content);
