@@ -275,9 +275,9 @@ public class HUD : MonoBehaviour {
 
             // Finally, create the form.
             WWWForm form = new WWWForm();
-            string[] fieldNames = new string[] { "first", "second", "third", "fourth" };
+            form.AddField("players", states.Length);
             for (int i = 0; i < states.Length; i++) {
-                form.AddField(fieldNames[i], carNames[i]);
+                form.AddField(i.ToString(), carNames[i]);
             }
 
             outerClass.StartCoroutine(WaitForSend(form));
