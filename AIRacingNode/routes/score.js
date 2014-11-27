@@ -41,7 +41,7 @@ router.post('/', function (req, res) {
         },
         {
            name: req.body.i,
-           rating: rxs[i];
+           rating: rxs[i]
         },
         { upsert: true },
         function (err, doc) {
