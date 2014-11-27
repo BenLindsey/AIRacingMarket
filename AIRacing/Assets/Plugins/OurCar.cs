@@ -240,7 +240,7 @@ public class OurCar : MonoBehaviour {
         Debug.Log("Velocity before: " + rigidbody.velocity);
 
         if (boostCountdown == MAX_BOOST) {
-            rigidbody.velocity = rigidbody.velocity.normalized * 10;
+            rigidbody.velocity = rigidbody.velocity.normalized * 30;
             boostCountdown = 0;
         }
         
