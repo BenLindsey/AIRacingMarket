@@ -25,39 +25,49 @@ router.post('/', function (req, res) {
     /*Get the Elo of all scripts. If the script is not in the DB, give it a rx of 1400.*/
     var rolds = [];
     var rxs = [];
-    rolds[0] = 1400;
-    rolds[1] = 1400;
-    rxs[0] = 1400;
-    rxs[1] = 1400;
+    int j = 0;
     for (i = 0; i < req.body.players; i++) {
-        for (j = 0; j < req.body.players; j++) {
-            if (i==j) continue;
-            rxs[i] = rX(rxs[i], calcW(i, j), eX(rolds[i], rolds[j]));
-            console.log(eX(rolds[i], rolds[j]));
-            console.log(i + " " + rxs[i]);
-        }
-        collection.update({
-           "name": req.body[i]
-        },
-        {
-           "name": req.body[i],
-           "rating": rxs[i]
-        },
-        { upsert: true },
-        function (err, doc) {
-            if (err) {
-                //idk
-                console.log("Something broke");
-                res.send("Welp");
-            }
-            else {
-                //idk2electricboogaloo
-            }
-        });
-    }
+        collecion.findOne( { "name": req.body[i] }, function(player) {
+            function(e,doc) {
+              if (!doc) {
+                  rolds[player] = 1400;
+                  rxs[player] = 1400;
+              } else {
+                  rolds[player] = doc.ranking;
+                  rxs[player] = doc.ranking;
+              }
+              j++; 
+              if (j==req.body.players) {
+                  for (x = 0; x < req.body.players; x++) {
+                    for (y = 0; y < req.body.players; y++) {
+                      if (x==y) continue;
+                       rxs[x] = rX(rxs[x], calcW(x, y), eX(rolds[x], rolds[y]));
+                      }
+                    collection.update({
+                      "name": req.body[i]
+                    },
+                    {
+                      "name": req.body[i],
+                      "rating": rxs[i]
+                    },
+                    { upsert: true },
+                    function (err, doc) {
+                      if (err) {
+                        //idk
+                      }
+                      else {
+                        //idk2electricboogaloo
+                      }
+                    });
+                 }         
 
-    res.location("leaderboard");
-    res.redirect("leaderboard");    
+                res.location("leaderboard");
+                res.redirect("leaderboard");
+            }
+        } 
+      }(i));
+  }
+        
 });
 
 module.exports = router; 
