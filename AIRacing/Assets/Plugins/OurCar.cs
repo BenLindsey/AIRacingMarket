@@ -48,7 +48,7 @@ public class OurCar : MonoBehaviour {
     public string Name { get { return name; } }
 
     private const int MAX_BOOST = 1000;
-    private int boostCountdown = MAX_BOOST;
+    private int boostCooldown = MAX_BOOST;
 
 	// Use this for initialization
 	void Start () {
@@ -82,8 +82,8 @@ public class OurCar : MonoBehaviour {
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
             centerOfMass.position);
 
-        if (boostCountdown < MAX_BOOST) {
-            boostCountdown++;
+        if (boostCooldown < MAX_BOOST) {
+            boostCooldown++;
         }
     }
 
@@ -239,13 +239,15 @@ public class OurCar : MonoBehaviour {
     public void Boost() {
         Debug.Log("Velocity before: " + rigidbody.velocity);
 
-        if (boostCountdown == MAX_BOOST && rigidbody.velocity != Vector3.zero) {
+        if (boostCooldown == MAX_BOOST && rigidbody.velocity != Vector3.zero) {
             rigidbody.velocity = rigidbody.velocity.normalized * 30;
-            boostCountdown = 0;
+            boostCooldown = 0;
         }
         
         Debug.Log("Velocity after: " + rigidbody.velocity);
     }
+
+
     
     private float GetMaxSteeringAngle(float speed) {
 
