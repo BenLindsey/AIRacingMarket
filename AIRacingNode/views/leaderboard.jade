@@ -14,5 +14,5 @@ block content
         each entry, i in leaderboard
           tr
             td= entry.name
-            td= entry.rating
+            td= Math.round(entry.rating)
         - }
