@@ -239,7 +239,7 @@ public class OurCar : MonoBehaviour {
     public void Boost() {
         Debug.Log("Velocity before: " + rigidbody.velocity);
 
-        if (boostCountdown == MAX_BOOST) {
+        if (boostCountdown == MAX_BOOST && rigidbody.velocity != Vector3.zero) {
             rigidbody.velocity = rigidbody.velocity.normalized * 30;
             boostCountdown = 0;
         }
