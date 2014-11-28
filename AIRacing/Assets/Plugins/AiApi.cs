@@ -170,4 +170,8 @@ public class AiApi : MonoBehaviour {
     public void Boost() {
         car.Boost();
     }
+
+    public float GetTimeToNextBoost() {
+        return car.GetTimeToNextBoost();
+    }
 }

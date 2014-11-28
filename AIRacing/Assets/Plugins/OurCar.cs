@@ -247,7 +247,9 @@ public class OurCar : MonoBehaviour {
         Debug.Log("Velocity after: " + rigidbody.velocity);
     }
 
-
+    public float GetTimeToNextBoost() {
+        return MAX_BOOST - boostCooldown;
+    }
     
     private float GetMaxSteeringAngle(float speed) {
 
