@@ -240,7 +240,7 @@ public class OurCar : MonoBehaviour {
         Debug.Log("Velocity before: " + rigidbody.velocity);
 
         if (boostCooldown == MAX_BOOST) {
-            rigidbody.AddForceAtPosition(rigidbody.transform.forward * 100,
+            rigidbody.AddForceAtPosition(rigidbody.transform.forward * 300,
             centerOfMass.position);
         }
         
