@@ -48,7 +48,7 @@ public class OurCar : MonoBehaviour {
     public string Name { get { return name; } }
 
     private const int MAX_BOOST = 1000;
-    private int boostCooldown = MAX_BOOST;
+    private int boostCooldown = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -249,7 +249,7 @@ public class OurCar : MonoBehaviour {
     }
 
     public float GetTimeToNextBoost() {
-        return MAX_BOOST - boostCooldown;
+        return boostCooldown;
     }
     
     private float GetMaxSteeringAngle(float speed) {
