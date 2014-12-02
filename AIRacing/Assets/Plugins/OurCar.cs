@@ -82,8 +82,8 @@ public class OurCar : MonoBehaviour {
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
             centerOfMass.position);
 
-        if (boostCooldown < MAX_BOOST) {
-            boostCooldown++;
+        if (boostCooldown > 0) {
+            boostCooldown--;
         }
     }
 
@@ -239,9 +239,10 @@ public class OurCar : MonoBehaviour {
     public void Boost() {
         Debug.Log("Velocity before: " + rigidbody.velocity);
 
-        if (boostCooldown == MAX_BOOST) {
+        if (boostCooldown == 0) {
             rigidbody.AddForceAtPosition(rigidbody.transform.forward * 300,
             centerOfMass.position);
+            boostCooldown = MAX_BOOST;
         }
         
         Debug.Log("Velocity after: " + rigidbody.velocity);
