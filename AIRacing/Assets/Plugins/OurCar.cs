@@ -241,7 +241,7 @@ public class OurCar : MonoBehaviour {
 
         if (boostCooldown == 0) {
             rigidbody.AddForceAtPosition(rigidbody.transform.forward * 300,
-            centerOfMass.position);
+            rigidbody.position);
             boostCooldown = MAX_BOOST;
         }
         
