@@ -351,7 +351,7 @@ public class HUD : MonoBehaviour {
 
         private string GetURL() {
             string url = Application.absoluteURL;
-            string defaultUrl = "146.169.47.15:3026/"; // The url used when running locally.
+            string defaultUrl = "http://146.169.47.15:3026/"; // The url used when running locally.
 
             if (url.StartsWith("http://")) {
                 url = url.Substring("http://".Length);
@@ -360,7 +360,7 @@ public class HUD : MonoBehaviour {
             Regex regex = new Regex(".*(:\\d+)?/");
             Match match = regex.Match(url);
             if (match.Success) {
-                return match.Groups[0].Value;
+                return "http://" + match.Groups[0].Value;
             } else {
                 Debug.LogWarning("Error finding the url. Using default url: \"" + defaultUrl + "\".");
                 return defaultUrl;
