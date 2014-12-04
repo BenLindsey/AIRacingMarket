@@ -32,6 +32,8 @@ router.get('/next', function(req, res) {
         }
 
         console.log("Redirecting user to: " + url);
+      
+        res.send(url);
     });
 });
 
