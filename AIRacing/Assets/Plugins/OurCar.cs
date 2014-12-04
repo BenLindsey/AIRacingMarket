@@ -48,6 +48,7 @@ public class OurCar : MonoBehaviour {
     public string Name { get { return name; } }
 
     private const int MAX_BOOST = 1000;
+    private const int BOOST_MULTIPLIER = 20;
     private int boostCooldown = 0;
 
 	// Use this for initialization
@@ -241,7 +242,7 @@ public class OurCar : MonoBehaviour {
         Debug.Log("Forward vector: " + rigidbody.transform.forward);
 
         if (boostCooldown == 0) {
-            rigidbody.velocity += rigidbody.transform.forward * 15;
+            rigidbody.velocity += rigidbody.transform.forward * BOOST_MULTIPLIER;
             boostCooldown = MAX_BOOST;
         }
         
