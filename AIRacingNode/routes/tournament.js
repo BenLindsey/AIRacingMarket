@@ -11,7 +11,7 @@ router.get('/next', function(req, res) {
         console.log("Found!");
         var scriptsArray = [];
         for (var doc in docs) {
-            console.log("pushing " + doc.scriptName);
+            console.log(doc);
             scriptsArray.push(doc.scriptName);
         }
         console.log("build array of size " + scriptsArray.length);
