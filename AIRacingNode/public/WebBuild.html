@@ -87,7 +87,7 @@
 
 			        // Convert list of names into Write api calls
 				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
-                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight", "Boost"];
 
 				for(var i = 0; i < calls.length; i++) {
 				    api[calls[i]] = function(call) {
