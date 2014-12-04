@@ -103,8 +103,6 @@ public class OurCar : MonoBehaviour {
             centerOfMass.position);
 
         foreach (ParticleSystem exhaust in exhausts) {
-            Debug.Log("Lifetime of particles: " + exhaust.startLifetime);
-
             if (exhaust.startLifetime > 0f) {
                 exhaust.startLifetime -= 0.01f;
             }
@@ -267,9 +265,6 @@ public class OurCar : MonoBehaviour {
     }
 
     public void Boost() {
-        Debug.Log("Velocity before: " + rigidbody.velocity);
-        Debug.Log("Forward vector: " + rigidbody.transform.forward);
-
         if (boostCooldown == 0) {
             rigidbody.velocity += rigidbody.transform.forward * BOOST_MULTIPLIER;
             boostCooldown = MAX_BOOST;
@@ -277,8 +272,6 @@ public class OurCar : MonoBehaviour {
                 exhaust.startLifetime = 2f;
             }
         }
-        
-        Debug.Log("Velocity after: " + rigidbody.velocity);
     }
 
     public float GetTimeToNextBoost() {
