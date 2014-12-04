@@ -10,9 +10,9 @@ router.get('/next', function(req, res) {
     collection.find({}, {sort : { scriptName : 1 }}, function(e, docs) {
         console.log("Found!");
         var scriptsArray = [];
-        for (var doc in docs) {
-            console.log(doc);
-            scriptsArray.push(doc.scriptName);
+        for (var i in docs) {
+            console.log(docs[i]);
+            scriptsArray.push(docs[i].scriptName);
         }
         console.log("build array of size " + scriptsArray.length);
 
@@ -34,7 +34,8 @@ router.get('/next', function(req, res) {
 
         console.log("Redirecting user to: " + url);
       
-        res.send(url);
+        res.location(url);
+        res.redirect(url);
     });
 });
 
