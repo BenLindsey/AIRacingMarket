@@ -25,10 +25,11 @@ router.get('/next', function(req, res) {
         var url = "/webbuild?levelname=OvalTrack"
                 + "&carname=Catamount";
 
-        for (var ch in ["A", "B", "C", "D"]) {
+        var carNames = ["A", "B", "C", "D"];
+        for (var i in carNames) {
             var index =  Math.floor(Math.random() * scriptsArray.length);    
             console.log("chose script: " + index + " | " + scriptsArray[index]);    
-            url += "&scripts[" + ch + "]=" + scriptsArray[index];
+            url += "&scripts[" + carNames[i] + "]=" + scriptsArray[index];
             scriptsArray.splice(index, 1);
         }
 
