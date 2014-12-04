@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET user profile. */
-router.get('/', isLoggedIn, function(req, res) {
+router.get('/', function(req, res) {
     var scriptNames = req.query.scripts;
     
     var scripts = [];
