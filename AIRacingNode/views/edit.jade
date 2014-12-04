@@ -3,7 +3,8 @@ include ./basic_navigator.jade
 block content
   script(type='text/javascript', src='/events.js')
   script.
-      var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}}];
+      var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}},
+                     {name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}} ];
       var levelname = "OvalTrack";
       var carname = "Catamount";
       var updateScript = function() {
@@ -20,9 +21,27 @@ block content
               return s;
           });
       };
+ 
+      var allScripts = !{JSON.stringify(allScripts)};
+
+      var handleOpponentChange = function() {
+          var select = document.getElementById("selectOpponent");
+          var opponent = select.options[select.selectedIndex].text;
+
+          console.log("Setting opponent to: " + opponent);
+          
+          for (var i = 0; i < allScripts.length; i++) {
+              var s = allScripts[i];
+
+              if(s.scriptName == opponent) {
+                  scripts[1] = {name : s.scriptName, content : s.script, update : buildUpdate(s.script)};
+                  break;
+              }
+          }
+      };
 
   .row
-    .col-lg-6
+    .col-lg-8
       .div(align='left')
         h1.
             Edit your Racing Script
@@ -32,19 +51,30 @@ block content
                     .row
                       .col-lg-14
                         .form-group
-                          label.col-lg-2.control-label(for='inputScriptName') Script Name
-                          .col-lg-9
+                          label.col-lg-1.control-label(for='inputScriptName') Script
+                          .col-lg-10
                             input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
+                          .col-lg-1
                         .form-group
                           label.col-lg-1.control-label(for='inputScript')
-                          .col-lg-12
+                          .col-lg-10
                             textarea#inputScript(name='script', data-editor="javascript", rows="20")
+                          .col-lg-1
+                        .form-group
+                          label.col-lg-1.control-label(for='inputAIName') Enemy
+                          .col-lg-10
+                            select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
+                                - if (allScripts.length) {
+                                each entry, i in allScripts
+                                    option= entry.scriptName
+                                - }
+                          .col-lg-1                      
                         .form-group
                           .col-lg-6.col-lg-offset-2
                             .btn-group
                               button.btn.btn-default(type='button', onclick='updateScript()') Update
                               button.btn.btn-primary(type='submit') Submit
-    .col-lg-6
+    .col-lg-4
       include ../public/WebBuild.html
 
     script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
