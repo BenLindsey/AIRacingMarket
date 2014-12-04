@@ -11,7 +11,7 @@ router.get('/next', function(req, res) {
         console.log("Found!");
         var scriptsArray = [];
         for (var i in docs) {
-            console.log(docs[i]);
+            console.log(docs[i].scriptName);
             scriptsArray.push(docs[i].scriptName);
         }
         console.log("build array of size " + scriptsArray.length);
@@ -29,7 +29,7 @@ router.get('/next', function(req, res) {
             var index =  Math.floor(Math.random() * scriptsArray.length);    
             console.log("chose script: " + index + " | " + scriptsArray[index]);    
             url += "&scripts[" + ch + "]=" + scriptsArray[index];
-            array.splice(index, 1);
+            scriptsArray.splice(index, 1);
         }
 
         console.log("Redirecting user to: " + url);
