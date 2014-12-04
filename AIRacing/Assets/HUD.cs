@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Collections;
 
@@ -65,9 +66,6 @@ public class HUD : MonoBehaviour {
                 carStates[i].name = ourCar.Name + ((nameFrequency == 0)
                     ? "" : " " + (nameFrequency + 1));
                 nameFrequencies[ourCar.Name] = nameFrequency + 1;
-
-                // TESTING ONLY: End the race as soon as all cars are loaded.
-                //endOfRaceObject.Finish(carStates[i].name);
             }
         }
 
@@ -284,20 +282,38 @@ public class HUD : MonoBehaviour {
         }
 
         private IEnumerator WaitForSend(WWWForm form) {
-            int port = 3026;
-            string url = "http://146.169.47.15:" + port + "/score";
+            string url = GetURL();
+            string scoreUrl = url + "score";
+            string leaderboardUrl = url + "leaderboard";
 
+            // Send the the result of the race.
             Debug.Log("Sending \"" + System.Text.Encoding.Default.GetString(form.data)
-                + "\" to '" + url + "' ...");
-            WWW www = new WWW(url, form);
+                + "\" to '" + scoreUrl + "' ...");
+            WWW www = new WWW(scoreUrl, form);
 
+            // Wait until the form has been recieved.
             yield return www;
 
             if (www.error == null) {
                 Debug.Log("End of race object sent! " + www.text);
+                Debug.Log("Redirecting to \"" + leaderboardUrl + "\" . . . ");
+                Application.OpenURL(leaderboardUrl);
+            } else {
+                Debug.LogError("Error sending: " + www.error);
             }
-            else {
-                Debug.Log("Error sending: " + www.error);
+        }
+
+        private string GetURL() {
+            string url = Application.absoluteURL;
+            string defaultUrl = "146.169.47.15:3026/"; // The url used when running locally.
+
+            Regex regex = new Regex("(http://)?.*(:\\d+)?/");
+            Match match = regex.Match(url);
+            if (match.Success) {
+                return match.Groups[0].Value;
+            } else {
+                Debug.LogWarning("Error finding the url. Using default url: \"" + defaultUrl + "\".");
+                return defaultUrl;
             }
         }
     }
