@@ -89,6 +89,8 @@ public class OurCar : MonoBehaviour {
             centerOfMass.position);
 
         foreach (ParticleSystem exhaust in exhausts) {
+            Debug.Log("Lifetime of particles: " + exhaust.startLifetime);
+
             if (boosting && exhaust.startLifetime > 0) {
                 exhaust.startLifetime -= 0.01f;
             }
