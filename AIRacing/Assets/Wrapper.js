@@ -13,10 +13,12 @@ function FixedUpdate () {
     var state = '{ "car":' + car
               + ', "GetLane":'  + api.GetLane() 
               + ', "GetSpeed":' + api.GetSpeed()
+              + ', "GetTimeToNextBoost":' + api.GetTimeToNextBoost()
               + ', "CarInFront":' + (api.CarInFront() ? "true" : "false")
               + ', "CarOnRight":' + (api.CarOnRight() ? "true" : "false") 
               + ', "CarOnLeft":'  + (api.CarOnLeft() ? "true" : "false")
-              + ', "GetCornerDirection":' + api.GetCornerDirection() 
+              + ', "GetDistanceToNextCorner":' + api.GetDistanceToNextCorner()
+              + ', "GetNextCornerAmount":' + api.GetNextCornerAmount() 
               + '}';
 
     Application.ExternalCall("BuildCommands", state);

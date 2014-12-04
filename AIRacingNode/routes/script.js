@@ -5,19 +5,21 @@ router.get('/edit/:name', isLoggedInProfile, function(req, res) {
     var db = req.db;
 
     var collection = db.get('scriptcollection');
-
-    collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
-        res.render('edit', {
-          script : doc.script,
-          scriptName : req.params.name
+    collection.find({}, function(e, docs) {
+        collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
+            res.render('edit', {
+                script : doc.script,
+                scriptName : req.params.name,
+                allScripts : docs
+            });
         });
     });
 });
 
 router.get('/', function(req, res) {
     res.render('script', { script : 
-        "// The vehicle can be controlled by calling functions on the api object\n" +
-        "// e.g. api.SetThrottle()\n" +
+        "// The vehicle can be controlled by calling functions on the\n" +
+        "// api object, e.g. api.SetThrottle()\n" +
         "\n" +
         "// Global state can be initialised here\n" +
         "\n" +

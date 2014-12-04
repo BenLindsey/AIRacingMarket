@@ -11,15 +11,15 @@
 		document.write('<script type="text\/javascript" src="' + unityObjectUrl + '"><\/script>');
 		-->
 		</script>
+		<script type="text/javascript" src="/events.js"></script>
 		<script type="text/javascript">
 		<!--
 			var config = {
-				width: 1080, 
-				height: 661,
 				params: { enableDebugging:"0" }
 				
 			};
 			var u = new UnityObject2(config);
+
 
 			jQuery(function() {
 
@@ -55,25 +55,17 @@
 						break;
 					}
 				});
-				u.initPlugin(jQuery("#unityPlayer")[0], "WebBuild.unity3d");
+				u.initPlugin(jQuery("#unityPlayer")[0], "/WebBuild.unity3d");
 			});
 
 			function RequestGameInfo() {
 			    console.log("Game info requested!");
 
 			    for (var i = 0; i < scripts.length; i++) {
-                    console.log(scripts[i]);
-                    u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
-                    u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
-                    		scripts[i].update = function() {
-                    		    // Execute the script, declaring globals as function variables
-                    		    eval(scripts[i].content);
-                    		    
-                    		    // Use lambda to pass these variables as if globals
-                    		    return function(api) {
-                    		    	PhysicsUpdate(api);	
-                    		    }
-                    		}();
+                                console.log(scripts[i]);
+                                u.getUnity().SendMessage("StartingGrid", "AddScriptByName", scripts[i].name);
+                                u.getUnity().SendMessage("StartingGrid", "AddScriptContent", scripts[i].content);
+                    		scripts[i].update = buildUpdate(scripts[i].content);
 			    }
 
 				console.log("Car model set to " + carname);
@@ -95,7 +87,7 @@
 
 			        // Convert list of names into Write api calls
 				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
-                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight", "Boost"];
 
 				for(var i = 0; i < calls.length; i++) {
 				    api[calls[i]] = function(call) {
@@ -114,7 +106,6 @@
 				    	};
 				    }(key);
 				}
-
                 		// Execute script
 				scripts[state.car].update(api);
 

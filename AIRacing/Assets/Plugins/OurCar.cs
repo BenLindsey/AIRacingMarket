@@ -57,6 +57,13 @@ public class OurCar : MonoBehaviour {
     private string name = ":(";
     public string Name { get { return name; } }
 
+    // Boost variables/components
+    public ParticleSystem[] exhausts;
+
+    private const int MAX_BOOST = 1000;
+    private const int BOOST_MULTIPLIER = 20;
+    private int boostCooldown = 0;
+
 	// Use this for initialization
 	void Start () {
 
@@ -71,6 +78,7 @@ public class OurCar : MonoBehaviour {
         rearAntiRoll.leftWheel = wheels[2].collider;
         rearAntiRoll.rightWheel = wheels[3].collider;
         rearAntiRoll.antiRoll = suspensionRearForce;
+
 	}
 
 	// Update is called once per frame
@@ -93,6 +101,18 @@ public class OurCar : MonoBehaviour {
         // Messy hack, force the car down on the road to reduce flips.
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
             centerOfMass.position);
+
+        foreach (ParticleSystem exhaust in exhausts) {
+            Debug.Log("Lifetime of particles: " + exhaust.startLifetime);
+
+            if (exhaust.startLifetime > 0f) {
+                exhaust.startLifetime -= 0.01f;
+            }
+        }
+
+        if (boostCooldown > 0) {
+            boostCooldown--;
+        }
     }
 
     public void SetCenterOfMass(Vector3 com) {
@@ -244,6 +264,25 @@ public class OurCar : MonoBehaviour {
     public void SetScriptName(string name) {
         Debug.Log("OurCar is setting name to: \"" + name + "\"");
         this.name = name;
+    }
+
+    public void Boost() {
+        Debug.Log("Velocity before: " + rigidbody.velocity);
+        Debug.Log("Forward vector: " + rigidbody.transform.forward);
+
+        if (boostCooldown == 0) {
+            rigidbody.velocity += rigidbody.transform.forward * BOOST_MULTIPLIER;
+            boostCooldown = MAX_BOOST;
+            foreach (ParticleSystem exhaust in exhausts) {
+                exhaust.startLifetime = 2f;
+            }
+        }
+        
+        Debug.Log("Velocity after: " + rigidbody.velocity);
+    }
+
+    public float GetTimeToNextBoost() {
+        return boostCooldown;
     }
     
     private float GetMaxSteeringAngle(float speed) {
