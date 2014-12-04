@@ -307,7 +307,11 @@ public class HUD : MonoBehaviour {
             string url = Application.absoluteURL;
             string defaultUrl = "146.169.47.15:3026/"; // The url used when running locally.
 
-            Regex regex = new Regex("(http://)?.*(:\\d+)?/");
+            if (url.StartsWith("http://")) {
+                url = url.Substring("http://".Length);
+            }
+
+            Regex regex = new Regex(".*(:\\d+)?/");
             Match match = regex.Match(url);
             if (match.Success) {
                 return match.Groups[0].Value;
