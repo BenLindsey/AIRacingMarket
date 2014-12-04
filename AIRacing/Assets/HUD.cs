@@ -204,7 +204,7 @@ public class HUD : MonoBehaviour {
     private class EndOfRaceObject {
         private MonoBehaviour outerClass;
 
-        private Queue<string> carsFinished = new Queue<string>();
+        private Queue<string> carsFinishedQueue = new Queue<string>();
         private HashSet<string> finishedCars = new HashSet<string>();
 
         private bool hasSentObject = false;
@@ -215,7 +215,7 @@ public class HUD : MonoBehaviour {
 
         public void Finish(string scriptName) {
             if (!finishedCars.Contains(scriptName)) {
-                carsFinished.Enqueue(scriptName);
+                carsFinishedQueue.Enqueue(scriptName);
                 finishedCars.Add(scriptName);
 
                 Debug.Log(scriptName + " has finished the race!");
@@ -258,14 +258,14 @@ public class HUD : MonoBehaviour {
             Debug.Log("Race has finished!");
 
             // Add the cars which have finished the race to the top of the list.
-            while (carsFinished.Count > 0) {
-                Debug.Log("Finished with position " + index + ": " + carsFinished.Peek());
-                carNames[index++] = carsFinished.Dequeue();
+            while (carsFinishedQueue.Count > 0) {
+                Debug.Log("Finished with position " + index + ": " + carsFinishedQueue.Peek());
+                carNames[index++] = carsFinishedQueue.Dequeue();
             }
 
             // Add the remaining cars.
             foreach (CarState car in states) {
-                if (!carsFinished.Contains(car.name)) {
+                if (!finishedCars.Contains(car.name)) {
                     Debug.Log("Stalled with position " + car.position + ": " + car.name);
                     carNames[car.position] = car.name;
                 }
