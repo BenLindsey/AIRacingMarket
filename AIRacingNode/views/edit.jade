@@ -1,52 +1,50 @@
 include ./basic_navigator.jade
 
 block content
-    script(type='text/javascript', src='/events.js')
-    script.
-        var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}}];
-        var levelname = "OvalTrack";
-        var carname = "Catamount";
-        var updateScript = function() {
-            console.log("Update!");
-            scripts = scripts.map(function(s) {
-                console.log("Mapping " + s.name);
-                if(s.name == !{JSON.stringify(scriptName)}) {
-                    s.content = document.getElementById('newScriptForm').elements["inputScript"].value;
-                    console.log("Set content to " + s.content);
+  script(type='text/javascript', src='/events.js')
+  script.
+      var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}}];
+      var levelname = "OvalTrack";
+      var carname = "Catamount";
+      var updateScript = function() {
+          console.log("Update!");
+          scripts = scripts.map(function(s) {
+              console.log("Mapping " + s.name);
+              if(s.name == !{JSON.stringify(scriptName)}) {
+                  s.content = document.getElementById('newScriptForm').elements["inputScript"].value;
+                  console.log("Set content to " + s.content);
 
-                    s.update = buildUpdate(s.content);
-                }
+                  s.update = buildUpdate(s.content);
+              }
 
-                return s;
-            });
-        };
+              return s;
+          });
+      };
 
-    div(style='width: 100%;')
-        div(style='float: left; width: 50%;', align='left')
-            h1.
-                Edit your Racing Script
-            div.well.bs-component
-                form#newScriptForm.form-horizontal(method='post')
-                    fieldset
-                        .row
-                          .col-lg-14
-                            .form-group
-                              label.col-lg-2.control-label(for='inputScriptName') Script Name
-                              .col-lg-9
-                                input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
-                            .form-group
-                              label.col-lg-2.control-label(for='inputScript') Script
-                              .col-lg-9
-                                textarea#inputScript(name='script', data-editor="javascript", rows="20")
-                            .form-group
-                              .col-lg-6.col-lg-offset-2
-                                .btn-group
-                                  button.btn.btn-default(type='button', onclick='updateScript()') Update
-                                  button.btn.btn-primary(type='submit') Submit
-          div(style='float: right;')
-            include ../public/WebBuild.html
-        div(style='clear: both;')
-
+  .row
+    .col-lg-6
+      h1.
+          Edit your Racing Script
+      div.well.bs-component
+          form#newScriptForm.form-horizontal(method='post')
+              fieldset
+                  .row
+                    .col-lg-14
+                      .form-group
+                        label.col-lg-2.control-label(for='inputScriptName') Script Name
+                        .col-lg-9
+                          input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
+                      .form-group
+                        label.col-lg-2.control-label(for='inputScript') Script
+                        .col-lg-9
+                          textarea#inputScript(name='script', data-editor="javascript", rows="20")
+                      .form-group
+                        .col-lg-6.col-lg-offset-2
+                          .btn-group
+                            button.btn.btn-default(type='button', onclick='updateScript()') Update
+                            button.btn.btn-primary(type='submit') Submit
+    .col-lg-6
+      include ../public/WebBuild.html
 
     script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
     script(type='text/javascript').
