@@ -18,6 +18,8 @@ public class HUD : MonoBehaviour {
         public float lastCheckpointTime;
     }
 
+    private enum RaceMode { Normal, Test, Tournament };
+
     public CarManager carManager;
 
     private CarState[] carStates;
@@ -27,10 +29,49 @@ public class HUD : MonoBehaviour {
 
     private GUIStyle style = new GUIStyle();
 
+    private RaceMode raceMode = RaceMode.Normal;
+
     private const int LAPS_IN_RACE = 1;
     private const int MAX_FLIP_TIME = 3;
     private const int MAX_CHECKPOINT_TIME = 30; // Number of seconds to complete a checkpoint.
     private EndOfRaceObject endOfRaceObject;
+
+    #region Browser Interface
+
+    // Endless race, no data is sent to the leaderboard.
+    public void SetTestMode() {
+        Debug.Log("SetTestMode called");
+
+        SetMode(RaceMode.Test);
+    }
+
+    // Normal race but user is redirected to /tournament/next.
+    public void SetTournamentMode() {
+        Debug.Log("SetTournamentMode called");
+
+        SetMode(RaceMode.Tournament);
+    }
+
+    private void SetMode(RaceMode mode) {
+        if (raceMode != RaceMode.Normal) {
+            Debug.LogWarning("Mode has already been changed to " + raceMode
+                + " this call will be ignored.");
+        // TODO: Check if this will always fail.
+        //} else if (carManager.IsRaceStarted) {
+        //    Debug.LogWarning("The call is too late! The race has already started.");
+        } else {
+            raceMode = mode;
+        }
+    }
+
+    // Move all cars to the starting positions.
+    // Can only be called in test mode.
+    public void ResetRace() {
+        Debug.Log("ResetRace called");
+
+        Debug.LogWarning("Not implemented yet - sorry :(");
+    }
+    #endregion
 
 	// Use this for initialization
 	public void Start () {
@@ -41,7 +82,6 @@ public class HUD : MonoBehaviour {
 	}
 
     public void Update() {
-
         // Setup the car states as soon as the race starts.
         if (carStates == null && carManager.IsRaceStarted) {
 
@@ -50,7 +90,6 @@ public class HUD : MonoBehaviour {
             endOfRaceObject = new EndOfRaceObject(this);
 
             for (int i = 0; i < carStates.Length; i++) {
-
                 OurCar ourCar = carManager.Cars[i].GetComponentInChildren<OurCar>();
                 carStates[i].car = ourCar;
                 carStates[i].position = i;
@@ -66,12 +105,14 @@ public class HUD : MonoBehaviour {
                 carStates[i].name = ourCar.Name + ((nameFrequency == 0)
                     ? "" : " " + (nameFrequency + 1));
                 nameFrequencies[ourCar.Name] = nameFrequency + 1;
+
+                endOfRaceObject.Finish(carStates[i].name);
             }
         }
 
         // Check if all cars have finished or have stalled.
         if (carStates != null) {
-            endOfRaceObject.CheckRaceOver(carStates);
+            endOfRaceObject.CheckRaceOver(carStates, raceMode);
 
             UpdateCarPositions();
         }
@@ -222,9 +263,14 @@ public class HUD : MonoBehaviour {
             }
         }
 
-        public bool CheckRaceOver(CarState[] states) {
+        public bool CheckRaceOver(CarState[] states, RaceMode mode) {
             if (hasSentObject) {
                 return true;
+            }
+
+            // Test mode is an endless race.
+            if (mode == RaceMode.Test) {
+                return false;
             }
 
             // The race is over only if all cars have finished the race or have
@@ -235,7 +281,7 @@ public class HUD : MonoBehaviour {
             }
 
             if (isRaceOver) {
-                Send(states);
+                Send(states, mode);
             }
 
             return isRaceOver;
@@ -245,7 +291,7 @@ public class HUD : MonoBehaviour {
             return Time.time - car.lastCheckpointTime > MAX_CHECKPOINT_TIME;
         }
 
-        private void Send(CarState[] states) {
+        private void Send(CarState[] states, RaceMode mode) {
             if (hasSentObject) {
                 return;
             }
@@ -278,13 +324,14 @@ public class HUD : MonoBehaviour {
                 form.AddField(i.ToString(), carNames[i]);
             }
 
-            outerClass.StartCoroutine(WaitForSend(form));
+            outerClass.StartCoroutine(WaitForSend(form, mode));
         }
 
-        private IEnumerator WaitForSend(WWWForm form) {
+        private IEnumerator WaitForSend(WWWForm form, RaceMode mode) {
             string url = GetURL();
             string scoreUrl = url + "score";
-            string leaderboardUrl = url + "leaderboard";
+            string leaderboardUrl = url + ((mode == RaceMode.Normal)
+                ? "leaderboard" : "tournament/next");
 
             // Send the the result of the race.
             Debug.Log("Sending \"" + System.Text.Encoding.Default.GetString(form.data)
@@ -296,11 +343,12 @@ public class HUD : MonoBehaviour {
 
             if (www.error == null) {
                 Debug.Log("End of race object sent! " + www.text);
-                Debug.Log("Redirecting to \"" + leaderboardUrl + "\" . . . ");
-                Application.OpenURL(leaderboardUrl);
             } else {
                 Debug.LogError("Error sending: " + www.error);
             }
+
+            Debug.Log("Redirecting to \"" + leaderboardUrl + "\" . . . ");
+            Application.OpenURL(leaderboardUrl);
         }
 
         private string GetURL() {
