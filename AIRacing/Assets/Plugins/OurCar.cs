@@ -47,9 +47,13 @@ public class OurCar : MonoBehaviour {
     private string name = ":(";
     public string Name { get { return name; } }
 
+    // Boost variables/components
+    public ParticleSystem[] exhausts;
+
     private const int MAX_BOOST = 1000;
     private const int BOOST_MULTIPLIER = 20;
     private int boostCooldown = 0;
+    private bool boosting = false;
 
 	// Use this for initialization
 	void Start () {
@@ -65,6 +69,7 @@ public class OurCar : MonoBehaviour {
         rearAntiRoll.leftWheel = wheels[2].collider;
         rearAntiRoll.rightWheel = wheels[3].collider;
         rearAntiRoll.antiRoll = suspensionRearForce;
+
 	}
 
 	// Update is called once per frame
@@ -83,8 +88,20 @@ public class OurCar : MonoBehaviour {
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
             centerOfMass.position);
 
+        foreach (ParticleSystem exhaust in exhausts) {
+            if (boosting && exhaust.startLifetime > 0) {
+                exhaust.startLifetime -= 0.01f;
+            }
+        }
+
         if (boostCooldown > 0) {
             boostCooldown--;
+        }
+        else {
+            boosting = false;
+            foreach (ParticleSystem exhaust in exhausts) {
+                exhaust.startLifetime = 2f;
+            }
         }
     }
 
@@ -244,6 +261,7 @@ public class OurCar : MonoBehaviour {
         if (boostCooldown == 0) {
             rigidbody.velocity += rigidbody.transform.forward * BOOST_MULTIPLIER;
             boostCooldown = MAX_BOOST;
+            boosting = true;
         }
         
         Debug.Log("Velocity after: " + rigidbody.velocity);
