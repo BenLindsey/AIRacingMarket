@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 /* GET user profile. */
-router.get('/', isLoggedIn, function(req, res) {
+router.get('/', function(req, res) {
     var scriptNames = req.query.scripts;
-
+    
     var scripts = [];
 
     var collection = req.db.get('scriptcollection');
@@ -20,7 +20,8 @@ router.get('/', isLoggedIn, function(req, res) {
             scripts.push({name : doc.scriptName, content : doc.script});
 
             if(scripts.length >= count) {
-                res.render('webbuild', {scripts : scripts, levelname : req.query.levelname, carname: req.query.carname});
+                res.render('webbuild', {scripts : scripts, levelname : req.query.levelname, 
+                                        carname: req.query.carname, gamemode: req.query.gamemode});
             }
         });
     }
