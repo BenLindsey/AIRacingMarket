@@ -60,12 +60,7 @@ router.post('/', function (req, res) {
                       }
                     });
                  }         
-
-                var match = "/(.*?)webbuild/g".exec(window.location);
-                //window.location.replace(match[0] + "leaderboard");
-                console.log("do we get here?!" + " " + match[0]);
-                window.alert("ALERTS?!");
-                window.location = "http://146.169.47.15:3026/leaderboard";
+                 req.session.redirect("/leaderboard");
             }
         } 
       }(i));
