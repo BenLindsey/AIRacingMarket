@@ -16,8 +16,8 @@ router.get('/edit/:name', isLoggedInProfile, function(req, res) {
 
 router.get('/', function(req, res) {
     res.render('script', { script : 
-        "// The vehicle can be controlled by calling functions on the api object\n" +
-        "// e.g. api.SetThrottle()\n" +
+        "// The vehicle can be controlled by calling functions on the\n" +
+        "// api object, e.g. api.SetThrottle()\n" +
         "\n" +
         "// Global state can be initialised here\n" +
         "\n" +

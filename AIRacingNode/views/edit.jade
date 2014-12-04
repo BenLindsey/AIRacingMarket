@@ -36,8 +36,8 @@ block content
                           .col-lg-9
                             input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
                         .form-group
-                          label.col-lg-2.control-label(for='inputScript') Script
-                          .col-lg-9
+                          label.col-lg-1.control-label(for='inputScript')
+                          .col-lg-12
                             textarea#inputScript(name='script', data-editor="javascript", rows="20")
                         .form-group
                           .col-lg-6.col-lg-offset-2
@@ -73,7 +73,7 @@ block content
           editor.getSession().setValue(!{JSON.stringify(script)});
           editor.getSession().setMode("ace/mode/" + mode);
           editor.renderer.setShowGutter(true);
-          editor.setFontSize("16px");
+          editor.setFontSize("14px");
           editor.setTheme("ace/theme/solarized_light");
           editor.setEnableBasicAutocompletion(true);
         });
