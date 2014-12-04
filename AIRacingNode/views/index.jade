@@ -6,8 +6,6 @@ block content
       .col-lg-1
       .col-lg-1
         .div(align='center')
-          br 
-          br
           img(src='GResearchLogo.png', alt='Logo')
           h1.
             AI Racing Market 
@@ -20,7 +18,8 @@ block content
           textarea#demo(name='demo', rows="12", data-editor="javascript")
       .col-lg-1
       .col-lg-1
-           img(class='fixed',src='racing.gif', alt='Logo')
+        img(class='fixed',src='racing.gif', alt='Logo')
+      .col-lg-2
 
   //.div(align='center')
     //.btn.btn-info#getstarted(href='/script') GET STARTED
@@ -45,16 +44,18 @@ block content
           editor.getSession().setUseWorker(false);
           editor.renderer.setShowGutter(false);
           editor.getSession().setValue(
-          "// The vehicle can be controlled by calling functions\n" +
-          "// on the api object e.g. api.SetThrottle()\n" +
+          "// The vehicle can be controlled by calling \n" +
+          "// function on the api object \n" + 
+          "// e.g. api.SetThrottle()\n" +
           "\n" +
           "// Global state can be initialised here\n" +
           "\n" +
-          "// This is called repeatedly as the game is running\n" +
+          "// This is called repeatedly as the game \n" + 
+          "// is running\n" +
           "var PhysicsUpdate = function(api) { ... };"
            );
           editor.getSession().setMode("ace/mode/" + mode);
-          editor.setFontSize("16px");
+          editor.setFontSize("14px");
           editor.setTheme("ace/theme/solarized_light");
         });
       });
