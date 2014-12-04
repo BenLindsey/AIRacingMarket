@@ -11,6 +11,7 @@ router.get('/next', function(req, res) {
         console.log("Found!");
         var scriptsArray = [];
         for (var doc in docs) {
+            console.log("pushing " + doc.scriptName);
             scriptsArray.push(doc.scriptName);
         }
         console.log("build array of size " + scriptsArray.length);
@@ -22,11 +23,11 @@ router.get('/next', function(req, res) {
          
         //todo levelname/carname
         var url = "/webbuild?levelname=OvalTrack"
-                + "&carname=Catamount"
+                + "&carname=Catamount";
 
         for (var ch in ["A", "B", "C", "D"]) {
             var index =  Math.floor(Math.random() * scriptsArray.length);    
-            console.log("chose script: " + scriptsArray[index]);    
+            console.log("chose script: " + index + " | " + scriptsArray[index]);    
             url += "&scripts[" + ch + "]=" + scriptsArray[index];
             array.splice(index, 1);
         }
