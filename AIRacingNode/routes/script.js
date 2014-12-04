@@ -10,7 +10,7 @@ router.get('/edit/:name', isLoggedInProfile, function(req, res) {
             res.render('edit', {
                 script : doc.script,
                 scriptName : req.params.name,
-                allScripts : docs;
+                allScripts : docs
             });
         });
     });
