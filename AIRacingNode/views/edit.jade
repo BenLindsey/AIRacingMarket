@@ -21,6 +21,8 @@ block content
               return s;
           });
       };
+ 
+      var allScripts = !{JSON.stringify(allScripts)};
 
       var handleOpponentChange = function() {
           var select = document.getElementById("selectOpponent");
@@ -28,14 +30,13 @@ block content
 
           console.log("Setting opponent to: " + opponent);
           
-          for (var s in allScripts) {
-              if(s.name == opponent) {
-                  console.log(s.name + " matches!");
-                  scripts[1] = s;
+          for (var i = 0; i < allScripts.length; i++) {
+              var s = allScripts[i];
+
+              if(s.scriptName == opponent) {
+                  scripts[1] = {name : s.scriptName, content : s.script, update : buildUpdate(s.script)};
                   break;
               }
-
-              console.log(s.name + " does not match");
           }
       };
 
