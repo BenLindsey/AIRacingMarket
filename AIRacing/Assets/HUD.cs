@@ -105,8 +105,6 @@ public class HUD : MonoBehaviour {
                 carStates[i].name = ourCar.Name + ((nameFrequency == 0)
                     ? "" : " " + (nameFrequency + 1));
                 nameFrequencies[ourCar.Name] = nameFrequency + 1;
-
-                endOfRaceObject.Finish(carStates[i].name);
             }
         }
 
