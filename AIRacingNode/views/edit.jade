@@ -22,7 +22,7 @@ block content
       };
 
   .row
-    .col-lg-6
+    .col-lg-8
       .div(align='left')
         h1.
             Edit your Racing Script
@@ -32,19 +32,21 @@ block content
                     .row
                       .col-lg-14
                         .form-group
-                          label.col-lg-2.control-label(for='inputScriptName') Script Name
-                          .col-lg-9
+                          label.col-lg-1.control-label(for='inputScriptName') Script
+                          .col-lg-10
                             input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
+                          .col-lg-1
                         .form-group
                           label.col-lg-1.control-label(for='inputScript')
-                          .col-lg-12
+                          .col-lg-10
                             textarea#inputScript(name='script', data-editor="javascript", rows="20")
+                          .col-lg-1
                         .form-group
                           .col-lg-6.col-lg-offset-2
                             .btn-group
                               button.btn.btn-default(type='button', onclick='updateScript()') Update
                               button.btn.btn-primary(type='submit') Submit
-    .col-lg-6
+    .col-lg-4
       include ../public/WebBuild.html
 
     script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
