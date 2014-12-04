@@ -61,9 +61,9 @@ router.post('/', function (req, res) {
                     });
                  }         
 
-                var match = "/(.*?)multiplayer/g".exec(window.location);
-                window.location.replace(match[0] + "leaderboard");
-                
+                //var match = "/(.*?)webbuild/g".exec(window.location);
+                //window.location.replace(match[0] + "leaderboard");
+                window.location = "http://146.169.47.15:3026/leaderboard";
             }
         } 
       }(i));
