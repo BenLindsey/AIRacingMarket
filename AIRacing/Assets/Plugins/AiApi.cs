@@ -167,4 +167,12 @@ public class AiApi : MonoBehaviour {
 		value = Mathf.Clamp(value, -45, 45);
 		car.SetSteer(value);
 	}
+
+    public void Boost() {
+        car.Boost();
+    }
+
+    public float GetTimeToNextBoost() {
+        return car.GetTimeToNextBoost();
+    }
 }

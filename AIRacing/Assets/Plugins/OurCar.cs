@@ -47,6 +47,10 @@ public class OurCar : MonoBehaviour {
     private string name = ":(";
     public string Name { get { return name; } }
 
+    private const int MAX_BOOST = 1000;
+    private const int BOOST_MULTIPLIER = 20;
+    private int boostCooldown = 0;
+
 	// Use this for initialization
 	void Start () {
 
@@ -78,6 +82,10 @@ public class OurCar : MonoBehaviour {
         // Messy hack, force the car down on the road to reduce flips.
         rigidbody.AddForceAtPosition(Vector3.down * downwardsForce,
             centerOfMass.position);
+
+        if (boostCooldown > 0) {
+            boostCooldown--;
+        }
     }
 
     public void SetCenterOfMass(Vector3 com) {
@@ -227,6 +235,22 @@ public class OurCar : MonoBehaviour {
     public void SetScriptName(string name) {
         Debug.Log("OurCar is setting name to: \"" + name + "\"");
         this.name = name;
+    }
+
+    public void Boost() {
+        Debug.Log("Velocity before: " + rigidbody.velocity);
+        Debug.Log("Forward vector: " + rigidbody.transform.forward);
+
+        if (boostCooldown == 0) {
+            rigidbody.velocity += rigidbody.transform.forward * BOOST_MULTIPLIER;
+            boostCooldown = MAX_BOOST;
+        }
+        
+        Debug.Log("Velocity after: " + rigidbody.velocity);
+    }
+
+    public float GetTimeToNextBoost() {
+        return boostCooldown;
     }
     
     private float GetMaxSteeringAngle(float speed) {

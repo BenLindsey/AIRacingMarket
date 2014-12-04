@@ -15,8 +15,6 @@
 		<script type="text/javascript">
 		<!--
 			var config = {
-				width: 1080, 
-				height: 661,
 				params: { enableDebugging:"0" }
 				
 			};
@@ -89,7 +87,7 @@
 
 			        // Convert list of names into Write api calls
 				var calls = ["SetSteer", "SetBrake", "SetThrottle", "ChangeLaneRight", 
-                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+                                             "ChangeLaneLeft", "SteerToMiddle", "SteerToLeft", "SteerToRight", "Boost"];
 
 				for(var i = 0; i < calls.length; i++) {
 				    api[calls[i]] = function(call) {

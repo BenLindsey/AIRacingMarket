@@ -10,12 +10,12 @@ block content
             .col-lg-7
               div.well.bs-component
                 .form-group
-                  label.col-lg-2.control-label(for='inputScriptName') Script Name
-                  .col-lg-8
+                  label.col-lg-1.control-label(for='inputScriptName') Script Name
+                  .col-lg-11
                     input#inputScriptName.form-control(placeholder='Enter a Script Name', type='text', name="scriptname")
                 .form-group
-                  label.col-lg-2.control-label(for='inputScript') Script
-                  .col-lg-8
+                  label.col-lg-1.control-label(for='inputScript') Script
+                  .col-lg-11
                     textarea#inputScript(name='script', data-editor="javascript",  rows="20") 
                 .form-group
                   .col-lg-6.col-lg-offset-2
@@ -29,19 +29,19 @@ block content
                       Optional Details :
                     br
                     .form-group
-                      label.col-lg-2.control-label(for='inputEmailAddress') Email Address
+                      label.col-lg-3.control-label(for='inputEmailAddress') Email Address
                       .col-lg-8
                         input#inputEmailAddress.form-control(placeholder='Enter your Email Address', type='email', name="emailaddress")
                     .form-group
-                      label.col-lg-2.control-label(for='inputUniversityName') University Name
+                      label.col-lg-3.control-label(for='inputUniversityName') University Name
                       .col-lg-8
                         input#inputUniversityName.form-control(placeholder='Which University do you attend?', type='text', name="university")
                     .form-group
-                      label.col-lg-2.control-label(for='inputCourse') Course
+                      label.col-lg-3.control-label(for='inputCourse') Course
                       .col-lg-8
                         input#inputCourse.form-control(placeholder='What do you study?', type='text', name="course")
                     .form-group
-                      label.col-lg-2.control-label(for='inputYearGroup') Year Group
+                      label.col-lg-3.control-label(for='inputYearGroup') Year Group
                       .col-lg-8
                         select#inputYearGroup.form-control
                             option 1st Year
@@ -75,7 +75,7 @@ block content
           editor.getSession().setValue(!{JSON.stringify(script)});
           editor.getSession().setMode("ace/mode/" + mode);
           editor.renderer.setShowGutter(true);
-          editor.setFontSize("16px");
+          editor.setFontSize("14px");
           editor.setTheme("ace/theme/solarized_light");
           editor.setEnableBasicAutocompletion(true);
         });
