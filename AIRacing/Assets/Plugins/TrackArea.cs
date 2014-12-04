@@ -21,7 +21,7 @@ public class TrackArea : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        if (DEBUG) {
+        if (DEBUG && marker != null) {
             startMarker = Instantiate(marker) as GameObject;
             endMarker = Instantiate(marker) as GameObject;
         }
@@ -29,7 +29,7 @@ public class TrackArea : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if (DEBUG && spline != null) {
+        if (DEBUG && spline != null && marker != null) {
             startMarker.transform.position = spline.GetPoint(start);
             endMarker.transform.position = spline.GetPoint(end);
         }

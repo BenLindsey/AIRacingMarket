@@ -6,8 +6,6 @@ public class AiApi : MonoBehaviour {
     public LayerMask walls;
     public LayerMask cars;
 
-    public GameObject marker;
-
     public BezierSpline centerLane;
     public int numOfLanesWideFromCenter = 1;
     public float laneWidth = 6;
@@ -89,14 +87,11 @@ public class AiApi : MonoBehaviour {
         TrackArea currentArea = trackAreaManager.GetCurrentTrackArea(targetAmountAlongSpline % 1);
 
         if (currentArea != null) {
-            marker.transform.position = centerLane.GetPoint(currentArea.start);
             return 0;
         }
 
         TrackArea trackArea = trackAreaManager.GetNextTrackArea(targetAmountAlongSpline % 1);
         centerLane.GetPoint(trackArea.start);
-
-        marker.transform.position = centerLane.GetPoint(trackArea.start);
 
         return Vector3.Distance(car.transform.position, centerLane.GetPoint(trackArea.start));
     }

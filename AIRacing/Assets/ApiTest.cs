@@ -14,7 +14,11 @@ public class ApiTest : MonoBehaviour {
 	void Update () {
         float distance = api.GetDistanceToNextCorner();
 
-        float maxSpeed = (distance / 7) + 20;
+        if (distance > 100) {
+            api.Boost();
+        }
+
+        float maxSpeed = (distance / 8) + 20;
 
         Debug.Log(maxSpeed);
 
