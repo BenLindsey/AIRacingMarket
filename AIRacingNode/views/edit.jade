@@ -1,6 +1,12 @@
 include ./basic_navigator.jade
 
 block content
+
+  .div(align='left')
+    h1.
+      Edit your Racing Script
+  br
+
   script(type='text/javascript', src='/events.js')
   script.
       var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}}];
@@ -21,64 +27,92 @@ block content
           });
       };
 
-  .row
-    .col-lg-8
-      .div(align='left')
-        h1.
-            Edit your Racing Script
-        div.well.bs-component
-            form#newScriptForm.form-horizontal(method='post')
-                fieldset
-                    .row
-                      .col-lg-14
-                        .form-group
-                          label.col-lg-1.control-label(for='inputScriptName') Script
-                          .col-lg-10
-                            input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
-                          .col-lg-1
-                        .form-group
-                          label.col-lg-1.control-label(for='inputScript')
-                          .col-lg-10
-                            textarea#inputScript(name='script', data-editor="javascript", rows="20")
-                          .col-lg-1
-                        .form-group
-                          .col-lg-6.col-lg-offset-2
-                            .btn-group
-                              button.btn.btn-default(type='button', onclick='updateScript()') Update
-                              button.btn.btn-primary(type='submit') Submit
-    .col-lg-4
-      include ../public/WebBuild.html
 
-    script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
-    script(type='text/javascript').
-      $(document).ready(function () {
-        $('textarea[data-editor]').each(function () {
+  ul.nav.nav-tabs
+    li.active
+      a(href="", data-toggle="tab")#tab1 Edit
+    li
+      a(href="", data-toggle="tab")#tab2 View
 
-          var textarea = $(this);
-          var mode = textarea.data('editor');
+  #tab-edit
+    .div(align='left')
+      div.well.bs-component
+        form#newScriptForm.form-horizontal(method='post')
+            fieldset
+                .row
+                  .col-lg-14
+                    .form-group
+                      label.col-lg-1.control-label(for='inputScriptName') Script
+                      .col-lg-10
+                        input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
+                      .col-lg-1
+                    .form-group
+                      label.col-lg-1.control-label(for='inputScript')
+                      .col-lg-10
+                        textarea#inputScript(name='script', data-editor="javascript", rows="20")
+                      .col-lg-1
+                    .form-group
+                      .col-lg-6.col-lg-offset-2
+                        .btn-group
+                          button.btn.btn-default(type='button', onclick='updateScript()') Update
+                          button.btn.btn-primary(type='submit') Submit
 
-          var editDiv = $('<div>', {
-            position:'absolute',
-            width:textarea.parent().width(),
-            height:textarea.height(),
-            'class':textarea.attr('class')
-          }).insertBefore(textarea);
+  #tab-game
+    include ../public/WebBuild.html
 
-          textarea.css('display', 'none');
+  script.
+      $(function() {
 
-          var editor = ace.edit(editDiv[0]);
-
-          editor.getSession().on('change', function(){
-            textarea.val(editor.getSession().getValue());
-          });
-
-          editor.getSession().setValue(!{JSON.stringify(script)});
-          editor.getSession().setMode("ace/mode/" + mode);
-          editor.renderer.setShowGutter(true);
-          editor.setFontSize("14px");
-          editor.setTheme("ace/theme/solarized_light");
-          editor.setEnableBasicAutocompletion(true);
+        $("#tab1").click(function() {
+          $("#unityPlayer").height("0");
+          $("#unityPlayer").width("0");
+          $("#tab-edit").show();
         });
+
+        $("#tab2").click(function() {
+          $("#tab-edit").hide();
+          $("#unityPlayer").height("661px");
+          $("#unityPlayer").width("1080px");
+        });
+
       });
+
+
+  script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
+  script(type='text/javascript').
+    $(document).ready(function () {
+
+      $("#unityPlayer").height("0");
+      $("#unityPlayer").width("0");
+
+      $('textarea[data-editor]').each(function () {
+
+        var textarea = $(this);
+        var mode = textarea.data('editor');
+
+        var editDiv = $('<div>', {
+          position:'absolute',
+          width:textarea.parent().width(),
+          height:textarea.height(),
+          'class':textarea.attr('class')
+        }).insertBefore(textarea);
+
+        textarea.css('display', 'none');
+
+        var editor = ace.edit(editDiv[0]);
+
+        editor.getSession().on('change', function(){
+          textarea.val(editor.getSession().getValue());
+        });
+
+        editor.getSession().setValue(!{JSON.stringify(script)});
+        editor.getSession().setMode("ace/mode/" + mode);
+        editor.renderer.setShowGutter(true);
+
+        editor.setFontSize("14px");
+        editor.setTheme("ace/theme/solarized_light");
+        editor.setEnableBasicAutocompletion(true);
+      });
+    });
 
 
