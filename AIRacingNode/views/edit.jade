@@ -23,26 +23,27 @@ block content
 
   .row
     .col-lg-6
-      h1.
-          Edit your Racing Script
-      div.well.bs-component
-          form#newScriptForm.form-horizontal(method='post')
-              fieldset
-                  .row
-                    .col-lg-14
-                      .form-group
-                        label.col-lg-2.control-label(for='inputScriptName') Script Name
-                        .col-lg-9
-                          input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
-                      .form-group
-                        label.col-lg-2.control-label(for='inputScript') Script
-                        .col-lg-9
-                          textarea#inputScript(name='script', data-editor="javascript", rows="20")
-                      .form-group
-                        .col-lg-6.col-lg-offset-2
-                          .btn-group
-                            button.btn.btn-default(type='button', onclick='updateScript()') Update
-                            button.btn.btn-primary(type='submit') Submit
+      .div(align='left')
+        h1.
+            Edit your Racing Script
+        div.well.bs-component
+            form#newScriptForm.form-horizontal(method='post')
+                fieldset
+                    .row
+                      .col-lg-14
+                        .form-group
+                          label.col-lg-2.control-label(for='inputScriptName') Script Name
+                          .col-lg-9
+                            input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
+                        .form-group
+                          label.col-lg-2.control-label(for='inputScript') Script
+                          .col-lg-9
+                            textarea#inputScript(name='script', data-editor="javascript", rows="20")
+                        .form-group
+                          .col-lg-6.col-lg-offset-2
+                            .btn-group
+                              button.btn.btn-default(type='button', onclick='updateScript()') Update
+                              button.btn.btn-primary(type='submit') Submit
     .col-lg-6
       include ../public/WebBuild.html
 
