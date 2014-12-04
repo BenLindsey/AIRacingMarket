@@ -68,8 +68,17 @@
                     		scripts[i].update = buildUpdate(scripts[i].content);
 			    }
 
-				console.log("Car model set to " + carname);
-				u.getUnity().SendMessage("StartingGrid", "SetCarModel", carname)
+		            console.log("Car model set to " + carname);
+		            u.getUnity().SendMessage("StartingGrid", "SetCarModel", carname)
+				
+			    switch(gamemode) {
+			    	case "tournament":
+			            u.getUnity().SendMessage("StartingGrid", "SetTournamentMode", "");
+			    	    break;
+			    	case "multiplayer":
+			    	    u.getUnity().SendMessage("StartingGrid", "SetMultiplayerMode", "");	
+			    	    break;
+			    }	
 
 			    u.getUnity().SendMessage("StartingGrid", "StartRace", "");
 			}
