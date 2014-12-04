@@ -16,7 +16,8 @@ function FixedUpdate () {
               + ', "CarInFront":' + (api.CarInFront() ? "true" : "false")
               + ', "CarOnRight":' + (api.CarOnRight() ? "true" : "false") 
               + ', "CarOnLeft":'  + (api.CarOnLeft() ? "true" : "false")
-              + ', "GetCornerDirection":' + api.GetCornerDirection() 
+              + ', "GetDistanceToNextCorner":' + api.GetDistanceToNextCorner()
+              + ', "GetNextCornerAmount":' + api.GetNextCornerAmount() 
               + '}';
 
     //Debug.Log("Requesting browser to build commands");
