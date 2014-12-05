@@ -99,11 +99,14 @@ block content
 
   script.
       $(function() {
-
         $("#tab1").click(function() {
-          $("#unityPlayer").height("0");
-          $("#unityPlayer").width("0");
+          $("#unityPlayer").height("1");
+          $("#unityPlayer").width("1");
           $("#tab-edit").show();
+        });
+
+        $("#tab2").one("click", function() {
+          $("#unityPlayer").show();
         });
 
         $("#tab2").click(function() {
@@ -119,9 +122,8 @@ block content
   script(type='text/javascript').
     $(document).ready(function () {
 
-      //Temp remove to fix crashing
-      //$("#unityPlayer").height("0");
-      //$("#unityPlayer").width("0");
+      $("tab-edit").show();
+      $("#unityPlayer").hide();
 
       $('textarea[data-editor]').each(function () {
 
