@@ -70,7 +70,11 @@ public class HUD : MonoBehaviour {
     public void ResetRace() {
         Debug.Log("ResetRace called");
 
-        Debug.LogWarning("Not implemented yet - sorry :(");
+        if (raceMode != RaceMode.Test) {
+            Debug.LogWarning("The race can only be reset in Test mode.");
+        } else {
+            Application.LoadLevel(Application.loadedLevel);
+        }
     }
     #endregion
 
