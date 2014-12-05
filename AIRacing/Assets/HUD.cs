@@ -32,7 +32,7 @@ public class HUD : MonoBehaviour {
 
     private RaceMode raceMode = RaceMode.Test;
 
-    private const int LAPS_IN_RACE = 1;
+    private const int LAPS_IN_RACE = 3;
     private const int MAX_FLIP_TIME = 3;
     private const int MAX_CHECKPOINT_TIME = 30; // Number of seconds to complete a checkpoint.
     private EndOfRaceObject endOfRaceObject;
@@ -83,7 +83,6 @@ public class HUD : MonoBehaviour {
 
 	// Use this for initialization
 	public void Start () {
-        SetTournamentMode();
         checkpoints = LoadCheckpoints();
 
         style = new GUIStyle();

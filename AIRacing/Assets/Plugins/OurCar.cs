@@ -96,8 +96,6 @@ public class OurCar : MonoBehaviour {
 	// Update is called once per frame
     void FixedUpdate() {
 
-        Boost();
-
 		float maxBrakeForce = -Mathf.Min(throttle, -brake);
 
         brakeLights.SetFloat("_Intensity", Mathf.Abs(maxBrakeForce / 100f));
