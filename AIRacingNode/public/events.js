@@ -109,46 +109,34 @@ var buildUpdate = function(script) {
       return this;
   };
   
+  var Events = {
+      "CarOnRight" : function(api) { return api.CarOnRight(); },
+      "CarOnLeft" : function(api) { return api.CarOnLeft(); },
+      "CarInFront" : function(api) { return api.CarInFront(); },
+      "RaceStarts" : function(api, state) { var temp = state.raceStarts; state.raceStarts = false; return temp; },
+  };
+  
   //Build events TODO Add api gets
   console.log("Building events");
-  var events = ["CarOnRight", "CarOnLeft", "CarInFront", "RaceStarts"];
-  for(var j = 0; j < events.length; j++) {
-      When[events[j]] = function(event) {
-      	  var raceStarts = true;
+  for(var event in Events) {
+      When[event] = function(eventChecker) {
+      	  var state = { raceStarts : true };
       	  
           return function() {
               if(this.invert) {  	
   	        this.events.push(function(api) {
-  	            if(event == "RaceStarts") {
-  	            	if(raceStarts) {
-  	            	   raceStarts = false;
-  	            	   return false;
-  	            	} else {
-  	            	   return true;
-  	            	}
-  	            } else {
-  	            	return !api[event]();
-  	            }
+  	            return !eventChecker(api, state);
   	        });
               } else {
               	this.events.push(function(api) {
-              	    if(event == "RaceStarts") {
-  	            	if(raceStarts) {
-  	            	   raceStarts = false;
-  	            	   return true;
-  	            	} else {
-  	            	   return false;
-  	            	}
-  	            } else {
-  	            	return api[event]();
-  	            }
+              	    return eventChecker(api, state);
   	        });
               }
               
               this.invert = false;
               return this;
           };
-      }(events[j]);
+      }(Events[event]);
   }
   
   //Build actions
