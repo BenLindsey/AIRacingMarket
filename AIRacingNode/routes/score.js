@@ -48,7 +48,8 @@ router.post('/', function (req, res) {
                     },
                     {
                       "name": req.body[x],
-                      "rating": rxs[x]
+                      "rating": rxs[x],
+                      "previous": rolds[x],
                     },
                     { upsert: true },
                     function (err, doc) {
@@ -56,11 +57,9 @@ router.post('/', function (req, res) {
                         //idk
                       }
                       else {
-                        //idk2electricboogaloo
                       }
                     });
-                 }         
-                 req.session.redirect("/leaderboard");
+                }         
             }
         } 
       }(i));
