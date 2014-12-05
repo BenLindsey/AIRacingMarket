@@ -21,8 +21,11 @@ router.get('/next', function(req, res) {
             return;
         }
          
-        //todo levelname/carname
-        var url = "/webbuild?levelname=OvalTrack"
+        //Select random level
+        var levels = ["OvalTrack", "EightTrack"];
+        var levelIndex =  Math.floor(Math.random() * levels.length); 
+         
+        var url = "/webbuild?levelname=" + levels[levelIndex]
                 + "&gamemode=Tournament"
                 + "&carname=Catamount";
 
