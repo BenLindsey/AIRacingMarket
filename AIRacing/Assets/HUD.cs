@@ -397,7 +397,9 @@ public class HUD : MonoBehaviour {
             string queryParams = "";
             for (int i = 0; i < states.Length; i++) {
                 form.AddField(i.ToString(), carNames[i]);
-                queryParams += "&previous[" + (char)('A' + i) + "]=" + WWW.EscapeURL(carNames[i]);
+                
+                queryParams += (i == 0) ? "?" : "&";
+                queryParams += "previous[" + (char)('A' + i) + "]=" + WWW.EscapeURL(carNames[i]);
             }
 
             outerClass.StartCoroutine(WaitForSend(form, mode, queryParams));
