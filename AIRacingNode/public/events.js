@@ -119,6 +119,7 @@ var buildUpdate = function(script) {
   //Build events TODO Add api gets
   console.log("Building events");
   for(var event in Events) {
+      console.log("Setting event: " + event);
       When[event] = function(eventChecker) {
       	  var state = { raceStarts : true };
       	  
