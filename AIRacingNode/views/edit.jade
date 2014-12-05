@@ -3,9 +3,8 @@ include ./basic_navigator.jade
 block content
 
   .div(align='left')
-    h1.
+    h3.
       Edit your Racing Script
-  br
 
   script(type='text/javascript', src='/events.js')
   script.
@@ -146,14 +145,11 @@ block content
         editor.resize();
         editor.getSession().setMode("ace/mode/" + mode);
         editor.renderer.setShowGutter(true);
-
+        editor.renderer.setScrollPastEnd(false);
+        editor.renderer.setVScrollBarAlwaysVisible(true);
         editor.setFontSize("14px");
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
-        editor.setOption("scrollPastEnd", false);
-        editor.setOption("vScrollBarAlwaysVisible", true);
-
-
       });
     });
 
