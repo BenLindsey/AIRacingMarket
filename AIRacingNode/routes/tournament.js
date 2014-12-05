@@ -36,6 +36,12 @@ router.get('/next', function(req, res) {
             url += "&scripts[" + carNames[i] + "]=" + scriptsArray[index];
             scriptsArray.splice(index, 1);
         }
+        
+        if(req.query.previous) {
+            for(var key in req.query.previous) {
+                url += "&previous[" + key + "]=" + req.query.previous[key];
+            }
+        }
 
         console.log("Redirecting user to: " + url);
       
