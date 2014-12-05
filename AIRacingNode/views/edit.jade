@@ -119,8 +119,6 @@ block content
 
       $("#show-editor").hide();
       $("#editor").show();
-      $("#editor-container").css('position', 'relative');
-      $("#editor-container").resizable();
 
       $('textarea[data-editor]').each(function () {
 
@@ -143,7 +141,6 @@ block content
         });
 
         editor.getSession().setValue(!{JSON.stringify(script)});
-        editor.resize();
         editor.getSession().setMode("ace/mode/" + mode);
         editor.renderer.setShowGutter(true);
 
@@ -151,6 +148,7 @@ block content
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
 
+        editor.resize();
       });
     });
 
