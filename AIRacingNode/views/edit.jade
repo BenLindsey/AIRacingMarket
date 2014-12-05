@@ -146,6 +146,12 @@ block content
         editor.setFontSize("14px");
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
+
+        $("#this").resizable({
+          resize: function( event, ui ) {
+              editor.resize();
+          }
+        });
       });
     });
 
