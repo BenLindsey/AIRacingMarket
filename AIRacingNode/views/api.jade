@@ -18,7 +18,7 @@ block content
     .col-lg-5
       p.
         Speed Control Commands
-      textarea(name='snip1', data-editor="javascript").
+      textarea(name='snip1', rows='3', data-editor="javascript").
         api.SetThrottle(70) \\Sets acceleration speed, -100 to 100
         api.SetBrake(50)    \\Applies a braking force, 0 to 100
         api.Boost()         \\Triggers a boost
@@ -31,7 +31,7 @@ block content
     .col-lg-5
       p.
         Steering Commands - Initially cars will follow the middle lane
-      textarea(name='snip2', data-editor="javascript"). 
+      textarea(name='snip2', rows='5', data-editor="javascript"). 
         api.SteerToRight()  \\Sets car to follow right lane
         api.SteerToMiddle() \\Sets car to follow middle lane
         api.SteerToLane()   \\Sets car to follow left lane
@@ -45,7 +45,7 @@ block content
     .col-lg-5
       p.
         Corner Commands
-      textarea(name='snip3', data-editor="javascript"). 
+      textarea(name='snip3', rows='6', data-editor="javascript"). 
         api.GetDistanceToNextCorner() \\Gets the distance to the start of the next corner
                                       \\ returns 0 if currently on a corner
         api.GetNextCornerAmount() \\Returns the sharpness the next corner
