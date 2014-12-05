@@ -27,6 +27,8 @@ public class OurCar : MonoBehaviour {
     public Material brakeLights;
     public Material skidmark;
 
+    public Camera camera;
+
     // Physics variables.
     public float downwardsForce = 0;
     public float suspensionDistance = 0.1f;
@@ -60,9 +62,18 @@ public class OurCar : MonoBehaviour {
     // Boost variables/components
     public ParticleSystem[] exhausts;
 
-    private const int MAX_BOOST = 1000;
+    private const int MAX_BOOST = 300;
     private const int BOOST_MULTIPLIER = 20;
     private int boostCooldown = 0;
+
+    private bool fovIncrease = false;
+    private float fov = FOV_NORMAL;
+    private const int FOV_NORMAL = 60;
+    private const int FOV_MAX = 100;
+    private const int FOV_CHANGE_MAX = 180; // fov will increase to this but the camera's fov will be capped at FOV_MAX.
+    private const float BOOST_FOV_BASE_CHANGE = (FOV_CHANGE_MAX - FOV_NORMAL) / (2 / 0.01f);
+    private const float BOOST_FOV_INC = 5 * BOOST_FOV_BASE_CHANGE / 2; // Spend 2/5 of the time increasing the FOV.
+    private const float BOOST_FOV_DEC = 5 * BOOST_FOV_BASE_CHANGE / 3; // Spend the rest of the time decreasing.
 
 	// Use this for initialization
 	void Start () {
@@ -79,6 +90,7 @@ public class OurCar : MonoBehaviour {
         rearAntiRoll.rightWheel = wheels[3].collider;
         rearAntiRoll.antiRoll = suspensionRearForce;
 
+        camera = transform.parent.GetComponentInChildren<Camera>();
 	}
 
 	// Update is called once per frame
@@ -107,6 +119,18 @@ public class OurCar : MonoBehaviour {
                 exhaust.startLifetime -= 0.01f;
             }
         }
+
+        // Update the field of view when boosting.
+        if (fovIncrease) {
+            if (fov >= FOV_CHANGE_MAX) {
+                fovIncrease = false;
+            } else {
+                fov += BOOST_FOV_INC;
+            }
+        } else if (fov >= FOV_NORMAL) {
+            fov -= BOOST_FOV_DEC;
+        }
+        camera.fieldOfView = Mathf.Min(fov, FOV_MAX);
 
         if (boostCooldown > 0) {
             boostCooldown--;
@@ -271,6 +295,8 @@ public class OurCar : MonoBehaviour {
             foreach (ParticleSystem exhaust in exhausts) {
                 exhaust.startLifetime = 2f;
             }
+
+            fovIncrease = true;
         }
     }
 
