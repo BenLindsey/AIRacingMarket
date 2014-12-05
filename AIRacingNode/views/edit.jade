@@ -9,6 +9,8 @@ block content
 
   script(type='text/javascript', src='/events.js')
   script.
+      var editScript = !{JSON.stringify(scriptName)};
+  
       var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}},
                      {name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}} ];
       var levelname = "OvalTrack";
@@ -26,6 +28,11 @@ block content
 
               return s;
           });
+      };
+      
+      var restartRace = function() {
+          console.log("Restart!");
+          //This function is replaced when unity is built!
       };
  
       var allScripts = !{JSON.stringify(allScripts)};
@@ -75,7 +82,11 @@ block content
                         select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
                             - if (allScripts.length) {
                             each entry, i in allScripts
+                              - if (entry.ScriptName == editScript) {
+                                option(selected)= entry.scriptName
+                              - } else {
                                 option= entry.scriptName
+                              - }
                             - }
                       .col-lg-1
                     .form-group
@@ -83,6 +94,7 @@ block content
                         .btn-group
                           button.btn.btn-default(type='button', onclick='updateScript()') Update
                           button.btn.btn-primary(type='submit') Submit
+                          button.btn.btn-danger(type='button', onclick='restartRace()') Restart
 
   #tab-game
     include ../public/WebBuild.html
@@ -109,8 +121,9 @@ block content
   script(type='text/javascript').
     $(document).ready(function () {
 
-      $("#unityPlayer").height("0");
-      $("#unityPlayer").width("0");
+      //Temp remove to fix crashing
+      //$("#unityPlayer").height("0");
+      //$("#unityPlayer").width("0");
 
       $('textarea[data-editor]').each(function () {
 
