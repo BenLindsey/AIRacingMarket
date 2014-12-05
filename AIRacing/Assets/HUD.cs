@@ -391,21 +391,23 @@ public class HUD : MonoBehaviour {
                 }
             }
 
-            // Finally, create the form.
+            // Finally, create the form and set the previous query params.
             WWWForm form = new WWWForm();
             form.AddField("players", states.Length);
+            string queryParams = "";
             for (int i = 0; i < states.Length; i++) {
                 form.AddField(i.ToString(), carNames[i]);
+                queryParams += "&previous[" + (char)('A' + i) + "]=" + WWW.EscapeURL(carNames[i]);
             }
 
-            outerClass.StartCoroutine(WaitForSend(form, mode));
+            outerClass.StartCoroutine(WaitForSend(form, mode, queryParams));
         }
 
-        private IEnumerator WaitForSend(WWWForm form, RaceMode mode) {
+        private IEnumerator WaitForSend(WWWForm form, RaceMode mode, string queryParams) {
             string url = GetURL();
             string scoreUrl = url + "score";
             string leaderboardUrl = url + ((mode == RaceMode.Multiplayer)
-                ? "leaderboard" : "tournament/next");
+                ? "leaderboard" : "tournament/next" + queryParams);
 
             // Send the the result of the race.
             Debug.Log("Sending \"" + System.Text.Encoding.Default.GetString(form.data)
