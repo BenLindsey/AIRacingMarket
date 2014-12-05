@@ -23,6 +23,7 @@ router.get('/next', function(req, res) {
          
         //todo levelname/carname
         var url = "/webbuild?levelname=OvalTrack"
+                + "&gamemode=Tournament"
                 + "&carname=Catamount";
 
         var carNames = ["A", "B", "C", "D"];
