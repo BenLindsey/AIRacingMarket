@@ -17,8 +17,12 @@ block content
     a(name="snippet1")
     .col-lg-5
       p.
-        Snippet 1
-      textarea(name='snip1', rows="2", data-editor="javascript") Snippet 1 \\wagwan
+        Speed Control Commands
+      textarea(name='snip1', rows="2", data-editor="javascript").
+        api.SetThrottle(70) \\Sets acceleration speed, -100 to 100
+        api.SetBrake(50)    \\Applies a braking force, 0 to 100
+        api.Boost()         \\Triggers a boost
+        
 
   hr
 
@@ -26,9 +30,29 @@ block content
     a(name="snippet2")
     .col-lg-5
       p.
-        Snippet 2
-      textarea(name='snip2', rows="2", data-editor="javascript") Snippet 2
+        Steering Commands - By default cars will follow middle lane
+      textarea(name='snip2', rows="2", data-editor="javascript"). 
+        api.SteerToRight()  \\Sets car to follow right lane
+        api.SteerToMiddle() \\Sets car to follow middle lane
+        api.SteerToLane()   \\Sets car to follow left lane
+        api.ChangeLaneRight() \\Changes lane to the right
+        api.ChangeLaneLeft()  \\Changes lane to the left 
 
+  hr
+
+  .row
+    a(name="snippet2")
+    .col-lg-5
+      p.
+        Corner Commands
+      textarea(name='snip2', rows="2", data-editor="javascript"). 
+        api.GetDistanceToNextCorner() \\Gets the distance to the start of the next corner
+                                      \\ returns 0 if currently on a corner
+        api.GetNextCornerAmount() \\Returns the sharpness the next corner
+                                  \\A value between -1 and 1
+                                  \\Positive for a right turn
+                                  \\Negative for a left turn
+  
   script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
   script(type='text/javascript').
     $(document).ready(function () {
