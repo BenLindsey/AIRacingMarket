@@ -9,6 +9,8 @@ block content
 
   script(type='text/javascript', src='/events.js')
   script.
+      var editScript = !{JSON.stringify(scriptName)};
+  
       var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}},
                      {name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}} ];
       var levelname = "OvalTrack";
@@ -75,7 +77,11 @@ block content
                         select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
                             - if (allScripts.length) {
                             each entry, i in allScripts
+                              - if (entry.ScriptName == editScript) {
+                                option(selected)= entry.scriptName
+                              - } else {
                                 option= entry.scriptName
+                              - }
                             - }
                       .col-lg-1
                     .form-group
@@ -109,8 +115,9 @@ block content
   script(type='text/javascript').
     $(document).ready(function () {
 
-      $("#unityPlayer").height("0");
-      $("#unityPlayer").width("0");
+      //Temp remove to fix crashing
+      //$("#unityPlayer").height("0");
+      //$("#unityPlayer").width("0");
 
       $('textarea[data-editor]').each(function () {
 
