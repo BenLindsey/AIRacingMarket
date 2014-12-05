@@ -180,13 +180,6 @@ public class HUD : MonoBehaviour {
             Color textColor = (carStates[i].position < carsFinished)
                 ? carFinishedColor
                 : ((carStates[i].HasCarStopped) ? carTimedOutColor : carRacingColor);
-            if (carStates[i].HasCarStopped) {
-                Debug.LogWarning(carStates[i].name + " has timed out.");
-            }
-
-            // Draw the car's row on the leaderboard.
-            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * position, 200, 100),
-                carStates[i].name, textColor, style);
 
             // Draw the car's name over its model if it's in front of the camera.
             Vector3 screenPosition = carCamera.WorldToScreenPoint(
@@ -196,6 +189,10 @@ public class HUD : MonoBehaviour {
                 DrawOutlinedText(new Rect(screenPosition.x - xOffset,
                     carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name,
                     Color.white, style);
+
+            // Draw the car's row on the leaderboard.
+            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * position, 200, 100),
+                carStates[i].name, textColor, style);
             }
         }
         y += yDiff * carStates.Length;
@@ -206,6 +203,10 @@ public class HUD : MonoBehaviour {
         style.normal.textColor = Color.black;
 
         GUI.Label(new Rect(location.xMin + 1, location.yMin + 1, location.width, location.height),
+            text, style);
+        GUI.Label(new Rect(location.xMin + 1, location.yMin - 1, location.width, location.height),
+            text, style);
+        GUI.Label(new Rect(location.xMin - 1, location.yMin + 1, location.width, location.height),
             text, style);
         GUI.Label(new Rect(location.xMin - 1, location.yMin - 1, location.width, location.height),
             text, style);
@@ -258,11 +259,11 @@ public class HUD : MonoBehaviour {
     }
 
     private int GetPosition(CarState car) {
-        int position = 0;
+        int position = carsFinished;
         foreach (CarState other in carStates) {
             // Increment the position each time we find a car which is in front
             // of the given car.
-            if (other.car != car.car && !IsCarInFront(car, other)) {
+            if (other.car != car.car && other.position >= carsFinished && !IsCarInFront(car, other)) {
                 position++;
             }
         }
