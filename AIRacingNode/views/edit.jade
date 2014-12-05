@@ -29,6 +29,11 @@ block content
               return s;
           });
       };
+      
+      var restartRace = function() {
+          console.log("Restart!");
+
+      };
  
       var allScripts = !{JSON.stringify(allScripts)};
 
@@ -89,6 +94,7 @@ block content
                         .btn-group
                           button.btn.btn-default(type='button', onclick='updateScript()') Update
                           button.btn.btn-primary(type='submit') Submit
+                          button.btn.btn-danger(type='button', onclick='restartRace()') Restart
 
   #tab-game
     include ../public/WebBuild.html
