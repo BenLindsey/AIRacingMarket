@@ -138,7 +138,6 @@ block content
 
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
-          editor.resize();
         });
 
         editor.getSession().setValue(!{JSON.stringify(script)});
