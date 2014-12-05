@@ -43,6 +43,7 @@ router.post('/', function (req, res) {
                       if (x==y) continue;
                        rxs[x] = rX(rxs[x], calcW(x, y), eX(rolds[x], rolds[y]));
                       }
+                      var count = 0;
                     collection.update({
                       "name": req.body[x]
                     },
@@ -57,6 +58,10 @@ router.post('/', function (req, res) {
                         //idk
                       }
                       else {
+                        count++;
+                        if (count >= req.body.players) {
+                          res.send('Done');
+                        }
                       }
                     });
                 }         
