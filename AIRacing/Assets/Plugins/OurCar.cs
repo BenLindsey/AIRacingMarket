@@ -42,8 +42,10 @@ public class OurCar : MonoBehaviour {
     private bool isGrounded = false;
     public bool IsGrounded { get { return isGrounded; } }
 
-    public bool IsFlipped { get { return 135 <= transform.eulerAngles.z
-        && transform.eulerAngles.z <= 225; } }
+    public bool IsFlipped { get { return 90 <= transform.eulerAngles.z
+        && transform.eulerAngles.z <= 270; } }
+    private float flipTime = -1;
+    private const float MAX_FLIP_TIME = 5;
 
     private Vector3 lastPosition;
     private bool isMoving = false;
@@ -134,6 +136,20 @@ public class OurCar : MonoBehaviour {
 
         if (boostCooldown > 0) {
             boostCooldown--;
+        }
+
+        // Check if the car should be flipped over.
+        if (IsFlipped) {
+            // If the car flipped over in this updated.
+            if (flipTime == -1) {
+                flipTime = Time.time;
+            }
+            // Reset the car if it has been flipped over for too long.
+            else if (Time.time - flipTime >= MAX_FLIP_TIME) {
+                UnFlip();
+            }
+        } else {
+            flipTime = -1;
         }
     }
 
@@ -269,6 +285,15 @@ public class OurCar : MonoBehaviour {
             wheel.currentSkidmark.material = skidmark;
             wheel.currentSkidmark.autodestruct = true; // Remove the game object when it stops drawing.
         }
+    }
+
+    private void UnFlip() {
+        Debug.Log("Unflipping " + Name);
+
+        // Move the car up a bit and reset z rotation.
+        rigidbody.transform.eulerAngles = new Vector3(rigidbody.transform.eulerAngles.x,
+            rigidbody.transform.eulerAngles.y, 0);
+        rigidbody.transform.position += 0.5f * Vector3.up;
     }
 
     public void SetThrottle(float value) {
