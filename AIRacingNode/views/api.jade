@@ -94,5 +94,9 @@ block content
           editor.getSession().setMode("ace/mode/" + mode);
           editor.setFontSize("16px");
           editor.setTheme("ace/theme/solarized_light");
+          editor.setOptions({
+            maxLines:Infinity
+          });
+          editor.resizable();
         });
       });
