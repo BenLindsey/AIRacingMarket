@@ -185,10 +185,23 @@ public class HUD : MonoBehaviour {
             Vector3 screenPosition = carCamera.WorldToScreenPoint(
                 carStates[i].car.transform.position + 2.5f * Vector3.up);
             if (screenPosition.z > 0) {
+
+                // Use 'minSize' as the font size if the car is further than 'farZ' from the
+                // camera. If the car is closer than 'nearZ' use 'maxSize', otherwise linearly
+                // scale the font size between these points.
+                int originalFontSize = style.fontSize;
+                float maxSize = originalFontSize;
+                float minSize = 10;
+                float nearZ = 5;
+                float farZ = 20;
+                style.fontSize = (int)Mathf.Clamp((minSize - maxSize) / (farZ - nearZ)
+                    * (screenPosition.z - nearZ) + maxSize, minSize, maxSize);
+
                 float xOffset = style.CalcSize(new GUIContent(carStates[i].name)).x / 2;
                 DrawOutlinedText(new Rect(screenPosition.x - xOffset,
                     carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name,
                     Color.white, style);
+                style.fontSize = originalFontSize;
 
             // Draw the car's row on the leaderboard.
             DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * position, 200, 100),
