@@ -15,7 +15,13 @@ public class HUD : MonoBehaviour {
         public string name;
 
         public float flipStartTime;
-        public float lastCheckpointTime;
+        private float lastCheckpointTime;
+
+        public bool HasCarStopped { get { return Time.time - lastCheckpointTime >= MAX_CHECKPOINT_TIME; } }
+
+        public void ResetCheckpointTime() {
+            lastCheckpointTime = Time.time;
+        }
     }
 
     private enum RaceMode { Multiplayer, Test, Tournament };
@@ -23,6 +29,7 @@ public class HUD : MonoBehaviour {
     public CarManager carManager;
 
     private CarState[] carStates;
+    private int carsFinished = 0;
 
     public GameObject checkpointsContainer;
     private GameObject[] checkpoints;
@@ -98,6 +105,7 @@ public class HUD : MonoBehaviour {
         if (carStates == null && carManager.IsRaceStarted) {
 
             carStates = new CarState[carManager.Cars.Count];
+
             Dictionary<string, int> nameFrequencies = new Dictionary<string, int>();
             endOfRaceObject = new EndOfRaceObject(this);
 
@@ -108,7 +116,7 @@ public class HUD : MonoBehaviour {
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
                 carStates[i].flipStartTime = -1;
-                carStates[i].lastCheckpointTime = Time.time;
+                carStates[i].ResetCheckpointTime();
 
                 // If there are multiple cars with the same name, then add the
                 // occurence number onto the end of the name.
@@ -129,7 +137,7 @@ public class HUD : MonoBehaviour {
     }
 
     private void UpdateCarPositions() {
-        for (int i = 0; i < carStates.Length; i++) {
+        for (int i = carsFinished; i < carStates.Length; i++) {
             carStates[i].position = GetPosition(carStates[i]);
         }
     }
@@ -139,6 +147,10 @@ public class HUD : MonoBehaviour {
 
         int y = 10;
         int yDiff = 30;
+
+        Color carFinishedColor = Color.gray;
+        Color carRacingColor = Color.white;
+        Color carTimedOutColor = Color.red;
 
         // Draw the lap number for the current car.
         if (raceMode != RaceMode.Test) {
@@ -158,16 +170,23 @@ public class HUD : MonoBehaviour {
             nameLocation = Math.Max(nameLocation, style.CalcSize(new GUIContent(ordinals[i])).x
                 + ordinalRect.xMin);
 
-            DrawOutlinedText(new Rect(13, y + yDiff * (i + 1), 200, 100), (i + 1).ToString(), style);
-            DrawOutlinedText(ordinalRect, ordinals[i], ordinalStyle);
+            DrawOutlinedText(new Rect(13, y + yDiff * (i + 1), 200, 100), (i + 1).ToString(),
+                Color.white, style);
+            DrawOutlinedText(ordinalRect, ordinals[i], Color.white, ordinalStyle);
         }
 
         for (int i = 0; i < carStates.Length; i++) {
             int position = carStates[i].position + 1;
+            Color textColor = (carStates[i].position < carsFinished)
+                ? carFinishedColor
+                : ((carStates[i].HasCarStopped) ? carTimedOutColor : carRacingColor);
+            if (carStates[i].HasCarStopped) {
+                Debug.LogWarning(carStates[i].name + " has timed out.");
+            }
 
             // Draw the car's row on the leaderboard.
             DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * position, 200, 100),
-                carStates[i].name, style);
+                carStates[i].name, textColor, style);
 
             // Draw the car's name over its model if it's in front of the camera.
             Vector3 screenPosition = carCamera.WorldToScreenPoint(
@@ -175,13 +194,14 @@ public class HUD : MonoBehaviour {
             if (screenPosition.z > 0) {
                 float xOffset = style.CalcSize(new GUIContent(carStates[i].name)).x / 2;
                 DrawOutlinedText(new Rect(screenPosition.x - xOffset,
-                    carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name, style);
+                    carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name,
+                    Color.white, style);
             }
         }
         y += yDiff * carStates.Length;
     }
 
-    private void DrawOutlinedText(Rect location, string text, GUIStyle style) {
+    private void DrawOutlinedText(Rect location, string text, Color textColor, GUIStyle style) {
         Color originalColor = style.normal.textColor;
         style.normal.textColor = Color.black;
 
@@ -190,13 +210,12 @@ public class HUD : MonoBehaviour {
         GUI.Label(new Rect(location.xMin - 1, location.yMin - 1, location.width, location.height),
             text, style);
 
-        style.normal.textColor = originalColor;
+        style.normal.textColor = textColor;
         GUI.Label(location, text, style);
+        style.normal.textColor = originalColor;
     }
 
     public void TriggerEnter(int checkpoint, Collider car) {
-
-        //int checkpointIndex = GetCheckpointIndexFromGameObject(checkpoint);
         int carIndex = GetCarIndexFromCollider(car);
 
         // Something bad happened, and a warning has already been logged, so just return.
@@ -207,7 +226,7 @@ public class HUD : MonoBehaviour {
         // If the car just completed the next stage of the lap.
         if (carStates[carIndex].stage == checkpoint) {
             carStates[carIndex].stage++;
-            carStates[carIndex].lastCheckpointTime = Time.time;
+            carStates[carIndex].ResetCheckpointTime();
 
             // If the car just completed a lap.
             if (carStates[carIndex].stage == checkpoints.Length) {
@@ -217,6 +236,7 @@ public class HUD : MonoBehaviour {
                 // Update the WWW form if this car just finished the race.
                 if (carStates[carIndex].lap == LAPS_IN_RACE) {
                     endOfRaceObject.Finish(carStates[carIndex].name);
+                    carsFinished++;
                 }
             }
         }
@@ -317,7 +337,7 @@ public class HUD : MonoBehaviour {
             // stopped, either because of a bad script or if the car has flipped over.
             bool isRaceOver = true;
             foreach (CarState car in states) {
-                isRaceOver &= finishedCars.Contains(car.name) || HasCarStopped(car);
+                isRaceOver &= finishedCars.Contains(car.name) || car.HasCarStopped;
             }
 
             if (isRaceOver) {
@@ -325,10 +345,6 @@ public class HUD : MonoBehaviour {
             }
 
             return isRaceOver;
-        }
-
-        private bool HasCarStopped(CarState car) {
-            return Time.time - car.lastCheckpointTime > MAX_CHECKPOINT_TIME;
         }
 
         private void Send(CarState[] states, RaceMode mode) {
