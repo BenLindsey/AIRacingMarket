@@ -145,6 +145,9 @@ public class HUD : MonoBehaviour {
     public void OnGUI() {
         CarState currentState = carStates[carManager.cameraManager.ActiveCamera];
 
+        // Find the active camera to convert 3D coordinates to screen coordinates.
+        Camera carCamera = currentState.car.transform.parent.GetComponentInChildren<Camera>();
+
         int y = 10;
         int yDiff = 30;
 
@@ -154,23 +157,22 @@ public class HUD : MonoBehaviour {
 
         // Draw the lap number for the current car.
         if (raceMode != RaceMode.Test) {
-            GUI.Label(new Rect(10, y, 200, 100), "Lap " + (currentState.lap + 1), style);
-            y += yDiff;
+            string text = "Lap " + (currentState.lap + 1);
+            float textWidth = style.CalcSize(new GUIContent(text)).x;
+            DrawOutlinedText(new Rect(carCamera.pixelWidth - textWidth - 10, y, textWidth, 100),
+                text, Color.white, style);
         }
-
-        // Find the active camera to convert 3D coordinates to screen coordinates.
-        Camera carCamera = currentState.car.transform.parent.GetComponentInChildren<Camera>();
 
         // Draw the place numbers.
         string[] ordinals = new string[] { "st", "nd", "rd", "th" };
         float nameLocation = float.MinValue;
         for (int i = 0; i < carStates.Length; i++) {
             float numberWidth = style.CalcSize(new GUIContent((i + 1).ToString())).x;
-            Rect ordinalRect = new Rect(15 + numberWidth, y + yDiff * (i + 1), 200, 100);
+            Rect ordinalRect = new Rect(15 + numberWidth, y + yDiff * i, 200, 100);
             nameLocation = Math.Max(nameLocation, style.CalcSize(new GUIContent(ordinals[i])).x
                 + ordinalRect.xMin);
 
-            DrawOutlinedText(new Rect(13, y + yDiff * (i + 1), 200, 100), (i + 1).ToString(),
+            DrawOutlinedText(new Rect(13, y + yDiff * i, 200, 100), (i + 1).ToString(),
                 Color.white, style);
             DrawOutlinedText(ordinalRect, ordinals[i], Color.white, ordinalStyle);
         }
@@ -202,11 +204,11 @@ public class HUD : MonoBehaviour {
                     carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name,
                     Color.white, style);
                 style.fontSize = originalFontSize;
+            }
 
             // Draw the car's row on the leaderboard.
-            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * position, 200, 100),
+            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * (position - 1), 200, 100),
                 carStates[i].name, textColor, style);
-            }
         }
         y += yDiff * carStates.Length;
     }
