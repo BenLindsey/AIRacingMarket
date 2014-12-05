@@ -137,8 +137,10 @@ public class HUD : MonoBehaviour {
     }
 
     private void UpdateCarPositions() {
-        for (int i = carsFinished; i < carStates.Length; i++) {
-            carStates[i].position = GetPosition(carStates[i]);
+        for (int i = 0; i < carStates.Length; i++) {
+            if (carStates[i].position >= carsFinished) {
+                carStates[i].position = GetPosition(carStates[i]);
+            }
         }
     }
 
@@ -195,7 +197,7 @@ public class HUD : MonoBehaviour {
                 float maxSize = originalFontSize;
                 float minSize = 10;
                 float nearZ = 5;
-                float farZ = 20;
+                float farZ = 40;
                 style.fontSize = (int)Mathf.Clamp((minSize - maxSize) / (farZ - nearZ)
                     * (screenPosition.z - nearZ) + maxSize, minSize, maxSize);
 
