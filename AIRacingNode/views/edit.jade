@@ -72,7 +72,7 @@ block content
                     .form-group
                       label.col-lg-1.control-label(for='inputScript')
                       .col-lg-10
-                      textarea#inputScript(name='script',data-editor="javascript")
+                        textarea#inputScript(name='script',data-editor="javascript")
                       .col-lg-1
                     .form-group
                       br
@@ -128,6 +128,7 @@ block content
           position:'absolute',
           width:textarea.parent().width(),
           height:textarea.height(),
+          'class':textarea.attr('class')
         }).insertBefore(textarea);
 
         textarea.css('display', 'none');
