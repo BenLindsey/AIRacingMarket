@@ -72,6 +72,7 @@ block content
                     .form-group
                       label.col-lg-1.control-label(for='inputScript')
                       .col-lg-10
+                      #editor-container
                         textarea#inputScript(name='script',data-editor="javascript")
                       .col-lg-1
                     .form-group
@@ -116,6 +117,7 @@ block content
   script(type='text/javascript').
     $(document).ready(function () {
 
+      $('#editor-container').css('resize', 'both');
       $("#show-editor").hide();
       $("#editor").show();
 
@@ -131,21 +133,20 @@ block content
           'class':textarea.attr('class')
         }).insertBefore(textarea);
 
-        textarea.css('resize', 'both');
         textarea.css('display', 'none');
 
         var editor = ace.edit(editDiv[0]);
 
-        textarea.resizable({
-          resize: function( event, ui ) {
-              editor.resize();
-          }
-        });
+        //textarea.resizable({
+        //  resize: function( event, ui ) {
+        //      editor.resize();
+        //  }
+        //});
 
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
+          editor.resize();
         });
-        editor.resize();
 
         editor.getSession().setValue(!{JSON.stringify(script)});
         editor.getSession().setMode("ace/mode/" + mode);
