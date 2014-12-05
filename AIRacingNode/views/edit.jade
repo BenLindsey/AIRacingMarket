@@ -72,7 +72,7 @@ block content
                     .form-group
                       label.col-lg-1.control-label(for='inputScript')
                       .col-lg-10
-                        textarea#inputScript(name='script', data-editor="javascript", rows="10")
+                        textarea#inputScript(name='script', data-editor="javascript")
                       .col-lg-1
                     .form-group
                       br
@@ -135,6 +135,12 @@ block content
 
         var editor = ace.edit(editDiv[0]);
 
+        $("#inputScript").resizable({
+          resize: function( event, ui ) {
+              editor.resize();
+          }
+        });
+
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
         });
@@ -147,11 +153,6 @@ block content
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
 
-        $("#this").resizable({
-          resize: function( event, ui ) {
-              editor.resize();
-          }
-        });
       });
     });
 
