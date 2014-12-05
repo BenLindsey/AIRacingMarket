@@ -55,66 +55,60 @@ block content
           }
       };
 
-  ul.nav.nav-tabs
-    li.active
-      a(href="", data-toggle="tab")#tab1 Edit
-    li
-      a(href="", data-toggle="tab")#tab2 View
-
-  #tab-edit
+  #editor
     .div(align='left')
       div.well.bs-component
         form#newScriptForm.form-horizontal(method='post')
             fieldset
-                .row
+              .row
                   .col-lg-14
                     .form-group
                       label.col-lg-1.control-label(for='inputScriptName') Script
-                      .col-lg-10
+                      .col-lg-5
                         input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
+                      .col-lg-4
+                      button.btn.btn-default(type='button')#hide-editor Hide
                       .col-lg-1
                     .form-group
                       label.col-lg-1.control-label(for='inputScript')
                       .col-lg-10
-                        textarea#inputScript(name='script', data-editor="javascript", rows="20")
+                        textarea#inputScript(name='script', data-editor="javascript", rows="10")
                       .col-lg-1
                     .form-group
+                      br
                       label.col-lg-1.control-label(for='inputAIName') Enemy
-                      .col-lg-10
+                      .col-lg-5
                         select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
                             - if (allScripts.length) {
                             each entry, i in allScripts
                                 option= entry.scriptName
                             - }
                       .col-lg-1
-                    .form-group
                       .col-lg-6.col-lg-offset-2
-                        .btn-group
-                          button.btn.btn-default(type='button', onclick='updateScript()') Update
-                          button.btn.btn-primary(type='submit') Submit
-                          button.btn.btn-danger(type='button', onclick='restartRace()') Restart
+                      .btn-group
+                        button.btn.btn-default(type='button', onclick='updateScript()') Update
+                        button.btn.btn-primary(type='submit') Submit
+                        button.btn.btn-danger(type='button', onclick='restartRace()') Restart
+  #restore-editor
+    button.btn-default.btn-lg.btn-block(type='button')#show-editor Restore Editor
+    br
 
   #tab-game
-    include ../public/WebBuild.html
+    div.well.bs-component
+      include ../public/WebBuild.html
 
   script.
       $(function() {
-        $("#tab1").click(function() {
-          $("#unityPlayer").height("1");
-          $("#unityPlayer").width("1");
-          $("#tab-edit").show();
+        $("#hide-editor").click(function() {
+          $("#editor").toggle();
+          $("#show-editor").toggle();
         });
-
-        $("#tab2").one("click", function() {
-          $("#unityPlayer").show();
+      });
+      $(function() {
+        $("#show-editor").click(function() {
+          $("#editor").toggle();
+          $("#show-editor").toggle();
         });
-
-        $("#tab2").click(function() {
-          $("#tab-edit").hide();
-          $("#unityPlayer").height("661px");
-          $("#unityPlayer").width("1080px");
-        });
-
       });
 
 
@@ -122,8 +116,8 @@ block content
   script(type='text/javascript').
     $(document).ready(function () {
 
-      $("tab-edit").show();
-      $("#unityPlayer").hide();
+      $("#show-editor").hide();
+      $("#editor").show();
 
       $('textarea[data-editor]').each(function () {
 
