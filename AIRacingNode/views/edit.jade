@@ -136,7 +136,7 @@ block content
         var editor = ace.edit(editDiv[0]);
 
         editor.setOptions({
-          maxLines:20
+          maxLines:15
         });
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
@@ -150,6 +150,10 @@ block content
         editor.setFontSize("14px");
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
+        editor.setOption("scrollPastEnd", false);
+        editor.setOption("vScrollBarAlwaysVisible", true);
+
+
       });
     });
 
