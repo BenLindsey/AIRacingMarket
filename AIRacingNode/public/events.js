@@ -110,8 +110,12 @@ var buildUpdate = function(script) {
   };
   
   When.And = function() {
-      this.join = true;
-      
+      this.and = true;
+      return this;
+  };
+  
+  When.Or = function() {
+      this.or = true;
       return this;
   };
   
@@ -148,18 +152,26 @@ var buildUpdate = function(script) {
   	        });
               }
               
-              if(this.join) {
+              if(this.and) {
               	this.events[this.events.length - 1]
           	  = function(previous, f) {
 	              return function(api) {
 	                return previous(api) && f(api);
 	              };
       		    }(this.events[this.events.length - 1], func);
+              } else if(this.or) {
+                this.events[this.events.length - 1]
+          	  = function(previous, f) {
+	              return function(api) {
+	                return previous(api) || f(api);
+	              };
+      		    }(this.events[this.events.length - 1], func);
               } else {
               	this.events.push(func);
               }
               
-              this.join = false;
+              this.and = false;
+              this.or = false;
               this.invert = false;
               return this;
           };
