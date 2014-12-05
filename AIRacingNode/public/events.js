@@ -129,7 +129,9 @@ var buildUpdate = function(script) {
       "NextCornerLeft" : function(api) { return api.GetNextCornerAmount() < 0; },
       "NextCornerRight" : function(api) { return api.GetNextCornerAmount() > 0; },
       "NextCornerDistanceBetween" : function(api, arg, arg2) { return api.GetDistanceToNextCorner() >= arg
-                                                                   && api.GetDistanceToNextCorner() <= arg2 },
+                                                                   && api.GetDistanceToNextCorner() <= arg2; },
+      "NextCornerDistanceLessThan" : function(api, arg) { return api.GetDistanceToNextCorner() < arg; },
+      "NextCornerDistanceMoreThan" : function(api, arg) { return api.GetDistanceToNextCorner() > arg; },
   };
   
   //Build events TODO Add api gets
