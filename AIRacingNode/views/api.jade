@@ -1,0 +1,56 @@
+include ./basic_navigator.jade
+
+block content
+  h1.
+    API Documentation
+  br
+  small.
+    Navigate to :
+  ul
+    li
+      a(href="#snippet1") Snippet 1
+    li
+      a(href="#snippet2") Snippet 2 
+  hr
+
+  .row
+    a(name="snippet1")
+    .col-lg-5
+      p.
+        Snippet 1
+      textarea(name='snip1', rows="2", data-editor="javascript") Snippet 1 \\wagwan
+
+  hr
+
+  .row
+    a(name="snippet2")
+    .col-lg-5
+      p.
+        Snippet 2
+      textarea(name='snip2', rows="2", data-editor="javascript") Snippet 2
+
+  script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
+  script(type='text/javascript').
+    $(document).ready(function () {
+    $('textarea[data-editor]').each(function () {
+          var textarea = $(this);
+          var mode = textarea.data('editor');
+
+          var editDiv = $('<div>', {
+            position:'absolute',
+            width:textarea.parent().width(),
+            height:textarea.height(),
+          }).insertBefore(textarea);
+
+          textarea.css('display', 'none');
+
+          var editor = ace.edit(editDiv[0]);
+          editor.setReadOnly(true);
+          editor.getSession().setUseWorker(false);
+          editor.renderer.setShowGutter(false);
+          editor.getSession().setValue(textarea.val());
+          editor.getSession().setMode("ace/mode/" + mode);
+          editor.setFontSize("18px");
+          editor.setTheme("ace/theme/solarized_light");
+        });
+      });

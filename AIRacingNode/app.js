@@ -19,6 +19,7 @@ var monk = require('monk');
 var db = monk(configDB.url);
 
 var routes = require('./routes/index');
+var api = require('./routes/api');
 var script = require('./routes/script');
 var multiplayer = require('./routes/multiplayer');
 var time = require('./routes/time');
@@ -60,6 +61,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', routes);
+app.use('/api', api);
 app.use('/script', script);
 app.use('/time', time);
 app.use('/leaderboard', leaderboard);
