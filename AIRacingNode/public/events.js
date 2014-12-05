@@ -113,7 +113,9 @@ var buildUpdate = function(script) {
       "CarOnRight" : function(api) { return api.CarOnRight(); },
       "CarOnLeft" : function(api) { return api.CarOnLeft(); },
       "CarInFront" : function(api) { return api.CarInFront(); },
-      "RaceStarts" : function(api, state) { var temp = state.raceStarts; state.raceStarts = false; return temp; },
+      "RaceStarts" : function(api, arg, state) { var temp = state.raceStarts; state.raceStarts = false; return temp; },
+      "SpeedLessThan" : function(api, arg) { return api.GetSpeed() < arg; },
+      "SpeedMoreThan" : function(api, arg) { return api.GetSpeed() > arg; },
   };
   
   //Build events TODO Add api gets
@@ -123,14 +125,14 @@ var buildUpdate = function(script) {
       When[event] = function(eventChecker) {
       	  var state = { raceStarts : true };
       	  
-          return function() {
+          return function(arg) {
               if(this.invert) {  	
   	        this.events.push(function(api) {
-  	            return !eventChecker(api, state);
+  	            return !eventChecker(api, arg, state);
   	        });
               } else {
               	this.events.push(function(api) {
-              	    return eventChecker(api, state);
+              	    return eventChecker(api, arg, state);
   	        });
               }
               
