@@ -22,7 +22,7 @@ block content
         api.SetThrottle(70) \\Sets acceleration speed, -100 to 100
         api.SetBrake(50)    \\Applies a braking force, 0 to 100
         api.Boost()         \\Triggers a boost
-        api.GetTimeToNextBoost() \\Returns the time until you can boost agian
+        api.GetTimeToNextBoost() \\Returns the time until you can boost again
 
   hr
 
@@ -32,9 +32,9 @@ block content
       p.
         Steering Commands - Initially cars will follow the middle lane
       textarea(name='snip2', rows='6', data-editor="javascript"). 
-        api.SteerToRight()  \\Sets car to follow right lane
-        api.SteerToMiddle() \\Sets car to follow middle lane
-        api.SteerToLane()   \\Sets car to follow left lane
+        api.SteerToRight()  \\Sets your car to follow right lane
+        api.SteerToMiddle() \\Sets your car to follow middle lane
+        api.SteerToLane()   \\Sets your car to follow left lane
         api.ChangeLaneRight() \\Changes lane to the right
         api.ChangeLaneLeft()  \\Changes lane to the left 
 
@@ -47,7 +47,7 @@ block content
         Corner Commands
       textarea(name='snip3', rows='10', data-editor="javascript"). 
         api.GetDistanceToNextCorner() 
-                \\Return the distance to the start of the next corner
+                \\Returns the distance to the start of the next corner
                 \\Returns 0 if you are currently on a corner
         api.GetNextCornerAmount() 
                  \\Returns the sharpness of the next corner
