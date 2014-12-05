@@ -78,6 +78,11 @@
 			    	case "Multiplayer":
 			    	    u.getUnity().SendMessage("StartingGrid", "SetMultiplayerMode", "");	
 			    	    break;
+			    	default:
+			    	    restartRace = function() {
+			    	    	u.getUnity().SendMessage("StartingGrid", "ResetRace", "")
+			    	    };
+			    	    break;
 			    }	
 
 			    u.getUnity().SendMessage("StartingGrid", "StartRace", "");
