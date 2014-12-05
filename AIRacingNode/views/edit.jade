@@ -82,11 +82,7 @@ block content
                         select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
                             - if (allScripts.length) {
                             each entry, i in allScripts
-                              - if (entry.ScriptName == editScript) {
-                                option(selected)= entry.scriptName
-                              - } else {
                                 option= entry.scriptName
-                              - }
                             - }
                       .col-lg-1
                     .form-group
