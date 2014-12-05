@@ -71,14 +71,15 @@
 		            console.log("Car model set to " + carname);
 		            u.getUnity().SendMessage("StartingGrid", "SetCarModel", carname)
 				
-			    switch(gamemode) {
-			    	case "Tournament":
-			            u.getUnity().SendMessage("StartingGrid", "SetTournamentMode", "");
-			    	    break;
-			    	case "Multiplayer":
-			    	    u.getUnity().SendMessage("StartingGrid", "SetMultiplayerMode", "");	
-			    	    break;
-			    }	
+			    if(gamemode == "Tournament") {
+			    	u.getUnity().SendMessage("StartingGrid", "SetTournamentMode", "");
+			    } else if (gamemode == "Multiplayer") {
+			    	u.getUnity().SendMessage("StartingGrid", "SetMultiplayerMode", "");	
+			    } else {
+			    	restartRace = function() {
+			    	u.getUnity().SendMessage("StartingGrid", "ResetRace", "")
+			    	};
+			    }
 
 			    u.getUnity().SendMessage("StartingGrid", "StartRace", "");
 			}
