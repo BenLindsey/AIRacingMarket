@@ -18,11 +18,11 @@ block content
     .col-lg-5
       p.
         Speed Control Commands
-      textarea(name='snip1', rows='3', data-editor="javascript").
+      textarea(name='snip1', rows='5', data-editor="javascript").
         api.SetThrottle(70) \\Sets acceleration speed, -100 to 100
         api.SetBrake(50)    \\Applies a braking force, 0 to 100
         api.Boost()         \\Triggers a boost
-        
+        api.GetTimeToNextBoost() \\Returns the time untill you can boost agian
 
   hr
 
@@ -31,7 +31,7 @@ block content
     .col-lg-5
       p.
         Steering Commands - Initially cars will follow the middle lane
-      textarea(name='snip2', rows='5', data-editor="javascript"). 
+      textarea(name='snip2', rows='6', data-editor="javascript"). 
         api.SteerToRight()  \\Sets car to follow right lane
         api.SteerToMiddle() \\Sets car to follow middle lane
         api.SteerToLane()   \\Sets car to follow left lane
@@ -45,13 +45,25 @@ block content
     .col-lg-5
       p.
         Corner Commands
-      textarea(name='snip3', rows='6', data-editor="javascript"). 
+      textarea(name='snip3', rows='7', data-editor="javascript"). 
         api.GetDistanceToNextCorner() \\Gets the distance to the start of the next corner
                                       \\ returns 0 if currently on a corner
-        api.GetNextCornerAmount() \\Returns the sharpness the next corner
+        api.GetNextCornerAmount() \\Returns the sharpness of the next corner
                                   \\A value between -1 and 1
                                   \\Positive for a right turn
                                   \\Negative for a left turn
+
+  hr
+
+  .row
+    a(name="snippet4")
+    .col-lg-5
+      p.
+        Opponenet Information
+      textarea(name='snip4', rows='4', data-editor="javascript"). 
+        api.CarInFront() \\Returns true if a car is in front of you
+        api.CarOnRight() \\Returns true if a car is on your right
+        api.CarOnLeft()  \\Returns true if a car is on your left
   
   script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
   script(type='text/javascript').
