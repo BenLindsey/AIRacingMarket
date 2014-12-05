@@ -8,6 +8,10 @@ public class CameraManager : MonoBehaviour {
     private int activeCamera = 0;
     public int ActiveCamera { get { return activeCamera; } }
 
+    private bool automaticCamera = false;
+    private float cameraTimer = 0f;
+    private const float CAMERA_TOGGLE_RATE = 4f;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -15,7 +19,11 @@ public class CameraManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetButtonDown("CameraToggle")) {
+        cameraTimer += Time.deltaTime;
+	    if (Input.GetButtonDown("CameraToggle") || (automaticCamera && cameraTimer > CAMERA_TOGGLE_RATE)) {
+
+            // Reset timer.
+            cameraTimer = 0f;
 
             // Disable the current camera and destroy its audio listener. Unity
             // will complain about multiple audio listeners even if only one is
@@ -39,6 +47,10 @@ public class CameraManager : MonoBehaviour {
                 cameras[activeCamera].gameObject.AddComponent<AudioListener>();
             }
         }
+    }
+
+    public void SetAutomaticCamera() {
+        automaticCamera = true;
     }
 }
 

@@ -69,8 +69,8 @@ public class OurCar : MonoBehaviour {
     private bool fovIncrease = false;
     private float fov = FOV_NORMAL;
     private const int FOV_NORMAL = 60;
-    private const int FOV_MAX = 100;
-    private const int FOV_CHANGE_MAX = 180; // fov will increase to this but the camera's fov will be capped at FOV_MAX.
+    private const int FOV_MAX = 75;
+    private const int FOV_CHANGE_MAX = 150; // fov will increase to this but the camera's fov will be capped at FOV_MAX.
     private const float BOOST_FOV_BASE_CHANGE = (FOV_CHANGE_MAX - FOV_NORMAL) / (2 / 0.01f);
     private const float BOOST_FOV_INC = 5 * BOOST_FOV_BASE_CHANGE / 2; // Spend 2/5 of the time increasing the FOV.
     private const float BOOST_FOV_DEC = 5 * BOOST_FOV_BASE_CHANGE / 3; // Spend the rest of the time decreasing.
@@ -95,6 +95,8 @@ public class OurCar : MonoBehaviour {
 
 	// Update is called once per frame
     void FixedUpdate() {
+
+        Boost();
 
 		float maxBrakeForce = -Mathf.Min(throttle, -brake);
 

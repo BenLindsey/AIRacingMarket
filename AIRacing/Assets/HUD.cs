@@ -51,6 +51,9 @@ public class HUD : MonoBehaviour {
         Debug.Log("SetTournamentMode called");
 
         SetMode(RaceMode.Tournament);
+        if (raceMode == RaceMode.Tournament) {
+            carManager.cameraManager.SetAutomaticCamera();
+        }
     }
 
     private void SetMode(RaceMode mode) {
@@ -80,6 +83,7 @@ public class HUD : MonoBehaviour {
 
 	// Use this for initialization
 	public void Start () {
+        SetTournamentMode();
         checkpoints = LoadCheckpoints();
 
         style = new GUIStyle();
