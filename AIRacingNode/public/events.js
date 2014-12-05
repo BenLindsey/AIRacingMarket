@@ -144,7 +144,7 @@ var buildUpdate = function(script) {
   console.log("Building actions");
   var actions = ["SetSteer", "SetBrake", "SetThrottle", 
   	       "ChangeLaneRight",  "ChangeLaneLeft", 
-  	       "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+  	       "SteerToMiddle", "SteerToLeft", "SteerToRight", "Boost"];
   for(var j = 0; j < actions.length; j++) {
       When[actions[j]] = function(action) {
           return function(arg) {
