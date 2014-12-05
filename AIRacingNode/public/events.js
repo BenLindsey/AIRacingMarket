@@ -151,7 +151,7 @@ var buildUpdate = function(script) {
               } else {
               	func = function(api) {
               	    return eventChecker(api, arg, arg2, state);
-  	        });
+  	        };
               }
               
               if(this.and) {
