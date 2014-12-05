@@ -111,17 +111,37 @@ var buildUpdate = function(script) {
   
   //Build events TODO Add api gets
   console.log("Building events");
-  var events = ["CarOnRight", "CarOnLeft", "CarInFront"];
+  var events = ["CarOnRight", "CarOnLeft", "CarInFront", "RaceStarts"];
   for(var j = 0; j < events.length; j++) {
       When[events[j]] = function(event) {
+      	  var raceStarts = true;
+      	  
           return function() {
               if(this.invert) {  	
   	        this.events.push(function(api) {
-  	            return !api[event]();
+  	            if(event == "RaceStarts") {
+  	            	if(raceStarts) {
+  	            	   raceStarts = false;
+  	            	   return false;
+  	            	} else {
+  	            	   return true;
+  	            	}
+  	            } else {
+  	            	return !api[event]();
+  	            }
   	        });
               } else {
               	this.events.push(function(api) {
-  	            return api[event]();
+              	    if(event == "RaceStarts") {
+  	            	if(raceStarts) {
+  	            	   raceStarts = false;
+  	            	   return true;
+  	            	} else {
+  	            	   return false;
+  	            	}
+  	            } else {
+  	            	return api[event]();
+  	            }
   	        });
               }
               
