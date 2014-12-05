@@ -76,7 +76,7 @@ block content
     $(document).ready(function () {
     $('textarea[data-editor]').each(function () {
           var textarea = $(this);
-          textarea.resizable();
+          $(this).resizable();
           var mode = textarea.data('editor');
 
           var editDiv = $('<div>', {
@@ -88,6 +88,9 @@ block content
           textarea.css('display', 'none');
 
           var editor = ace.edit(editDiv[0]);
+          editor.getSession().on('change', function(){
+            textarea.val(editor.getSession().getValue());
+          });
           editor.setReadOnly(true);
           editor.getSession().setUseWorker(false);
           editor.renderer.setShowGutter(false);
@@ -98,5 +101,6 @@ block content
           editor.setOptions({
             maxLines:Infinity
           });
+          editor.resize();
         });
       });
