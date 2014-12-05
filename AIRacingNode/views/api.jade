@@ -8,17 +8,21 @@ block content
     Navigate to :
   ul
     li
-      a(href="#snippet1") Snippet 1
+      a(href="#snippet1") Speed Control Commands
     li
-      a(href="#snippet2") Snippet 2 
+      a(href="#snippet2") Steering Commands
+    li
+      a(href="#snippet3") Corner Commands
+    li
+      a(href="#snippet4") Opponent Information
   hr
 
   .row
     a(name="snippet1")
-    .col-lg-5
+    .col-lg-10
       p.
         Speed Control Commands
-      textarea(name='snip1', rows='5', data-editor="javascript").
+      textarea(name='snip1', data-editor="javascript").
         api.SetThrottle(70)      \\Sets acceleration speed, -100 to 100
         api.SetBrake(50)         \\Applies a braking force, 0 to 100
         api.Boost()              \\Triggers a boost
@@ -28,10 +32,10 @@ block content
 
   .row
     a(name="snippet2")
-    .col-lg-5
+    .col-lg-10
       p.
         Steering Commands - Initially cars will follow the middle lane
-      textarea(name='snip2', rows='6', data-editor="javascript"). 
+      textarea(name='snip2', data-editor="javascript"). 
         api.SteerToRight()    \\Sets your car to follow right lane
         api.SteerToMiddle()   \\Sets your car to follow middle lane
         api.SteerToLane()     \\Sets your car to follow left lane
@@ -42,10 +46,10 @@ block content
 
   .row
     a(name="snippet3")
-    .col-lg-5
+    .col-lg-10
       p.
         Corner Commands
-      textarea(name='snip3', rows='9', data-editor="javascript"). 
+      textarea(name='snip3', data-editor="javascript"). 
         api.GetDistanceToNextCorner() 
                 \\Returns the distance to the start of the next corner
                 \\Returns 0 if you are currently on a corner
@@ -61,8 +65,8 @@ block content
     a(name="snippet4")
     .col-lg-5
       p.
-        Opponenet Information
-      textarea(name='snip4', rows='4', data-editor="javascript"). 
+        Opponent Information
+      textarea(name='snip4', data-editor="javascript"). 
         api.CarInFront() \\Returns true if a car is in front of you
         api.CarOnRight() \\Returns true if a car is on your right
         api.CarOnLeft()  \\Returns true if a car is on your left
@@ -88,7 +92,7 @@ block content
           editor.renderer.setShowGutter(false);
           editor.getSession().setValue(textarea.val());
           editor.getSession().setMode("ace/mode/" + mode);
-          editor.setFontSize("18px");
+          editor.setFontSize("16px");
           editor.setTheme("ace/theme/solarized_light");
         });
       });
