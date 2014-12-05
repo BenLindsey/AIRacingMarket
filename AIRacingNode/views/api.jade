@@ -17,8 +17,12 @@ block content
     a(name="snippet1")
     .col-lg-5
       p.
-        Snippet 1
-      textarea(name='snip1', rows="2", data-editor="javascript") Snippet 1 \\wagwan
+        Speed Control Commands
+      textarea(name='snip1', rows='5', data-editor="javascript").
+        api.SetThrottle(70)      \\Sets acceleration speed, -100 to 100
+        api.SetBrake(50)         \\Applies a braking force, 0 to 100
+        api.Boost()              \\Triggers a boost
+        api.GetTimeToNextBoost() \\Returns the time until you can boost again
 
   hr
 
@@ -26,9 +30,43 @@ block content
     a(name="snippet2")
     .col-lg-5
       p.
-        Snippet 2
-      textarea(name='snip2', rows="2", data-editor="javascript") Snippet 2
+        Steering Commands - Initially cars will follow the middle lane
+      textarea(name='snip2', rows='6', data-editor="javascript"). 
+        api.SteerToRight()    \\Sets your car to follow right lane
+        api.SteerToMiddle()   \\Sets your car to follow middle lane
+        api.SteerToLane()     \\Sets your car to follow left lane
+        api.ChangeLaneRight() \\Changes lane to the right
+        api.ChangeLaneLeft()  \\Changes lane to the left 
 
+  hr
+
+  .row
+    a(name="snippet3")
+    .col-lg-5
+      p.
+        Corner Commands
+      textarea(name='snip3', rows='9', data-editor="javascript"). 
+        api.GetDistanceToNextCorner() 
+                \\Returns the distance to the start of the next corner
+                \\Returns 0 if you are currently on a corner
+        api.GetNextCornerAmount() 
+                \\Returns the sharpness of the next corner
+                \\A value between -1 and 1
+                \\Positive for a right turn
+                 \\Negative for a left turn
+
+  hr
+
+  .row
+    a(name="snippet4")
+    .col-lg-5
+      p.
+        Opponenet Information
+      textarea(name='snip4', rows='4', data-editor="javascript"). 
+        api.CarInFront() \\Returns true if a car is in front of you
+        api.CarOnRight() \\Returns true if a car is on your right
+        api.CarOnLeft()  \\Returns true if a car is on your left
+  
   script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
   script(type='text/javascript').
     $(document).ready(function () {
