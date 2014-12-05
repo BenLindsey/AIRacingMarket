@@ -129,7 +129,6 @@ block content
           position:'absolute',
           width:textarea.parent().width(),
           height:textarea.height(),
-          'class':textarea.attr('class')
         }).insertBefore(textarea);
 
         textarea.css('display', 'none');
@@ -148,6 +147,9 @@ block content
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
 
+        editor.setOptions({
+          maxLines:Infinity
+        });
         editor.resize();
       });
     });
