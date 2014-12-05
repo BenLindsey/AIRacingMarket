@@ -109,13 +109,23 @@ var buildUpdate = function(script) {
       return this;
   };
   
+  When.And = function() {
+      this.join = true;
+      
+      return this;
+  };
+  
   var Events = {
       "CarOnRight" : function(api) { return api.CarOnRight(); },
       "CarOnLeft" : function(api) { return api.CarOnLeft(); },
       "CarInFront" : function(api) { return api.CarInFront(); },
-      "RaceStarts" : function(api, arg, state) { var temp = state.raceStarts; state.raceStarts = false; return temp; },
+      "RaceStarts" : function(api, arg, arg2, state) { var temp = state.raceStarts; state.raceStarts = false; return temp; },
       "SpeedLessThan" : function(api, arg) { return api.GetSpeed() < arg; },
       "SpeedMoreThan" : function(api, arg) { return api.GetSpeed() > arg; },
+      "NextCornerLeft" : function(api) { return api.GetNextCornerAmount() < 0; },
+      "NextCornerRight" : function(api) { return api.GetNextCornerAmount() > 0; },
+      "NextCornerDistanceBetween" : function(api, arg, arg2) { return api.GetDistanceToNextCorner() >= arg
+                                                                   && api.GetDistanceToNextCorner() <= arg2 },
   };
   
   //Build events TODO Add api gets
@@ -125,17 +135,31 @@ var buildUpdate = function(script) {
       When[event] = function(eventChecker) {
       	  var state = { raceStarts : true };
       	  
-          return function(arg) {
+          return function(arg, arg2) {
+              var func = function() {};
+
               if(this.invert) {  	
-  	        this.events.push(function(api) {
-  	            return !eventChecker(api, arg, state);
-  	        });
+  	        func = function(api) {
+  	            return !eventChecker(api, arg, arg2, state);
+  	        };
               } else {
-              	this.events.push(function(api) {
-              	    return eventChecker(api, arg, state);
+              	func = function(api) {
+              	    return eventChecker(api, arg, arg2, state);
   	        });
               }
               
+              if(this.join) {
+              	this.events[this.events.length - 1]
+          	  = function(previous, f) {
+	              return function(api) {
+	                return previous(api) && f(api);
+	              };
+      		    }(this.events[this.events.length - 1], func);
+              } else {
+              	this.events.push(func);
+              }
+              
+              this.join = false;
               this.invert = false;
               return this;
           };
