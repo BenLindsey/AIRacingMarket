@@ -12,7 +12,15 @@ block content
         tbody
         - if (leaderboard.length) {
         each entry, i in leaderboard
+          - if (i == 0) { 
+          tr.success
+          - } else if (i == 1) {
+          tr.info
+          - } else if (i == 2) { 
+          tr.warning
+          - } else {
           tr
+          - }
             td= entry.name
             td= Math.round(entry.rating)
         - }
