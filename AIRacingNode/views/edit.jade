@@ -134,22 +134,21 @@ block content
 
         var editor = ace.edit(editDiv[0]);
 
+        editor.setOptions({
+          maxLines:Infinity
+        });
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
         });
 
         editor.getSession().setValue(!{JSON.stringify(script)});
+        editor.resize();
         editor.getSession().setMode("ace/mode/" + mode);
         editor.renderer.setShowGutter(true);
 
         editor.setFontSize("14px");
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
-
-        editor.setOptions({
-          maxLines:Infinity
-        });
-        editor.resize();
       });
     });
 
