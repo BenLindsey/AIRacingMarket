@@ -76,6 +76,7 @@ block content
     $(document).ready(function () {
     $('textarea[data-editor]').each(function () {
           var textarea = $(this);
+          textarea.resizable();
           var mode = textarea.data('editor');
 
           var editDiv = $('<div>', {
@@ -97,6 +98,5 @@ block content
           editor.setOptions({
             maxLines:Infinity
           });
-          editor.resizable();
         });
       });

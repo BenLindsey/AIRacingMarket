@@ -122,6 +122,7 @@ block content
       $('textarea[data-editor]').each(function () {
 
         var textarea = $(this);
+        textarea.resizable();
         var mode = textarea.data('editor');
 
         var editDiv = $('<div>', {
