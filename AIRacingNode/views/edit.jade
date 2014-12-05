@@ -117,7 +117,6 @@ block content
   script(type='text/javascript').
     $(document).ready(function () {
 
-      $('#editor-container').css('resize', 'both');
       $("#show-editor").hide();
       $("#editor").show();
 
@@ -137,12 +136,6 @@ block content
 
         var editor = ace.edit(editDiv[0]);
 
-        //textarea.resizable({
-        //  resize: function( event, ui ) {
-        //      editor.resize();
-        //  }
-        //});
-
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
           editor.resize();
@@ -156,6 +149,11 @@ block content
         editor.setTheme("ace/theme/solarized_light");
         editor.setEnableBasicAutocompletion(true);
 
+        $('#editor-container').resizable({
+          resize: function(e, ui) {
+              editor.resize();
+          }
+        });
       });
     });
 
