@@ -35,7 +35,7 @@ router.get('/', function(req, res) {
                   });  
                 } else {
                   res.render('webbuild', {scripts : scripts, levelname : req.query.levelname, 
-                                          carname: req.query.carname, gamemode: req.query.gamemode});
+                                          carname: req.query.carname, gamemode: req.query.gamemode, scores:[]});
                 }
             }
         });
