@@ -135,7 +135,7 @@ block content
         var editor = ace.edit(editDiv[0]);
 
         editor.setOptions({
-          maxLines:Infinity
+          maxLines:20
         });
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
