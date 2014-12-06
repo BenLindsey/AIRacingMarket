@@ -54,6 +54,14 @@ block content
               }
           }
       };
+      
+      var updateLanguage = function() {
+          var select = document.getElementById("selectLanguage");
+          var language = select.options[select.selectedIndex].text;
+          //language = JavaScript or CoffeeScript
+            
+          //TODO UPDATE EDITOR SYNTAX HIGHLIGHTING
+      }
 
   ul.nav.nav-tabs
     li.active
