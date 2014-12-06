@@ -1,6 +1,15 @@
 include ./basic_navigator.jade
 
 block content
+    script.
+        var updateLanguage = function() {
+            var select = document.getElementById("selectLanguage");
+            var language = select.options[select.selectedIndex].text;
+            //language = JavaScript or CoffeeScript
+            
+            //TODO UPDATE EDITOR SYNTAX HIGHLIGHTING
+        }
+
     h1.
         Create your Racing Script
 
@@ -16,7 +25,7 @@ block content
                 .form-group
                   label.col-lg-1.control-label(for='selectLanguage') Language
                   .col-lg-11
-                    select#selectLanguage.form-control(placeholder='Select Language', name="language")
+                    select#selectLanguage.form-control(placeholder='Select Language', name="language", onchange="updateLanguage()")
                         option JavaScript
                         option CoffeeScript
                 .form-group
