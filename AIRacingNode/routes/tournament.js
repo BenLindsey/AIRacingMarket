@@ -22,7 +22,7 @@ router.get('/next', function(req, res) {
         }
          
         //Select random level
-        var levels = ["OvalTrack", "EightTrack"];
+        var levels = ["OvalTrack","TheWinder", "EightTrack"];
         var levelIndex =  Math.floor(Math.random() * levels.length); 
          
         var url = "/webbuild?levelname=" + levels[levelIndex]
