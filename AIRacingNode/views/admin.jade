@@ -13,10 +13,16 @@ block content
           th Year
         tbody
         - if (users && users.length) {
-        each entry, i in users
-          tr
-            td= entry.local.email
-            td= entry.local.degree
-            td= entry.local.university
-            td= entry.local.year
+          each entry, i in users
+            tr
+              td= entry.local.email
+              td= entry.local.degree
+              td= entry.local.university
+              td= entry.local.year
+          - if (entry.local.scripts && entry.local.scripts.length) {
+            table.table.table-striped.table-hover
+              each scriptEntry, j in entry.local.scripts
+                tr
+                  td= scriptEntry
+          - }
         - }

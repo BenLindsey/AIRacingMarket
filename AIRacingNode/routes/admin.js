@@ -4,10 +4,32 @@ var router = express.Router();
 /* GET user profile. */
 router.get('/', [isLoggedIn, isAdmin], function(req, res) {
     var collection = req.db.get('users');
+    var scriptcollection = req.db.get('scriptcollection');
 
     collection.find({}, {sort : { email : 1 }}, function(e, docs) {
-        res.render('admin', {
-            "users" : docs
+
+        // Make a list of all emails, and create an array for the scripts to be stored.
+        var emails = [];
+        for (var i = 0; i < docs.length; i++) {
+            docs[i].scripts = [];
+            emails.append(docs[i].local.email);
+        };
+
+        scriptcollection.find({email: { $in: emails}}, {}, function(e, scriptdocs) {
+            // Append scripts for each email to the retrieved documents.
+            scriptdocs.forEach(function (scriptdoc) {
+               for (var i = 0; i < docs.length; i++) {
+                   if (scriptdoc.email === docs[i].local.email) {
+                       docs[i].local.scripts.append(scriptdoc.scriptName);
+                   }
+               }
+            });
+
+            // I miss SQL. I never thought I'd say it.
+
+            res.render('admin', {
+                "users" : docs
+            });
         });
     });
 });
