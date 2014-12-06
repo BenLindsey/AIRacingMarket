@@ -57,7 +57,7 @@ router.post('/', function(req, res) {
     
     if(req.body.language == "CoffeeScript") {
         user_form["csScript"] = req.body.script; 
-        user_form["script"] = coffeeScript.compile(req.body.script); 
+        user_form["script"] = coffeeScript.compile(req.body.script, {bare: true}); 
     } else {
         user_form["script"] = req.body.script;
     }
@@ -98,7 +98,7 @@ router.post('/edit/:name', isLoggedInProfile, function(req, res) {
     
     if(req.body.language == "CoffeeScript") {
         updatedScript.csScript = req.body.script; 
-        updatedScript.script = coffeeScript.compile(req.body.script); 
+        updatedScript.script = coffeeScript.compile(req.body.script, {bare: true}); 
     } else {
         updatedScript.script = req.body.script;
     }
