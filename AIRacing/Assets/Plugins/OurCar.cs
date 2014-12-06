@@ -228,13 +228,14 @@ public class OurCar : MonoBehaviour {
             wheel.collider.steerAngle = steer;
 
             // Rotate the front wheel around the y axis to show steering.
-            wheel.transform.localEulerAngles = new Vector3(wheel.transform.localEulerAngles.x,
-                wheel.collider.steerAngle, wheel.transform.localEulerAngles.z);
+            Vector3 eulerAngles = wheel.transform.localEulerAngles;
+            wheel.transform.localEulerAngles = new Vector3(eulerAngles.x,
+                wheel.collider.steerAngle - eulerAngles.z, eulerAngles.z);
         }
 
 		// Cumulatively rotate the wheel around the x axis to show speed.
 		// Magic number: rpm / 60 * 360 * fixedDeltaTime.
-		wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
+        wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
 
         // Update the vertical position of the wheel according to the suspension.
         WheelHit hit;
