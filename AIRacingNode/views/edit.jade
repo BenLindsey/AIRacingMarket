@@ -74,6 +74,13 @@ block content
                         input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
                       .col-lg-1
                     .form-group
+                      label.col-lg-1.control-label(for='selectLanguage') Language
+                      .col-lg-10
+                        select#selectLanguage.form-control(placeholder='Select Language', name="language")
+                          option JavaScript
+                          option CoffeeScript
+                      .col-lg-1
+                    .form-group
                       label.col-lg-1.control-label(for='inputScript')
                       .col-lg-10
                         textarea#inputScript(name='script', data-editor="javascript", rows="20")
