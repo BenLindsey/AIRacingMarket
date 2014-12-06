@@ -10,7 +10,8 @@ block content
   script(type='text/javascript', src='/events.js')
   script.
       var editScript = !{JSON.stringify(scriptName)};
-  
+      var language = !{JSON.stringify(language)};
+      var csScript = !{JSON.stringify(csScript)};
       var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}},
                      {name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}} ];
       var levelname = "OvalTrack";
@@ -22,7 +23,7 @@ block content
               if(s.name == !{JSON.stringify(scriptName)}) {
                   s.content = document.getElementById('newScriptForm').elements["inputScript"].value;
                   console.log("Set content to " + s.content);
-
+                  //TODO HANDLE CS
                   s.update = buildUpdate(s.content);
               }
 
@@ -30,8 +31,7 @@ block content
           });
       };
       
-      var gamemode = "Test";
-      
+      var gamemode = "Test";     
       var restartRace = function() {
           console.log("Restart!");
           //This function is replaced when unity is built!
@@ -84,9 +84,12 @@ block content
                     .form-group
                       label.col-lg-1.control-label(for='selectLanguage') Language
                       .col-lg-10
-                        select#selectLanguage.form-control(placeholder='Select Language', name="language")
+                        select#selectLanguage.form-control(placeholder='Select Language', name="language", readonly="true")
+                          - if (language != "CoffeeScript") {
                           option JavaScript
+                          - } else {
                           option CoffeeScript
+                          - }
                       .col-lg-1
                     .form-group
                       label.col-lg-1.control-label(for='inputScript')
@@ -105,7 +108,9 @@ block content
                     .form-group
                       .col-lg-6.col-lg-offset-2
                         .btn-group
+                          - if (language != "CoffeeScript") {
                           button.btn.btn-default(type='button', onclick='updateScript()') Update
+                          - }
                           button.btn.btn-primary(type='submit') Submit
                           button.btn.btn-danger(type='button', onclick='restartRace()') Restart
 
@@ -157,8 +162,14 @@ block content
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
         });
+       
+        var lang = !{JSON.stringify(language)};
 
-        editor.getSession().setValue(!{JSON.stringify(script)});
+        if(!lang || lang != "CoffeeScript") {
+          editor.getSession().setValue(!{JSON.stringify(script)});
+        } else {
+          editor.getSession().setValue(!{JSON.stringify(csScript)});
+        }
         editor.getSession().setMode("ace/mode/" + mode);
         editor.renderer.setShowGutter(true);
 

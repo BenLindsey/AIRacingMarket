@@ -11,7 +11,7 @@ router.get('/edit/:name', isLoggedInProfile, function(req, res) {
             res.render('edit', {
                 script : doc.script,
                 csScript : doc.csScript,
-                language : doc.language,
+                language : doc.language == undefined? "JavaScript" : doc.language,
                 scriptName : req.params.name,
                 allScripts : docs
             });
