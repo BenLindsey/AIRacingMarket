@@ -11,17 +11,7 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
         console.log("Retrieve documents: ");
         console.log(docs);
 
-        // Make a list of all emails, and create an array for the scripts to be stored.
-        var emails = [];
-        for (var i = 0; i < docs.length; i++) {
-            docs[i].local.scripts = [];
-            emails.push(docs[i].local.email);
-        }
-
-        console.log("Emails: ");
-        console.log(emails);
-
-        scriptcollection.find({email: { $in: emails}}, {}, function(e, scriptdocs) {
+        scriptcollection.find({}, {}, function(e, scriptdocs) {
 
             console.log("Script docs: ");
             console.log(scriptdocs);
@@ -30,6 +20,10 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
             scriptdocs.forEach(function (scriptdoc) {
                for (var i = 0; i < docs.length; i++) {
                    if (scriptdoc.email === docs[i].local.email) {
+                       // Create scrips array if necessary.
+                       if (!docs[i].local.scripts) {
+                           docs[i].local.scripts = [];
+                       }
                        docs[i].local.scripts.push(scriptdoc.scriptName);
                    }
                }
