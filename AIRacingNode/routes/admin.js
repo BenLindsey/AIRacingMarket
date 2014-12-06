@@ -40,9 +40,10 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
             console.log("Final docs: ");
             console.log(docs);
 
-            res.render('admin', {
-                "users" : docs
-            });
+            //res.render('admin', {
+            //    "users" : docs
+            //});
+            res.render('index');
         });
     });
 });
