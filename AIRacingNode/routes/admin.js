@@ -8,14 +8,24 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
 
     collection.find({}, {sort : { email : 1 }}, function(e, docs) {
 
+        console.log("Retrieve documents: ");
+        console.log(docs);
+
         // Make a list of all emails, and create an array for the scripts to be stored.
         var emails = [];
         for (var i = 0; i < docs.length; i++) {
             docs[i].scripts = [];
             emails.append(docs[i].local.email);
-        };
+        }
+
+        console.log("Emails: ");
+        console.log(emails);
 
         scriptcollection.find({email: { $in: emails}}, {}, function(e, scriptdocs) {
+
+            console.log("Script docs: ");
+            console.log(scriptdocs);
+
             // Append scripts for each email to the retrieved documents.
             scriptdocs.forEach(function (scriptdoc) {
                for (var i = 0; i < docs.length; i++) {
@@ -26,6 +36,9 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
             });
 
             // I miss SQL. I never thought I'd say it.
+
+            console.log("Final docs: ");
+            console.log(docs);
 
             res.render('admin', {
                 "users" : docs
