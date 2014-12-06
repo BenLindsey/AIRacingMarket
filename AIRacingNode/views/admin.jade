@@ -19,16 +19,16 @@ block content
               td= entry.local.degree
               td= entry.local.university
               td= entry.local.year
-            tr
-              td
-                - if (entry.local.scripts && entry.local.scripts.length) {
-                  table.table.table-striped.table-hover
-                    thead
-                      tr
-                        th Scripts
-                    tbody
-                      each scriptEntry, j in entry.local.scripts
+              - if (entry.local.scripts && entry.local.scripts.length) {
+                tr
+                  td
+                    table.table.table-striped.table-hover
+                      thead
                         tr
-                          td= scriptEntry
-                - }
+                          th Scripts
+                      tbody
+                        each scriptEntry, j in entry.local.scripts
+                          tr
+                            td= scriptEntry
+              - }
         - }
