@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var coffeeScript = require('coffee-script');
 
 router.get('/edit/:name', isLoggedInProfile, function(req, res) {
     var db = req.db;
@@ -9,6 +10,8 @@ router.get('/edit/:name', isLoggedInProfile, function(req, res) {
         collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
             res.render('edit', {
                 script : doc.script,
+                csScript : doc.csScript,
+                language : doc.language,
                 scriptName : req.params.name,
                 allScripts : docs
             });
@@ -50,7 +53,15 @@ router.post('/', function(req, res) {
     console.log("user :" );
     console.log(req.user);
 
-    user_form = {"scriptName" : req.body.scriptname, "script" : req.body.script};
+    user_form = {"scriptName" : req.body.scriptname, "language" : req.body.language};
+    
+    if(req.body.language == "CoffeeScript") {
+        user_form["csScript"] = req.body.script; 
+        user_form["script"] = coffeeScript.compile(req.body.script); 
+    } else {
+        user_form["script"] = req.body.script;
+    }
+    
     if (req.isAuthenticated()) {
         user_form["email"] = req.user.local.email;
     }
@@ -82,14 +93,22 @@ router.post('/edit/:name', isLoggedInProfile, function(req, res) {
 
     console.log("Editing " + req.body.scriptname);
     console.log("To" + req.body.script);
+    
+    var updatedScript = {"scriptName" : req.body.scriptname, "language" : req.body.language};
+    
+    if(req.body.language == "CoffeeScript") {
+        updatedScript.csScript = req.body.script; 
+        updatedScript.script = coffeeScript.compile(req.body.script); 
+    } else {
+        updatedScript.script = req.body.script;
+    }
+
+    updatedScript.email = req.user.local.email;
 
     collection.update({
         "scriptName" : req.body.scriptname
-    }, {
-        "email"      : req.user.local.email,
-        "scriptName" : req.body.scriptname,
-        "script"     : req.body.script
-    }, function (err, doc) {
+    }, updatedScript, 
+    function (err, doc) {
         if (err) {
             res.send("There was a problem adding the information to the database.");
         }
