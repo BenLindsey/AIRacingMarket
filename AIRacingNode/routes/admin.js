@@ -15,7 +15,7 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
         var emails = [];
         for (var i = 0; i < docs.length; i++) {
             docs[i].scripts = [];
-            emails.append(docs[i].local.email);
+            emails.push(docs[i].local.email);
         }
 
         console.log("Emails: ");
@@ -30,7 +30,7 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
             scriptdocs.forEach(function (scriptdoc) {
                for (var i = 0; i < docs.length; i++) {
                    if (scriptdoc.email === docs[i].local.email) {
-                       docs[i].local.scripts.append(scriptdoc.scriptName);
+                       docs[i].local.scripts.push(scriptdoc.scriptName);
                    }
                }
             });
@@ -40,10 +40,9 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
             console.log("Final docs: ");
             console.log(docs);
 
-            //res.render('admin', {
-            //    "users" : docs
-            //});
-            res.render('index');
+            res.render('admin', {
+                "users" : docs
+            });
         });
     });
 });
