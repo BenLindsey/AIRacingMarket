@@ -14,7 +14,7 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
         // Make a list of all emails, and create an array for the scripts to be stored.
         var emails = [];
         for (var i = 0; i < docs.length; i++) {
-            docs[i].scripts = [];
+            docs[i].local.scripts = [];
             emails.push(docs[i].local.email);
         }
 
