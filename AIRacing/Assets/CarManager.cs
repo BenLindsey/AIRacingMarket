@@ -86,9 +86,8 @@ public class CarManager : MonoBehaviour {
         Debug.Log("Setting car colour to " + colour);
 
         MeshRenderer carRenderer = car.transform.FindChild("OurCar/Body").GetComponent<MeshRenderer>();
-        foreach (Material material in carRenderer.materials) {
-            material.mainTexture = Resources.Load<Texture2D>("Colours/CAR_body_" + colour);
-        }
+        Material bodyMaterial = carRenderer.materials[0];
+        bodyMaterial.mainTexture = Resources.Load<Texture2D>("Colours/CAR_body_" + colour);
 
         colours.RemoveAt(selected);
     }
