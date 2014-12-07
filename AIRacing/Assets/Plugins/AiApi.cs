@@ -20,8 +20,6 @@ public class AiApi : MonoBehaviour {
 
 	OurCar car;
 
-    float lastSteer;
-
 	// Use this for initialization
 	void Start () {
 		car = GetComponent<OurCar>();
@@ -51,8 +49,6 @@ public class AiApi : MonoBehaviour {
         };
 
         SetSteer(angle);
-
-        lastSteer = angle;
     }
 
     public void ChangeLaneRight() {
