@@ -29,7 +29,7 @@ public class AiApi : MonoBehaviour {
         targetPoint = centerLane.GetPoint(targetAmountAlongSpline % 1);
 	}
 
-    void Update() {
+    void FixedUpdate() {
         if (Vector3.Distance(transform.position, targetPoint) < 15) {
             targetAmountAlongSpline += 0.003f;
             targetPoint = centerLane.GetPoint(targetAmountAlongSpline % 1);
