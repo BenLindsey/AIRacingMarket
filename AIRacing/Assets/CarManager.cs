@@ -23,7 +23,11 @@ public class CarManager : MonoBehaviour {
         "red",
         "yellow",
         "orange",
-        "green"
+        "green",
+        "blue",
+        "brown",
+        "pink",
+        "purple"
     };
 
 	public GameObject original;
