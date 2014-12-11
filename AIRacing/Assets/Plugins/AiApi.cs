@@ -25,7 +25,7 @@ public class AiApi : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		otherThing = Instantiate(thing) as GameObject;
+        //otherThing = Instantiate(thing) as GameObject;
 
 		car = GetComponent<OurCar>();
 		detector = transform.FindChild("Detector");
@@ -43,7 +43,7 @@ public class AiApi : MonoBehaviour {
             targetPoint += right * lane * laneWidth;
         }
 
-		otherThing.transform.position = targetPoint;
+        //otherThing.transform.position = targetPoint;
 
         Vector3 relativePosition = transform.InverseTransformPoint(targetPoint);
 
