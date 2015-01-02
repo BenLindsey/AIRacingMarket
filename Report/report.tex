@@ -1,21 +1,51 @@
-\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
-\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
-\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
-%\geometry{landscape}                		% Activate for for rotated page geometry
-%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
-\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
-								% TeX will automatically convert eps --> pdf in pdflatex		
+\documentclass[11pt, oneside]{report}  
+
+\usepackage{geometry} 
+\geometry{a4paper}   
+
+\usepackage{graphicx}		
+	
 \usepackage{amssymb}
+
+% -- Hide Chapter Heading -- 
+% \renewcommand{\chaptername}{}
+% \renewcommand{\thechapter}{}
+% ------------------------------------ 
+
+% -- Document Begins --
 
 \title{AI Racing Market}
 \author{The Author}
-%\date{}							% Activate to display a given date or no date
 
 \begin{document}
 \maketitle
-%\section{}
-%\subsection{}
 
 
+\tableofcontents
+
+\chapter{Executive Summary}
+No implementations details/engineering details/project management!
+
+\chapter{Introduction}
+\input{chapters/introduction}
+
+\chapter{Project Management}
+\input{chapters/project_management}
+
+\chapter{Design and Implementation}
+\input{chapters/design_and_implementation}
+
+\chapter{Evaluation}
+\input{chapters/evaluation}
+
+\chapter{Conclusion}
+\input{chapters/conclusion}
+
+\chapter{Bibliography}
+\input{chapters/bibliography}
+
+\appendix
+\chapter{Appendix}
+\input{chapters/appendix}
 
 \end{document}  
