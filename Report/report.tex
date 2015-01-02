@@ -1,25 +1,34 @@
-\documentclass[11pt, oneside]{report}  
+\documentclass[11pt]{report}  
+
+% ---- Packages ----
 
 \usepackage{geometry} 
 \geometry{a4paper}   
 
-\usepackage{graphicx}		
+\usepackage{graphicx}
+\graphicspath{ {images/} }	
 	
 \usepackage{amssymb}
 
-% -- Hide Chapter Heading -- 
-% \renewcommand{\chaptername}{}
-% \renewcommand{\thechapter}{}
-% ------------------------------------ 
+\usepackage{fancyhdr}
 
-% -- Document Begins --
+% ---- Headers ---- 
+% Config: [L]eft/[R]ight/[C]entre of [O]dd pages/[E]ven pages
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO,LE]{AI Racing Market}   
+\fancyfoot{}
+\fancyfoot[CE,CO]{\thepage}
+%\fancyfoot[LO,LE]{Chapter \thechapter}
+%\fancyfoot[RO,RE]{Group 2}
+
+% ---- Document ----
 
 \title{AI Racing Market}
-\author{The Author}
+\author{Group 2}
 
 \begin{document}
 \maketitle
-
 
 \tableofcontents
 
