@@ -10,10 +10,9 @@
 	
 \usepackage{amssymb}
 
-\usepackage{fancyhdr}
-
 % ---- Headers ---- 
 % Config: [L]eft/[R]ight/[C]entre of [O]dd pages/[E]ven pages
+\usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
 \fancyhead[RO,LE]{AI Racing Market}   
@@ -21,6 +20,11 @@
 \fancyfoot[CE,CO]{\thepage}
 %\fancyfoot[LO,LE]{Chapter \thechapter}
 %\fancyfoot[RO,RE]{Group Fuck }
+
+% ---- Citations ----
+% Usage: \cite{KEY}
+\usepackage{biblatex}
+\addbibresource{references.bib}
 
 % ---- Document ----
 
@@ -36,7 +40,7 @@
 \tableofcontents
 
 \chapter{Executive Summary}
-No implementations details/engineering details/project management!
+\input{chapters/executive_summary}
 
 \chapter{Introduction}
 \input{chapters/introduction}
@@ -54,7 +58,7 @@ No implementations details/engineering details/project management!
 \input{chapters/conclusion}
 
 \chapter{Bibliography}
-\input{chapters/bibliography}
+\printbibliography
 
 \appendix
 \chapter{Appendix}
