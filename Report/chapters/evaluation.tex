@@ -164,16 +164,49 @@ In our case this was simply used among our team to decide on a design. Which, wh
 
 From our experience using UI prototyping software such as Fluid UI, it is rigid and takes only a little less time to create a prototype than drafting up an actual web page. Paper prototypes give the impression that it is a work in process, whereas realistic prototypes can give the impression that too much time and effort has been vested in a UI for it to be changed. We consequently opted for paper prototyping to ensure we received honest feedback from Ed.
 
-\section{Hallway Testing \bf NEEDS MAJOR WORK}
-Hallway testing was our primary testing method since our target audience, Computing/Maths students, is too small to find reliable statistics through techniques such as the random sampling in A/B testing. Instead, we will setup a mock G-Research careers fair stand with one or two laptops. Our client and a colleague of his will invite students to write AI scripts, and we will assist where appropriate - we will minimise intervention.
 
-We will encourage students to take around 5-10 minutes to write their scripts, as we believe this is representative of how long a student will have at a busy careers fair. Considering only a few laptops will be available, we will provide handouts containing an API reference, short tutorial and space for making notes. Whilst a student waits for a turn on the laptop, this will let them think about the problem and potentially discuss it with other candidates or the recruiters. We will not give the students any help unless required. We will hold regular tournaments during the test and ask students for feedback after submitting their scripts. 
+\section{Automated Testing}
 
-Our primary goal is to promote G-Research, so our project should be exciting for students in order to draw more attention to their stand and consequently generate interest in G-Research. We will evaluate this by observing how much students engage with the game; ideally, there should be some competition to create the fastest script, with students returning to refine their scripts after they are pushed down on the leaderboard. Another key measure will be the time students stay at the stand: we know we need to improve our project if all students spend five minutes on the script and leave immediately afterwards, but we've accomplished this goal if students start asking for more time and stay to watch other scripts compete in tournaments.
+We integrated testing into our project lifecycle, ensuring that we tested often, and consequently kept the code in a releasable state. Automated testing helped us identify issues early and fix them immediately - this flexible response to change is key in agile software development, the development approach we have adopted. 
 
-After the testing, we will discuss how the game generated interest in G-Research with our client and his colleague. From their experience running careers fair stands, it is likely they will have a good idea of whether the software proved valuable as a means of connecting with prospective candidates, or whether it simply functioned as a fun distraction for students. 
+As previously detailed in section {\bf X}, we used TeamCity to management continuous integration, including automated unit testing. To test the functionality of our website, we used two Node.s modules alongside the TeamCity Node plugin: Zombie.js and Mocha. Both of these tools have opZombie.js is a lightweight framework for client-side Javascript testing, and facilitates headless full-stack testing. In other words, Zombie.js let us programatically interact with a browser (without a graphical user interface). Mocha is also a Javascript testing framework, simplifying test-driven and behaviour-driven development. Mocha provides an asynchronous test runner alongside interfaces such as {\tt describe, before, after, beforeEach} that simplify the declaration of test specifications.
 
-An important goal of the project is the usability, as players will have limited means of learning the API given the unconventional setting of a careers fair. It is crucial that the API is easy to use with helpful tutorials and example/starter scripts. We can evaluate the usability by the quality of the scripts, for example, we know the tutorials or the API must be improved if most students submit simple low constant speed scripts or variations of the example scripts. We will ask students to rate the quality of the API, tutorials and example scripts after the test and combine this with our own insights from observing the test to evaluate the usability.
+Below is an example test and the corresponding Mocha report. This demonstrates the readability of Mocha results, alongside the highly abstracted headless interactions that Zombie.js facilitates.  \\
+
+{\bf INSERT UNIT TESTING SCREENSHOT }
+
+\section{Usability Testing}
+
+Players have limited means of learning the API given the unconventional setting of a careers fair, so it was important that users would find the game intuitive and accessible. It was crucial to produce a API that was easy to use, and supported by helpful tutorials and example/starter scripts. 
+
+One way of evaluating our project's usability was to evaluate the quality of the scripts produced by users. For example, we knew the tutorials or API needed improving if most students were submitting simple scripts (e.g. low constant speed scripts) or close variations of the example scripts. Beyond evaluating the quality of the scripts produced, we asked students to rate the quality of the API, tutorials and example scripts.
+
+\subsection{Hallway Testing}
+
+Hallway testing was our primary testing method since our target audience, Computing/Maths students, is too small to find reliable statistics through techniques such as the random sampling in A/B testing. Instead, we set up a mock G-Research careers fair stand with two laptops, and invited random students to write AI scripts.
+
+We encouraged students to take around 5-10 minutes to write their scripts, as we believed this is representative of how long a student will have at a busy careers fair. As requested by our customer, we also provided handouts containing an API reference, short tutorial and space for making notes. Whilst a student waits for a turn on the laptop, this lets them think about the problem and potentially discuss it with other candidates or the recruiters. 
+
+Although we did not prescribe a specific testing strategy, we had a few key measures:
+\vspace*{-6mm}
+\begin{enumerate} \itemsep -1pt 
+\item Time spent by a student at the stand : We knew we would need to improve our project if all students spent five minutes on their scripts and left immediately afterwards. Instead, we hoped students would ask for more time, or stay to watch other scripts compete in tournaments.
+\item Students interaction with those running the stand : Primarily this project's goal is to promote G-Research, so we wanted to observe whether the AI Racing Market was simply a fun distraction for students or a valuable means of connecting with prospective G-Research candidates.
+\end{enumerate}
+
+\subsubsection{Key Observations}
+
+Unleash the bullshit
+
+\subsection{Collaborative Testing}
+
+As stated on our value proposition canvas, the opportunity for students to collaborate with other students or G-Research employees when playing AI Racing market could be incredibly valuable. For example, a G-Research employee could use the opportunity to demonstrate how they work collaboratively on a daily basis - this is a more informative insight into how G-Research works than any dustbin-destined panflet.
+
+To gauge whether collaboration worked with the AI Racing Market, we introduced individuals (of varying programming ability) to the game and pair-programmed to iteratively produce an advanced script. We did this with individuals of different programming ability levels, for example : a second-year Computing student (advanced), third-year Geophysics student (intermediate). and two secondary-school students (inexperienced). 
+
+\subsubsection{Key Observations}
+
+Unleash the bullshit
 
 \section{Metrics \bf NEEDS MAJOR WORK}
 Metrics are an important part of the feedback process. They will allow us to easily understand which parts of the workflow are going right and wrong, in order for us to improve working efficiency. They also allow us to see if our product is working as intended, and what parts need changing - either because they don't work or as part of general improvement.
