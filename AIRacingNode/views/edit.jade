@@ -102,22 +102,16 @@ block content
                             - }
                       .col-lg-1
                       .col-lg-6.col-lg-offset-2
-<<<<<<< HEAD
-                        .btn-group
-                          - if (language != "CoffeeScript") {
-                          button.btn.btn-default(type='button', onclick='updateScript()') Update
-                          - }
-                          button.btn.btn-primary(type='submit') Submit
-                          button.btn.btn-danger(type='button', onclick='restartRace()') Restart
-=======
                       .btn-group
+                        - if (language != "CoffeeScript") {
+                        button.btn.btn-default(type='button', onclick='updateScript()') Update
+                        - }
                         button.btn.btn-default(type='button', onclick='updateScript()') Update
                         button.btn.btn-primary(type='submit') Submit
                         button.btn.btn-danger(type='button', onclick='restartRace()') Restart
   #restore-editor
     button.btn-default.btn-lg.btn-block(type='button')#show-editor Restore Editor
     br
->>>>>>> master
 
   #tab-game
     div.well.bs-component
