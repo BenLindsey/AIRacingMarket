@@ -4,6 +4,18 @@
 
 \usepackage{geometry} 
 \geometry{a4paper}  
+
+\usepackage {tikz}
+% ER Diagram
+\usetikzlibrary {er}
+\tikzset{multi attribute/.style ={attribute, double distance=1.5 pt}}
+\tikzset{derived attribute/.style={attribute, dashed}}
+\tikzset{total/.style={ double distance=1.5 pt}}
+\tikzset{every entity/.style={draw=orange, fill=orange!20}}
+\tikzset{every attribute/.style={draw=purple, fill=purple!20}}
+\tikzset{every relationship/.style={draw=green, fill=green!20}}
+\newcommand{\key}[1]{ \underline {#1}}
+
  
 \usepackage{titlesec}
 \titleformat{\chapter}[display]

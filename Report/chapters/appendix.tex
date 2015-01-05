@@ -1,3 +1,23 @@
 \section{ER Diagram}
 
+\begin{center}
+\begin{tikzpicture}[node distance=7 em]
+\node [entity] (person) {User};
+\node [relationship] (has) [below of=person] {Owns};
+\node [entity] (script) [below of=has] {Script};
+\node [attribute] (email) [left of=person] {\key{Email}} edge (person);
+\node [attribute] (pid) [above of=person] {Year?} edge (person);
+\node [attribute] (pid) [above left of=person] {Degree?} edge (person);
+\node [attribute] (pid) [above right of=person] {University?} edge (person);
+\node [attribute] (pid) [right of=person] {Hash} edge (person);
+\node [attribute] (pid) [left of=script] {\key{Name}} edge (script);
+\node [attribute] (pid) [right of=script] {Code} edge (script);
+\node [attribute] (pid) [below left of=script] {Language} edge (script);
+\node [attribute] (pid) [below right of=script] {Rating} edge (script);
+%Edge
+\path[every node/.style={font=\sffamily\small}] (person) edge node [right] {0..N} (has);
+\path[every node/.style={font=\sffamily\small}] (script) edge node [right] {1..1} (has);
+\end{tikzpicture}
+\end{center}
+
 \section{Instruction Manual}
