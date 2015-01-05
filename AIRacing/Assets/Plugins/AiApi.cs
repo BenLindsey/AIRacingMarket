@@ -3,6 +3,9 @@ using System.Collections;
 
 public class AiApi : MonoBehaviour {
 
+	public GameObject thing;
+	private GameObject otherThing;
+
     public LayerMask walls;
     public LayerMask cars;
 
@@ -20,16 +23,16 @@ public class AiApi : MonoBehaviour {
 
 	OurCar car;
 
-    float lastSteer;
-
 	// Use this for initialization
 	void Start () {
+        //otherThing = Instantiate(thing) as GameObject;
+
 		car = GetComponent<OurCar>();
 		detector = transform.FindChild("Detector");
         targetPoint = centerLane.GetPoint(targetAmountAlongSpline % 1);
 	}
 
-    void Update() {
+    void FixedUpdate() {
         if (Vector3.Distance(transform.position, targetPoint) < 15) {
             targetAmountAlongSpline += 0.003f;
             targetPoint = centerLane.GetPoint(targetAmountAlongSpline % 1);
@@ -39,6 +42,8 @@ public class AiApi : MonoBehaviour {
 
             targetPoint += right * lane * laneWidth;
         }
+
+        //otherThing.transform.position = targetPoint;
 
         Vector3 relativePosition = transform.InverseTransformPoint(targetPoint);
 
@@ -51,8 +56,6 @@ public class AiApi : MonoBehaviour {
         };
 
         SetSteer(angle);
-
-        lastSteer = angle;
     }
 
     public void ChangeLaneRight() {
@@ -103,7 +106,7 @@ public class AiApi : MonoBehaviour {
         if (currentArea != null) {
             return currentArea.cornerAmount;
         }
-
+		
         return trackAreaManager.GetNextTrackArea(targetAmountAlongSpline % 1).cornerAmount;
     }
 

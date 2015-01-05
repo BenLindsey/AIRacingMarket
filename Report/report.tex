@@ -1,0 +1,81 @@
+\documentclass[11pt]{report}  
+
+% ---- Packages ----
+
+\usepackage{geometry} 
+\geometry{a4paper}  
+ 
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-50pt}{40pt}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }	
+	
+\usepackage{amssymb}
+
+% Tabular stuffs
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{array,multirow}
+
+\newcommand{\project}{AI Racing Market }
+
+% ---- Headers ---- 
+% Config: [L]eft/[R]ight/[C]entre of [O]dd pages/[E]ven pages
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LO,LE]{Chapter \thechapter}  
+\fancyhead[RO,RE]{AI Racing Market}   
+\fancyfoot{}
+\fancyfoot[CE,CO]{\thepage}
+%\fancyfoot[LO,LE]{Chapter \thechapter}
+%\fancyfoot[RO,RE]{Author}
+
+% ---- Citations ----
+% Usage: \cite{KEY}
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+% ---- Document ----
+
+\title{	
+  {\huge \project}\\
+  {\large Dr Evil is watching.}\\[2em]
+  {\includegraphics[scale=0.5]{G-Research.jpg}}
+}
+\author{Ben Lindsey, Thomas Kaplan}
+
+\begin{document}
+\maketitle
+
+\chapter*{Executive Summary}
+\input{chapters/executive_summary}
+
+\tableofcontents
+
+\chapter{Introduction}
+\input{chapters/introduction}
+
+\chapter{Project Management TODO UPDATE TENSE/CHANGES}
+\input{chapters/project_management}
+
+\chapter{Design and Implementation TODO REFERENCE WEBSITES OF TOOLS }
+\input{chapters/design_and_implementation}
+
+\chapter{Evaluation TODO MOVE SOME TO DESIGN?}
+\input{chapters/evaluation}
+
+\chapter{Conclusion}
+\input{chapters/conclusion}
+
+\chapter{Bibliography}
+\printbibliography
+
+\appendix
+\chapter{Appendix}
+\input{chapters/appendix}
+
+\end{document}  

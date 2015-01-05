@@ -1,0 +1,124 @@
+include ./basic_navigator.jade
+
+block content
+  h1.
+    API Documentation
+  br
+  .row
+    .col-lg-3
+      small.
+        API Commands  :
+      ul
+        li
+          a(href="#snippet1") Speed Control Commands
+        li
+          a(href="#snippet2") Steering Commands
+        li
+          a(href="#snippet3") Corner Commands
+        li
+          a(href="#snippet4") Opponent Information
+    .col-lg-3
+      small.
+        Event API  :
+      ul
+        li
+          a(href="#snippet5") Event Stuffs
+    .col-lg-3  
+      small.
+        Example Scripts  :
+      ul
+        li
+          a(href="#example1") Example Stuffs
+    
+  hr
+  h2.
+    API Commands 
+  br
+
+  .row
+    a(name="snippet1")
+    .col-lg-10
+      p.
+        Speed Control Commands
+      textarea(name='snip1', data-editor="javascript").
+        api.SetThrottle(70)      \\Sets acceleration speed, -100 to 100
+        api.SetBrake(50)         \\Applies a braking force, 0 to 100
+        api.Boost()              \\Triggers a boost
+        api.GetTimeToNextBoost() \\Returns the time until you can boost again
+  br
+  .row
+    a(name="snippet2")
+    .col-lg-10
+      p.
+        Steering Commands - Initially cars will follow the middle lane
+      textarea(name='snip2', data-editor="javascript"). 
+        api.SteerToRight()    \\Sets your car to follow right lane
+        api.SteerToMiddle()   \\Sets your car to follow middle lane
+        api.SteerToLane()     \\Sets your car to follow left lane
+        api.ChangeLaneRight() \\Changes lane to the right
+        api.ChangeLaneLeft()  \\Changes lane to the left 
+  br
+  .row
+    a(name="snippet3")
+    .col-lg-10
+      p.
+        Corner Commands
+      textarea(name='snip3', data-editor="javascript"). 
+        api.GetDistanceToNextCorner() 
+                \\Returns the distance to the start of the next corner
+                \\Returns 0 if you are currently on a corner
+        api.GetNextCornerAmount() 
+                \\Returns the sharpness of the next corner
+                \\A value between -1 and 1
+                \\Positive for a right turn
+                \\Negative for a left turn
+  br
+  .row
+    a(name="snippet4")
+    .col-lg-5
+      p.
+        Opponent Information
+      textarea(name='snip4', data-editor="javascript"). 
+        api.CarInFront() \\Returns true if a car is in front of you
+        api.CarOnRight() \\Returns true if a car is on your right
+        api.CarOnLeft()  \\Returns true if a car is on your left
+  hr
+  h2.
+    Event API
+  hr
+  h2.
+    Example Scripts
+  br
+
+  script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
+  script(type='text/javascript').
+    $(document).ready(function () {
+    $('textarea[data-editor]').each(function () {
+          var textarea = $(this);
+          var mode = textarea.data('editor');
+
+          var editDiv = $('<div>', {
+            position:'absolute',
+            width:textarea.parent().width(),
+            height:textarea.height(),
+          }).insertBefore(textarea);
+
+          textarea.css('display', 'none');
+
+          var editor = ace.edit(editDiv[0]);
+          editor.getSession().on('change', function(){
+            textarea.val(editor.getSession().getValue());
+          });
+          editor.setReadOnly(true);
+          editor.getSession().setUseWorker(false);
+          editor.renderer.setShowGutter(false);
+          editor.getSession().setValue(textarea.val());
+          editor.getSession().setMode("ace/mode/" + mode);
+          editor.setFontSize("16px");
+          editor.setTheme("ace/theme/solarized_light");
+          editor.setOptions({
+            maxLines:Infinity
+          });
+          editor.resize();
+        });
+      });

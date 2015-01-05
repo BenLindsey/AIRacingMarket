@@ -109,33 +109,82 @@ var buildUpdate = function(script) {
       return this;
   };
   
+  When.And = function() {
+      this.and = true;
+      return this;
+  };
+  
+  When.Or = function() {
+      this.or = true;
+      return this;
+  };
+  
+  var Events = {
+      "CarOnRight" : function(api) { return api.CarOnRight(); },
+      "CarOnLeft" : function(api) { return api.CarOnLeft(); },
+      "CarInFront" : function(api) { return api.CarInFront(); },
+      "RaceStarts" : function(api, arg, arg2, state) { var temp = state.raceStarts; state.raceStarts = false; return temp; },
+      "SpeedLessThan" : function(api, arg) { return api.GetSpeed() < arg; },
+      "SpeedMoreThan" : function(api, arg) { return api.GetSpeed() > arg; },
+      "NextCornerLeft" : function(api) { return api.GetNextCornerAmount() < 0; },
+      "NextCornerRight" : function(api) { return api.GetNextCornerAmount() > 0; },
+      "NextCornerDistanceBetween" : function(api, arg, arg2) { return api.GetDistanceToNextCorner() >= arg
+                                                                   && api.GetDistanceToNextCorner() <= arg2; },
+      "NextCornerDistanceLessThan" : function(api, arg) { return api.GetDistanceToNextCorner() < arg; },
+      "NextCornerDistanceMoreThan" : function(api, arg) { return api.GetDistanceToNextCorner() > arg; },
+  };
+  
   //Build events TODO Add api gets
   console.log("Building events");
-  var events = ["CarOnRight", "CarOnLeft", "CarInFront"];
-  for(var j = 0; j < events.length; j++) {
-      When[events[j]] = function(event) {
-          return function() {
+  for(var event in Events) {
+      console.log("Setting event: " + event);
+      When[event] = function(eventChecker) {
+      	  var state = { raceStarts : true };
+      	  
+          return function(arg, arg2) {
+              var func = function() {};
+
               if(this.invert) {  	
-  	        this.events.push(function(api) {
-  	            return !api[event]();
-  	        });
+  	        func = function(api) {
+  	            return !eventChecker(api, arg, arg2, state);
+  	        };
               } else {
-              	this.events.push(function(api) {
-  	            return api[event]();
-  	        });
+              	func = function(api) {
+              	    return eventChecker(api, arg, arg2, state);
+  	        };
               }
               
+              if(this.and) {
+              	this.events[this.events.length - 1]
+          	  = function(previous, f) {
+	              return function(api) {
+	                return previous(api) && f(api);
+	              };
+      		    }(this.events[this.events.length - 1], func);
+              } else if(this.or) {
+                this.events[this.events.length - 1]
+          	  = function(previous, f) {
+	              return function(api) {
+	                return previous(api) || f(api);
+	              };
+      		    }(this.events[this.events.length - 1], func);
+              } else {
+              	this.events.push(func);
+              }
+              
+              this.and = false;
+              this.or = false;
               this.invert = false;
               return this;
           };
-      }(events[j]);
+      }(Events[event]);
   }
   
   //Build actions
   console.log("Building actions");
   var actions = ["SetSteer", "SetBrake", "SetThrottle", 
   	       "ChangeLaneRight",  "ChangeLaneLeft", 
-  	       "SteerToMiddle", "SteerToLeft", "SteerToRight"];
+  	       "SteerToMiddle", "SteerToLeft", "SteerToRight", "Boost"];
   for(var j = 0; j < actions.length; j++) {
       When[actions[j]] = function(action) {
           return function(arg) {

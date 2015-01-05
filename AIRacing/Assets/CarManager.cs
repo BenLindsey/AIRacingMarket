@@ -19,6 +19,17 @@ public class CarManager : MonoBehaviour {
 	private List<GameObject> cars = new List<GameObject>();
     public List<GameObject> Cars { get { return cars; } }
 
+    private List<string> colours = new List<string>(){
+        "red",
+        "yellow",
+        "orange",
+        "green",
+        "blue",
+        "brown",
+        "pink",
+        "purple"
+    };
+
 	public GameObject original;
 
     public CameraManager cameraManager;
@@ -50,6 +61,8 @@ public class CarManager : MonoBehaviour {
         newCar.transform.position = startPositions[cars.Count].position;
         newCar.transform.rotation = startPositions[cars.Count].rotation;
 
+        SetCarColour(newCar);
+
         cars.Add(newCar);
 
         newCar.transform.FindChild("OurCar").SendMessage("SetCar", cars.Count - 1);
@@ -64,6 +77,23 @@ public class CarManager : MonoBehaviour {
         Debug.Log("Trying to add script...: " + scriptContent);
         cars[cars.Count - 1].transform.FindChild("OurCar").SendMessage("SetScriptContent", scriptContent);
         cars[cars.Count - 1].SetActive(false);
+    }
+
+    private void SetCarColour(GameObject car) {
+
+        System.Random random = new System.Random();
+        int selected = random.Next(colours.Count);
+
+        // Set a default colour (red) if we're using more than four cars.
+        string colour = colours.Count == 0 ? "red" : colours[selected];
+
+        Debug.Log("Setting car colour to " + colour);
+
+        MeshRenderer carRenderer = car.transform.FindChild("OurCar/Body").GetComponent<MeshRenderer>();
+        Material bodyMaterial = carRenderer.materials[0];
+        bodyMaterial.mainTexture = Resources.Load<Texture2D>("Colours/CAR_body_" + colour);
+
+        colours.RemoveAt(selected);
     }
 
     public void SetCarModel(string carName) {

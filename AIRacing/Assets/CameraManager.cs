@@ -3,10 +3,16 @@ using System.Collections.Generic;
 
 public class CameraManager : MonoBehaviour {
 
+	public GameObject audioListener;
+
     private List<Camera> cameras = new List<Camera>();
 
     private int activeCamera = 0;
     public int ActiveCamera { get { return activeCamera; } }
+
+    private bool automaticCamera = false;
+    private float cameraTimer = 0f;
+    private const float CAMERA_TOGGLE_RATE = 4f;
 
 	// Use this for initialization
 	void Start () {
@@ -15,30 +21,33 @@ public class CameraManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetButtonDown("CameraToggle")) {
 
-            // Disable the current camera and destroy its audio listener. Unity
-            // will complain about multiple audio listeners even if only one is
-            // enabled.
-            cameras[activeCamera].enabled = false;
-            Destroy(cameras[activeCamera].gameObject.GetComponent<AudioListener>());
+        cameraTimer += Time.deltaTime;
+	    if (Input.GetButtonDown("CameraToggle") || (automaticCamera && cameraTimer > CAMERA_TOGGLE_RATE)) {
 
-            // Activate the new camera and create an audio listener 
+            // Reset timer.
+            cameraTimer = 0f;
+
+			cameras[activeCamera].enabled = false;
+
+            // Activate the new camera 
             activeCamera = (activeCamera + 1) % cameras.Count;
             cameras[activeCamera].enabled = true;
-            cameras[activeCamera].gameObject.AddComponent<AudioListener>();
         }
+
+		audioListener.transform.position = cameras[activeCamera].transform.position;
 	}
 
     public void AddCamera(Camera camera) {
-        cameras.Add(camera);
+		if (cameras.Count != activeCamera) {
+			camera.enabled = false;
+		}
 
-        for (int i = 0; i < cameras.Count; i++) {
-            cameras[i].enabled = (i == activeCamera);
-            if (i == activeCamera) {
-                cameras[activeCamera].gameObject.AddComponent<AudioListener>();
-            }
-        }
+        cameras.Add(camera);
+    }
+
+    public void SetAutomaticCamera() {
+        automaticCamera = true;
     }
 }
 

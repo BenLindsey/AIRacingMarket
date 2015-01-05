@@ -43,12 +43,14 @@ router.post('/', function (req, res) {
                       if (x==y) continue;
                        rxs[x] = rX(rxs[x], calcW(x, y), eX(rolds[x], rolds[y]));
                       }
+                      var count = 0;
                     collection.update({
                       "name": req.body[x]
                     },
                     {
                       "name": req.body[x],
-                      "rating": rxs[x]
+                      "rating": rxs[x],
+                      "previous": rolds[x],
                     },
                     { upsert: true },
                     function (err, doc) {
@@ -56,11 +58,13 @@ router.post('/', function (req, res) {
                         //idk
                       }
                       else {
-                        //idk2electricboogaloo
+                        count++;
+                        if (count >= req.body.players) {
+                          res.send('Done');
+                        }
                       }
                     });
-                 }         
-                 req.session.redirect("/leaderboard");
+                }         
             }
         } 
       }(i));

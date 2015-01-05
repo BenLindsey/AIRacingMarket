@@ -42,8 +42,10 @@ public class OurCar : MonoBehaviour {
     private bool isGrounded = false;
     public bool IsGrounded { get { return isGrounded; } }
 
-    public bool IsFlipped { get { return 135 <= transform.eulerAngles.z
-        && transform.eulerAngles.z <= 225; } }
+    public bool IsFlipped { get { return 90 <= transform.eulerAngles.z
+        && transform.eulerAngles.z <= 270; } }
+    private float flipTime = -1;
+    private const float MAX_FLIP_TIME = 5;
 
     private Vector3 lastPosition;
     private bool isMoving = false;
@@ -69,8 +71,8 @@ public class OurCar : MonoBehaviour {
     private bool fovIncrease = false;
     private float fov = FOV_NORMAL;
     private const int FOV_NORMAL = 60;
-    private const int FOV_MAX = 100;
-    private const int FOV_CHANGE_MAX = 180; // fov will increase to this but the camera's fov will be capped at FOV_MAX.
+    private const int FOV_MAX = 75;
+    private const int FOV_CHANGE_MAX = 150; // fov will increase to this but the camera's fov will be capped at FOV_MAX.
     private const float BOOST_FOV_BASE_CHANGE = (FOV_CHANGE_MAX - FOV_NORMAL) / (2 / 0.01f);
     private const float BOOST_FOV_INC = 5 * BOOST_FOV_BASE_CHANGE / 2; // Spend 2/5 of the time increasing the FOV.
     private const float BOOST_FOV_DEC = 5 * BOOST_FOV_BASE_CHANGE / 3; // Spend the rest of the time decreasing.
@@ -134,6 +136,20 @@ public class OurCar : MonoBehaviour {
 
         if (boostCooldown > 0) {
             boostCooldown--;
+        }
+
+        // Check if the car should be flipped over.
+        if (IsFlipped) {
+            // If the car flipped over in this updated.
+            if (flipTime == -1) {
+                flipTime = Time.time;
+            }
+            // Reset the car if it has been flipped over for too long.
+            else if (Time.time - flipTime >= MAX_FLIP_TIME) {
+                UnFlip();
+            }
+        } else {
+            flipTime = -1;
         }
     }
 
@@ -212,13 +228,14 @@ public class OurCar : MonoBehaviour {
             wheel.collider.steerAngle = steer;
 
             // Rotate the front wheel around the y axis to show steering.
-            wheel.transform.localEulerAngles = new Vector3(wheel.transform.localEulerAngles.x,
-                wheel.collider.steerAngle, wheel.transform.localEulerAngles.z);
+            Vector3 eulerAngles = wheel.transform.localEulerAngles;
+            wheel.transform.localEulerAngles = new Vector3(eulerAngles.x,
+                wheel.collider.steerAngle - eulerAngles.z, eulerAngles.z);
         }
 
 		// Cumulatively rotate the wheel around the x axis to show speed.
 		// Magic number: rpm / 60 * 360 * fixedDeltaTime.
-		wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
+        wheel.transform.Rotate(wheel.collider.rpm * 6 * Time.fixedDeltaTime, 0, 0);
 
         // Update the vertical position of the wheel according to the suspension.
         WheelHit hit;
@@ -269,6 +286,15 @@ public class OurCar : MonoBehaviour {
             wheel.currentSkidmark.material = skidmark;
             wheel.currentSkidmark.autodestruct = true; // Remove the game object when it stops drawing.
         }
+    }
+
+    private void UnFlip() {
+        Debug.Log("Unflipping " + Name);
+
+        // Move the car up a bit and reset z rotation.
+        rigidbody.transform.eulerAngles = new Vector3(rigidbody.transform.eulerAngles.x,
+            rigidbody.transform.eulerAngles.y, 0);
+        rigidbody.transform.position += 0.5f * Vector3.up;
     }
 
     public void SetThrottle(float value) {

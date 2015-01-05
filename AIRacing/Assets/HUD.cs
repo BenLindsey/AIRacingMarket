@@ -15,7 +15,13 @@ public class HUD : MonoBehaviour {
         public string name;
 
         public float flipStartTime;
-        public float lastCheckpointTime;
+        private float lastCheckpointTime;
+
+        public bool HasCarStopped { get { return Time.time - lastCheckpointTime >= MAX_CHECKPOINT_TIME; } }
+
+        public void ResetCheckpointTime() {
+            lastCheckpointTime = Time.time;
+        }
     }
 
     private enum RaceMode { Multiplayer, Test, Tournament };
@@ -23,6 +29,7 @@ public class HUD : MonoBehaviour {
     public CarManager carManager;
 
     private CarState[] carStates;
+    private int carsFinished = 0;
 
     public GameObject checkpointsContainer;
     private GameObject[] checkpoints;
@@ -32,7 +39,7 @@ public class HUD : MonoBehaviour {
 
     private RaceMode raceMode = RaceMode.Test;
 
-    private const int LAPS_IN_RACE = 1;
+    private const int LAPS_IN_RACE = 3;
     private const int MAX_FLIP_TIME = 3;
     private const int MAX_CHECKPOINT_TIME = 30; // Number of seconds to complete a checkpoint.
     private EndOfRaceObject endOfRaceObject;
@@ -51,6 +58,9 @@ public class HUD : MonoBehaviour {
         Debug.Log("SetTournamentMode called");
 
         SetMode(RaceMode.Tournament);
+        if (raceMode == RaceMode.Tournament) {
+            carManager.cameraManager.SetAutomaticCamera();
+        }
     }
 
     private void SetMode(RaceMode mode) {
@@ -95,6 +105,7 @@ public class HUD : MonoBehaviour {
         if (carStates == null && carManager.IsRaceStarted) {
 
             carStates = new CarState[carManager.Cars.Count];
+
             Dictionary<string, int> nameFrequencies = new Dictionary<string, int>();
             endOfRaceObject = new EndOfRaceObject(this);
 
@@ -105,7 +116,7 @@ public class HUD : MonoBehaviour {
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
                 carStates[i].flipStartTime = -1;
-                carStates[i].lastCheckpointTime = Time.time;
+                carStates[i].ResetCheckpointTime();
 
                 // If there are multiple cars with the same name, then add the
                 // occurence number onto the end of the name.
@@ -127,73 +138,102 @@ public class HUD : MonoBehaviour {
 
     private void UpdateCarPositions() {
         for (int i = 0; i < carStates.Length; i++) {
-            carStates[i].position = GetPosition(carStates[i]);
+            if (carStates[i].position >= carsFinished) {
+                carStates[i].position = GetPosition(carStates[i]);
+            }
         }
     }
 
     public void OnGUI() {
         CarState currentState = carStates[carManager.cameraManager.ActiveCamera];
 
+        // Find the active camera to convert 3D coordinates to screen coordinates.
+        Camera carCamera = currentState.car.transform.parent.GetComponentInChildren<Camera>();
+
         int y = 10;
         int yDiff = 30;
 
+        Color carFinishedColor = Color.gray;
+        Color carRacingColor = Color.white;
+        Color carTimedOutColor = Color.red;
+
         // Draw the lap number for the current car.
         if (raceMode != RaceMode.Test) {
-            GUI.Label(new Rect(10, y, 200, 100), "Lap " + (currentState.lap + 1), style);
-            y += yDiff;
+            string text = "Lap " + (currentState.lap + 1);
+            float textWidth = style.CalcSize(new GUIContent(text)).x;
+            DrawOutlinedText(new Rect(carCamera.pixelWidth - textWidth - 10, y, textWidth, 100),
+                text, Color.white, style);
         }
-
-        // Find the active camera to convert 3D coordinates to screen coordinates.
-        Camera carCamera = currentState.car.transform.parent.GetComponentInChildren<Camera>();
 
         // Draw the place numbers.
         string[] ordinals = new string[] { "st", "nd", "rd", "th" };
         float nameLocation = float.MinValue;
         for (int i = 0; i < carStates.Length; i++) {
             float numberWidth = style.CalcSize(new GUIContent((i + 1).ToString())).x;
-            Rect ordinalRect = new Rect(15 + numberWidth, y + yDiff * (i + 1), 200, 100);
+            Rect ordinalRect = new Rect(15 + numberWidth, y + yDiff * i, 200, 100);
             nameLocation = Math.Max(nameLocation, style.CalcSize(new GUIContent(ordinals[i])).x
                 + ordinalRect.xMin);
 
-            DrawOutlinedText(new Rect(13, y + yDiff * (i + 1), 200, 100), (i + 1).ToString(), style);
-            DrawOutlinedText(ordinalRect, ordinals[i], ordinalStyle);
+            DrawOutlinedText(new Rect(13, y + yDiff * i, 200, 100), (i + 1).ToString(),
+                Color.white, style);
+            DrawOutlinedText(ordinalRect, ordinals[i], Color.white, ordinalStyle);
         }
 
         for (int i = 0; i < carStates.Length; i++) {
             int position = carStates[i].position + 1;
-
-            // Draw the car's row on the leaderboard.
-            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * position, 200, 100),
-                carStates[i].name, style);
+            Color textColor = (carStates[i].position < carsFinished)
+                ? carFinishedColor
+                : ((carStates[i].HasCarStopped) ? carTimedOutColor : carRacingColor);
 
             // Draw the car's name over its model if it's in front of the camera.
             Vector3 screenPosition = carCamera.WorldToScreenPoint(
                 carStates[i].car.transform.position + 2.5f * Vector3.up);
             if (screenPosition.z > 0) {
+
+                // Use 'minSize' as the font size if the car is further than 'farZ' from the
+                // camera. If the car is closer than 'nearZ' use 'maxSize', otherwise linearly
+                // scale the font size between these points.
+                int originalFontSize = style.fontSize;
+                float maxSize = originalFontSize;
+                float minSize = 10;
+                float nearZ = 5;
+                float farZ = 40;
+                style.fontSize = (int)Mathf.Clamp((minSize - maxSize) / (farZ - nearZ)
+                    * (screenPosition.z - nearZ) + maxSize, minSize, maxSize);
+
                 float xOffset = style.CalcSize(new GUIContent(carStates[i].name)).x / 2;
                 DrawOutlinedText(new Rect(screenPosition.x - xOffset,
-                    carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name, style);
+                    carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name,
+                    Color.white, style);
+                style.fontSize = originalFontSize;
             }
+
+            // Draw the car's row on the leaderboard.
+            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * (position - 1), 200, 100),
+                carStates[i].name, textColor, style);
         }
         y += yDiff * carStates.Length;
     }
 
-    private void DrawOutlinedText(Rect location, string text, GUIStyle style) {
+    private void DrawOutlinedText(Rect location, string text, Color textColor, GUIStyle style) {
         Color originalColor = style.normal.textColor;
         style.normal.textColor = Color.black;
 
         GUI.Label(new Rect(location.xMin + 1, location.yMin + 1, location.width, location.height),
             text, style);
+        GUI.Label(new Rect(location.xMin + 1, location.yMin - 1, location.width, location.height),
+            text, style);
+        GUI.Label(new Rect(location.xMin - 1, location.yMin + 1, location.width, location.height),
+            text, style);
         GUI.Label(new Rect(location.xMin - 1, location.yMin - 1, location.width, location.height),
             text, style);
 
-        style.normal.textColor = originalColor;
+        style.normal.textColor = textColor;
         GUI.Label(location, text, style);
+        style.normal.textColor = originalColor;
     }
 
     public void TriggerEnter(int checkpoint, Collider car) {
-
-        //int checkpointIndex = GetCheckpointIndexFromGameObject(checkpoint);
         int carIndex = GetCarIndexFromCollider(car);
 
         // Something bad happened, and a warning has already been logged, so just return.
@@ -204,7 +244,7 @@ public class HUD : MonoBehaviour {
         // If the car just completed the next stage of the lap.
         if (carStates[carIndex].stage == checkpoint) {
             carStates[carIndex].stage++;
-            carStates[carIndex].lastCheckpointTime = Time.time;
+            carStates[carIndex].ResetCheckpointTime();
 
             // If the car just completed a lap.
             if (carStates[carIndex].stage == checkpoints.Length) {
@@ -214,6 +254,7 @@ public class HUD : MonoBehaviour {
                 // Update the WWW form if this car just finished the race.
                 if (carStates[carIndex].lap == LAPS_IN_RACE) {
                     endOfRaceObject.Finish(carStates[carIndex].name);
+                    carsFinished++;
                 }
             }
         }
@@ -235,11 +276,11 @@ public class HUD : MonoBehaviour {
     }
 
     private int GetPosition(CarState car) {
-        int position = 0;
+        int position = carsFinished;
         foreach (CarState other in carStates) {
             // Increment the position each time we find a car which is in front
             // of the given car.
-            if (other.car != car.car && !IsCarInFront(car, other)) {
+            if (other.car != car.car && other.position >= carsFinished && !IsCarInFront(car, other)) {
                 position++;
             }
         }
@@ -314,7 +355,7 @@ public class HUD : MonoBehaviour {
             // stopped, either because of a bad script or if the car has flipped over.
             bool isRaceOver = true;
             foreach (CarState car in states) {
-                isRaceOver &= finishedCars.Contains(car.name) || HasCarStopped(car);
+                isRaceOver &= finishedCars.Contains(car.name) || car.HasCarStopped;
             }
 
             if (isRaceOver) {
@@ -322,10 +363,6 @@ public class HUD : MonoBehaviour {
             }
 
             return isRaceOver;
-        }
-
-        private bool HasCarStopped(CarState car) {
-            return Time.time - car.lastCheckpointTime > MAX_CHECKPOINT_TIME;
         }
 
         private void Send(CarState[] states, RaceMode mode) {
@@ -354,21 +391,25 @@ public class HUD : MonoBehaviour {
                 }
             }
 
-            // Finally, create the form.
+            // Finally, create the form and set the previous query params.
             WWWForm form = new WWWForm();
             form.AddField("players", states.Length);
+            string queryParams = "";
             for (int i = 0; i < states.Length; i++) {
                 form.AddField(i.ToString(), carNames[i]);
+                
+                queryParams += (i == 0) ? "?" : "&";
+                queryParams += "previous[" + (char)('A' + i) + "]=" + WWW.EscapeURL(carNames[i]);
             }
 
-            outerClass.StartCoroutine(WaitForSend(form, mode));
+            outerClass.StartCoroutine(WaitForSend(form, mode, queryParams));
         }
 
-        private IEnumerator WaitForSend(WWWForm form, RaceMode mode) {
+        private IEnumerator WaitForSend(WWWForm form, RaceMode mode, string queryParams) {
             string url = GetURL();
             string scoreUrl = url + "score";
             string leaderboardUrl = url + ((mode == RaceMode.Multiplayer)
-                ? "leaderboard" : "tournament/next");
+                ? "leaderboard" : "tournament/next" + queryParams);
 
             // Send the the result of the race.
             Debug.Log("Sending \"" + System.Text.Encoding.Default.GetString(form.data)

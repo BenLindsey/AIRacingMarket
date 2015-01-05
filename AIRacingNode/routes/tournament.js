@@ -21,8 +21,11 @@ router.get('/next', function(req, res) {
             return;
         }
          
-        //todo levelname/carname
-        var url = "/webbuild?levelname=OvalTrack"
+        //Select random level
+        var levels = ["OvalTrack","TheWinder", "EightTrack"];
+        var levelIndex =  Math.floor(Math.random() * levels.length); 
+         
+        var url = "/webbuild?levelname=" + levels[levelIndex]
                 + "&gamemode=Tournament"
                 + "&carname=Catamount";
 
@@ -32,6 +35,12 @@ router.get('/next', function(req, res) {
             console.log("chose script: " + index + " | " + scriptsArray[index]);    
             url += "&scripts[" + carNames[i] + "]=" + scriptsArray[index];
             scriptsArray.splice(index, 1);
+        }
+        
+        if(req.query.previous) {
+            for(var key in req.query.previous) {
+                url += "&previous[" + key + "]=" + req.query.previous[key];
+            }
         }
 
         console.log("Redirecting user to: " + url);

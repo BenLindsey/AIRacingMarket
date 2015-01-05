@@ -1,0 +1,92 @@
+\section{System Architecture}
+
+Our first step, after reading the description of our project, was to decide what kind of application or system would be best suited to tackle our requirements. The first thing that we gleaned from the specification was that some form of persistent storage would be required. For example, the user submitted scripts must be stored so that they can later be raced against new scripts and data used to rank the scripts must be recorded so that a leaderboard can be shown. It was also mentioned in our project's specification that we should use the Unity game engine for the physics simulation and visualisation of our vehicle races. These two requirements gave us a solid starting point for designing our system. Our first thought was to develop a stand alone Unity application to run on any desktop machine. This option would have required one machine to act as a server and manage the centralised data while the other machines communicate with it using networking code inside of Unity. It would also have meant we'd need to build a full user interface for uploading, editing and managing scripts inside of Unity. The more we thought about this the more we realised that these tasks would be a massive undertaking and highly difficult to achive in the time frame, due to our group's limited knowledge of Unity.
+
+Once we began thinking about alternatives an obvious solution sprang to mind. A huge benifit of Unity is that it is highly portable and can be run on many different platforms. One of these platforms is the Unity Web Player, a browser plug-in that allows Unity applications to be run inside all modern web browsers. If we used the web player we would could pull all of the things that are difficult to do in Unity outside of the Unity application and into the web browser. Thus turning the task of creating an easy to use interface for uploading scripts into a web design problem, a domain that is a lot better suited to solve user interface tasks such as this. The Unity application is then only needed for running and visualising the races. Unity also provides features for communication with the web browser, in both directions, when running in the web player, making passing data to the Unity application at runtime easy. This design also reduces the complexity of the networking problems as now one machine can run a web-server and database, using standard web technologies, while client machines simply run a web browser, containing the Unity Web Player, and communicate with the server using standard web protocols.
+
+\subsection{Component Diagram TODO}
+
+[[DIAGRAM HERE!!!]]
+
+\section{Back-end}
+
+Our back end system is designed to provide two different services. ??
+First is to provide the website for our product... ??
+Second is a REST API for manging the getting, submitting and updating of user scripts ?? 
+
+Tech used:
+\begin{itemize}
+\item Node.js
+	\begin{itemize}
+		\item Mocha \& Zombie.js
+		\item Passport (passport-local)
+		\item Monk \& Mongoose
+	\end{itemize}
+\item MongoDB
+\end{itemize}
+
+\subsection{Risks}
+Anticipation \& Mitigation
+
+\subsection{Challenges}
+Solutions
+
+\section{Browser Front-End}
+Tech used:
+\begin{itemize}
+\item Jade 
+\item Bootstrap
+\item Ace
+\end{itemize}
+
+\subsection{Design}
+Website layout / key design features 
+\begin{itemize}
+\item Responsive edit screen
+\item Anonymous/logged in submit screens
+\item Admin accessible features
+\end{itemize}
+
+\subsection{Risks}
+Anticipation \& Mitigation
+
+\subsection{Challenges}
+Solutions
+
+\section{Unity Application}
+No external tech used except for a few of Unity's basic script assets, e.g. smooth follow cam.
+
+Main design points:
+Designing the Script API
+Managing and recording race data e.g. checkpoints, hud
+Comunication with browser i.e. starting race, where scripts are exectued, how many calls per frame
+
+Unity applications are based around a system of scenes that can be switched between at runtime. We used this in our application to have a seperate scene for each racetrack we had built. As, in our case, each time the application is loaded only 
+
+\subsection{Risks}
+Spending ages on 
+
+Anticipation \& Mitigation
+
+\subsection{Challenges}
+Designing the script API
+
+Initially we had a very simplistic system of controling and receving environment information from the car. 
+
+steering and throttle control for control. Proximity sensors (ray casting) for position information. 
+
+Solutions
+
+\section{User Interface Design. TODO: Add some of "evaluation" section here?}
+Aims:
+\begin{itemize}
+\item Easy to navigate (hence bootstrap for simple familiar website) 
+\item 
+\end{itemize}
+
+
+
+\subsection{Justification}
+
+
+
