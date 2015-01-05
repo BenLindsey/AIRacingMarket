@@ -2,12 +2,19 @@ include ./basic_navigator.jade
 
 block content
     script.
+        var previousScript = "PhysicsUpdate = (api) ->";
+        var setScript = function(script) {}; // Built by editor
+        var setMode = function(mode) {};
+
         var updateLanguage = function() {
             var select = document.getElementById("selectLanguage");
             var language = select.options[select.selectedIndex].text;
-            //language = JavaScript or CoffeeScript
+            var oldScript = document.getElementById("inputScript").value;
             
-            //TODO UPDATE EDITOR SYNTAX HIGHLIGHTING
+            setScript(previousScript);
+            previousScript = oldScript;
+
+            setMode(language == "CoffeeScript" ? "coffee" : "javascript");
         }
 
     h1.
@@ -88,7 +95,9 @@ block content
           });
 
           editor.getSession().setValue(!{JSON.stringify(script)});
+          setScript = function(value) { editor.getSession().setValue(value); };
           editor.getSession().setMode("ace/mode/" + mode);
+          setMode = function(mode) { editor.getSession().setMode("ace/mode/" + mode); };
           editor.renderer.setShowGutter(true);
           editor.setFontSize("14px");
           editor.setTheme("ace/theme/solarized_light");

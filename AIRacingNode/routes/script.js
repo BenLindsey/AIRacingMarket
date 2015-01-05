@@ -10,7 +10,7 @@ router.get('/edit/:name', isLoggedInProfile, function(req, res) {
         collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
             res.render('edit', {
                 script : doc.script,
-                csScript : doc.csScript,
+                csScript : doc.csScript == undefined ? "" : doc.csScript,
                 language : doc.language == undefined? "JavaScript" : doc.language,
                 scriptName : req.params.name,
                 allScripts : docs
