@@ -169,7 +169,7 @@ From our experience using UI prototyping software such as Fluid UI, it is rigid 
 
 We integrated testing into our project lifecycle, ensuring that we tested often, and consequently kept the code in a releasable state. Automated testing helped us identify issues early and fix them immediately - this flexible response to change is key in agile software development, the development approach we have adopted. 
 
-As previously detailed in section {\bf X}, we used TeamCity to management continuous integration, including automated unit testing. To test the functionality of our website, we used two Node.s modules alongside the TeamCity Node plugin: Zombie.js and Mocha. Both of these tools have opZombie.js is a lightweight framework for client-side Javascript testing, and facilitates headless full-stack testing. In other words, Zombie.js let us programatically interact with a browser (without a graphical user interface). Mocha is also a Javascript testing framework, simplifying test-driven and behaviour-driven development. Mocha provides an asynchronous test runner alongside interfaces such as {\tt describe, before, after, beforeEach} that simplify the declaration of test specifications.
+As previously detailed in section {\bf X}, we used TeamCity to management continuous integration, including automated unit testing. To test the functionality of our website, we used two Node.s modules alongside the TeamCity Node plugin: Zombie.js and Mocha. Zombie.js is a lightweight framework for client-side Javascript testing, and facilitates headless full-stack testing. In other words, Zombie.js let us programatically interact with a browser (without a graphical user interface). Mocha is also a Javascript testing framework, that simplifies test-driven and behaviour-driven development. Mocha provides an asynchronous test runner alongside interfaces such as {\tt describe, before, after, beforeEach} that simplify the declaration of test specifications.
 
 Below is an example test and the corresponding Mocha report. This demonstrates the readability of Mocha results, alongside the highly abstracted headless interactions that Zombie.js facilitates.  \\
 
@@ -196,7 +196,13 @@ Although we did not prescribe a specific testing strategy, we had a few key meas
 
 \subsubsection{Key Observations}
 
-Unleash the bullshit
+\begin{tabular}{| c | c |}
+\hline
+Observation & Response \\
+\hline\hline
+X & Y \\
+\hline
+\end{tabular}
 
 \subsection{Collaborative Testing}
 
@@ -206,7 +212,26 @@ To gauge whether collaboration worked with the AI Racing Market, we introduced i
 
 \subsubsection{Key Observations}
 
-Unleash the bullshit
+\begin{tabularx}{\textwidth}{ | X | X | p{.55\textwidth} |}
+\hline
+Student & Observation & Response\\
+Ability Level & & \\
+\hline\hline
+Inexperienced 
+& Unfamiliar with use of an API 
+	& Alongside our standard API, we expanded our event-based API. This involves chaining calls similar to that of the builder pattern, in turn producing behaviour that is easy to read and understand, e.g. {\tt When.RaceStarts().ApiBoost()}. \\ \cline{2-3}
+& Major difficulty debugging 
+	& There is very little feedback between the Ace editor and Unity player itself, and it was infeasible to bridge this gap within our time limitations. Working collaboratively does improve the debugging process, as one individual can simply observe as the other drives.\\  \hline
+Intermediate 
+& Confusion over program scope 
+	& Unlike the inexperienced users who simply related the main script body to a while-loop, a student questioned the construct and struggled to understand the game loop. We attempted to iron this kind of confusion out through strong documentation. \\ \cline{2-3}
+& Struggle using advanced API 
+	& Occasionally it was hard to produce an advanced script within a reasonable time frame. This was expected, as it is important the API caters for all ability levels whilst allowing advanced individuals to produce complex scripts.\\ \hline
+Advanced 
+& Lateral thinking 
+	& We were pleasantly surprised by out-of-the-box thinking used by the advanced students. For example, before adding boost to our API ({\tt ApiBoost()}), a user was measuring game cycles to achieve a boost at the start of the race - similar to that seen in many computer games.  \\
+\hline
+\end{tabularx}
 
 \section{Metrics}
 Metrics were a useful part of the feedback process for two reasons. First, they allowed us to easily understand which parts of our workflow were going right and wrong, helping us improve working efficiency. Second, they allowed us to see if our product was working as intended, and recognise parts that needed changing - be it because they do not work or as part of general improvements.
@@ -228,6 +253,7 @@ Creating this graph initially revealed an alarming trend of an increase in the n
 
 \subsection{Product Metrics}
 
+Unleash the bullshit
 
 %We need to be able to evaluate how good a feature is, and quantitatively measure this so we can use it as feedback. There are a few methods for achieving this - for instance, for the website, we can record how long a user spends on a particular page, or how often they visit said page - this represents how popular the feature on the page is. 
 %
