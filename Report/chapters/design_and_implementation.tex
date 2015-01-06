@@ -65,23 +65,19 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 
 \section{Back-end}
 
-The design of our back-end is focused around a simple REST API. The implementation primarily involves NodeJS and supporting libraries:
-Our back end system is designed to provide two different services. ??
-First is to provide the website for our product... ??
-Second is a REST API for manging the getting, submitting and updating of user scripts ?? 
-
-Tech used:
-\begin{itemize}
-\item Node.js
+The design of our back-end was focused around a simple REST API, while the implementation primarily involves NodeJS and its supporting libraries:
 	\begin{itemize}
-		\item Mocha \& Zombie.js (described later in evaluation testing section though)
+	        \item Express
 		\item Passport (passport-local)
-		\item Monk \& Mongoose
+		\item Monk		
 	\end{itemize}
-\item MongoDB
-\end{itemize}
 
-\subsection{Examples of the REST API}
+\subsection{REST API}
+Why use REST API?
+
+Below you can see some example interactions with our REST API:\\
+
+\begin{center}
 \begin{tabular}{| l | l | l | l |}\hline
 Route & Request &  Response & Explanation\\\hline\hline
 /script & GET & View & Show the create new script page\\\hline
@@ -91,6 +87,34 @@ Route & Request &  Response & Explanation\\\hline\hline
 /tournament & GET & View & Show the next tournament match\\\hline
 /tournament & POST & View & Store the match result and show the next \\\hline
 \end{tabular}
+\end{center}
+
+Comment on the table.
+
+\subsection{MongoDB}
+Why use MongoDB?
+
+Although MongoDB is a non relational database, we can still model the data storage as such:
+
+\begin{center}
+\begin{tikzpicture}[node distance=7 em]
+\node [entity] (person) {User};
+\node [relationship] (has) [right of=person] {Owns};
+\node [entity] (script) [right of=has] {Script};
+\node [attribute] (email) [above of=person] {\key{Email}} edge (person);
+\node [attribute] (pid) [below of=person] {Year?} edge (person);
+\node [attribute] (pid) [below left of=person, above=0cm] {Degree?} edge (person);
+\node [attribute] (pid) [left of=person, left=-0.6cm] {University?} edge (person);
+\node [attribute] (pid) [above left of=person, above=-0.5cm] {Hash} edge (person);
+\node [attribute] (pid) [above of=script] {\key{Name}} edge (script);
+\node [attribute] (pid) [below of=script] {Code} edge (script);
+\node [attribute] (pid) [above right of=script] {Language} edge (script);
+\node [attribute] (pid) [below right of=script] {Rating} edge (script);
+%Edge
+\path[every node/.style={font=\sffamily\small}] (person) edge node [above] {0..N} (has);
+\path[every node/.style={font=\sffamily\small}] (script) edge node [above] {1..1} (has);
+\end{tikzpicture}
+\end{center}
 
 \subsection{Risks}
 Anticipation \& Mitigation
