@@ -36,7 +36,7 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 	\draw
 	        node [block, below of=unity, below=2.5cm, name=express] {Express\\Router}
 	        node [block, right of=express, right=0cm, name=passport] {Passport \\ Auth}
-	        	node [db, below of=passport, below=0cm, name=mongo] {MongoDB}
+	        node [db, below of=passport, below=0cm, name=mongo] {MongoDB}
 	        node [interface, above of=mongo, above=-1cm, name=monk] {Monk Adapter}
 	        node [block, right of=passport, right=0cm, name=routes] {Routes}
 	        node [block, right of=routes, right=0cm, name=views] {Views}
@@ -65,6 +65,7 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 
 \section{Back-end}
 
+The design of our back-end is focused around a simple REST API. The implementation primarily involves NodeJS and supporting libraries:
 Our back end system is designed to provide two different services. ??
 First is to provide the website for our product... ??
 Second is a REST API for manging the getting, submitting and updating of user scripts ?? 
@@ -79,6 +80,17 @@ Tech used:
 	\end{itemize}
 \item MongoDB
 \end{itemize}
+
+\subsection{Examples of the REST API}
+\begin{tabular}{| l | l | l | l |}\hline
+Route & Request &  Response & Explanation\\\hline\hline
+/script & GET & View & Show the create new script page\\\hline
+/script & POST & None & Store a new script to the server\\\hline
+/script/DrEvil & GET & String & Get the code for script DrEvil\\\hline
+/edit/DrEvil & GET & View & Show the live edit script page\\\hline
+/tournament & GET & View & Show the next tournament match\\\hline
+/tournament & POST & View & Store the match result and show the next \\\hline
+\end{tabular}
 
 \subsection{Risks}
 Anticipation \& Mitigation
