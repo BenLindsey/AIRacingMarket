@@ -7,23 +7,21 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 \subsection{Component Diagram}
 
 \tikzset{%
-  block/.style    = {draw, thick, rectangle, minimum height = 3em,
-    minimum width = 3em},
+  block/.style    = {draw, thick, rectangle, minimum height = 3em, rounded corners,
+    minimum width = 3.5em, align=center},
   sum/.style      = {draw, circle, node distance = 2cm}, % Adder
-  input/.style    = {coordinate}, % Input
-  output/.style   = {coordinate}, % Output
-  db/.style  = {draw, cylinder, shape border rotate=90, aspect=0.25}
+  %input/.style    = {coordinate},
+  db/.style  = {draw, cylinder, shape border rotate=90, aspect=0.25},
+  interface/.style    = {draw, thick, rectangle, 
+    minimum width = 4em, align=center},
 }
-% Defining string as labels of certain blocks.
-\newcommand{\suma}{\Large$+$}
-\newcommand{\inte}{$\displaystyle \int$}
-\newcommand{\derv}{\huge$\frac{d}{dt}$}
 
 \begin{center}
 \begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
 	% Blocks of FRONT END:
 	\draw
-		node at (2, 0) [sum] (suma1) {Unity}
+		node at (1, -1.5) [block] (unity) {Unity}
+		node at (11, -1.5) [block] (browser) {Browser}
 		%node [sum, right of=input1] (suma1) {Unity}
 	;
     	% Joining FRONT END:
@@ -31,25 +29,37 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 	
 	% Blocks of MIDDLE
 	\draw
-		node at (5.5,-4) [block, name=suma2] {REST API}
+		node at (5.5,-4) [block, name=rest] {REST API}
 	;
 
         % Blocks of BACK END
 	\draw
-		node at (5.5,-8) [db, name=ret2] {\Large MongoDB}
+	        node [block, below of=unity, below=2.5cm, name=express] {Express\\Router}
+	        node [block, right of=express, right=0cm, name=passport] {Passport \\ Auth}
+	        	node [db, below of=passport, below=0cm, name=mongo] {MongoDB}
+	        node [interface, above of=mongo, above=-1cm, name=monk] {Monk Adapter}
+	        node [block, right of=passport, right=0cm, name=routes] {Routes}
+	        node [block, right of=routes, right=0cm, name=views] {Views}
 	;
 	% Joining BACK END
-	%\draw[->] (suma3) -- node {} (inte2);
-	%\draw[->] (inte2) -- node {} (suma4);
-	
-    	% Drawing nodes with \textbullet
-        %\draw node at (8,0) {\textbullet};
+	\draw[->] (express) -- node {} (passport);
+	\draw[->] (rest) -| node {} (express);
+	\draw[->] ($(browser.south) + (-0.2, 0)$) |- node {} (rest);
+	\draw[-, dotted] (passport) -- node[below right] {} (monk);
+	\draw[-] (monk) -- node {} (mongo);
+	\draw[->] (passport) -- node {} (routes);
+	\draw[->] (routes) -- node {} (views);
+	\draw[-, dotted] (routes) |- node {} (monk);
+	\draw[->] (views) -| node {} ($(browser.south) + (0.2, 0)$);
         
 	% Boxing
-	\draw [color=gray,thick](-0.5,-3) rectangle (12.5,1);
-	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Front-End}};
-	\draw [color=gray,thick](-0.5,-9) rectangle (12.5,-5);
-	\node at (-0.5,-9) [below=5mm, right=0mm] {\textsc{Back-End}};
+	%\draw [color=gray,thick, dotted] ($(passport.north west)+(-0.2,0.2)$) rectangle ($(monk.south east)+(0.2,-0.2)$);
+        %\node at (passport) [above=3mm, right=0mm] {\small If private};
+        
+	\draw [color=gray,thick](-0.5,-3) rectangle (12.5,0);
+	\node at (-0.5,0) [above=5mm, right=0mm] {\textsc{Front-End}};
+	\draw [color=gray,thick](-0.5,-10.5) rectangle (12.5,-5);
+	\node at (-0.5,-10.5) [below=5mm, right=0mm] {\textsc{Back-End}};
 \end{tikzpicture}
 \end{center}
 
