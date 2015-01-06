@@ -35,7 +35,7 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
         % Blocks of BACK END
 	\draw
 	        node [block, below of=unity, below=2.5cm, name=express] {Express\\Router}
-	        node [block, right of=express, right=0cm, name=passport] {Passport \\ Auth}
+	        node [block, right of=express, right=0cm, name=passport] {Passport \\ Auth.}
 	        node [db, below of=passport, below=0cm, name=mongo] {MongoDB}
 	        node [interface, above of=mongo, above=-1cm, name=monk] {Monk Adapter}
 	        node [block, right of=passport, right=0cm, name=routes] {Routes}
@@ -167,5 +167,14 @@ Aims:
 
 \subsection{Justification}
 
+
+\section{Harvesting Personal Data TODO}
+One of the primary objectives of our project is the acquisition of personal data about potential employees. This includes information such as email address, university degree, etc. 
+\subsection{Non-invasive authentication}
+We don't want to scare users away to early...
+Allow anonymous script posting..
+\subsection{Risks}
+We must avoid leaking personal data...
+For example, when designing our leaderboard we had to bare in mind we didn't want to display user's emails to passing strangers...
 
 
