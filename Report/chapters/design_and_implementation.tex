@@ -73,7 +73,7 @@ Tech used:
 \begin{itemize}
 \item Node.js
 	\begin{itemize}
-		\item Mocha \& Zombie.js
+		\item Mocha \& Zombie.js (described later in evaluation testing section though)
 		\item Passport (passport-local)
 		\item Monk \& Mongoose
 	\end{itemize}
@@ -87,12 +87,24 @@ Anticipation \& Mitigation
 Solutions
 
 \section{Browser Front-End {\color{red} TOM}}
-Tech used:
-\begin{itemize}
-\item Jade 
-\item Bootstrap
-\item Ace
-\end{itemize}
+
+For the browser front-end, i.e. website, we used three technologies : 
+\\
+
+\noindent
+{\bf Jade}  \hspace*{2mm} 
+As explained above, we chose to use the Node.js platform, and we next had to chose a template engine for it's web template system. We chose to use Node's default engine, Jade, which is written in JavaScript and specifically a templating language for HTML. It simplifies writing web pages as it is less verbose than HTML, and allows  template inheritance alongside other dynamic constructs such as conditionals and loops. Compared to other engines such as Swig and Hamljs, which have similar feature sets, Jade has had reported sluggish benchmarking performance \footnote{http://paularmstrong.github.io/node-templates/benchmarks.html} (obviously some benchmarks can't be treated as gospel). However, performance was not a concern for us; templating engines are very rarely a system bottleneck, and the decision to use Jade was founded upon it's usability and readability.
+\\
+
+\noindent
+{\bf Bootstrap}  \hspace*{2mm} 
+Given our limited experience using Jade/HTML and CSS, alongside our negligible artistic talent, we opted to use Twitter's Bootstrap to design our website. Bootstrap makes web design a breeze by providing the HTML and CSS templates for well-designed web components, including forms, buttons, navigation bars, JavaScript extensions and more. In particular, we used the Sandstone \footnote{http://bootswatch.com/sandstone/} template from Bootswatch (released under MIT license). Although this may not give users with a particularly unique experience, it means providing users with a familiar experience that would allow them to utilise preconceived assumptions on how the website can be navigated - avoiding the need to explain the website explicitly.
+\\
+
+\noindent
+{\bf Ace} \hspace*{2mm} 
+Apart from the most cavalier advocates of text editors, programmers shudder at the idea of coding in a plain text area. To simplify the process of reading, writing and submitting scripts, we chose to use a web-based code editor. There are few open-source editors that can rival the performance, features and simplicity of Ace (a standalone editor written in JavaScript). Ace is actively developed for use in the online Cloud9 IDE, yet can be embedded in any web page given its BSD license. By using Ace, users have JavaScript syntax highlighting, syntax error checking, searching/replace, automatic indentation etc. Not only does this improve the productivity of a user, which is important given the time pressures which may be faced if a queue forms at the G-Research careers fair stand; but it provides immediate feedback for those unfamiliar with JavaScript syntax, which may be the majority of users, reducing the likelihood of submitting broken scripts.
+\\
 
 \subsection{Design}
 Website layout / key design features 
