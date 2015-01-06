@@ -4,7 +4,7 @@ Our first step, after reading the description of our project, was to decide what
 
 Once we began thinking about alternatives an obvious solution sprang to mind. A huge benifit of Unity is that it is highly portable and can be run on many different platforms. One of these platforms is the Unity Web Player, a browser plug-in that allows Unity applications to be run inside all modern web browsers. If we used the web player we would could pull all of the things that are difficult to do in Unity outside of the Unity application and into the web browser. Thus turning the task of creating an easy to use interface for uploading scripts into a web design problem, a domain that is a lot better suited to solve user interface tasks such as this. The Unity application is then only needed for running and visualising the races. Unity also provides features for communication with the web browser, in both directions, when running in the web player, making passing data to the Unity application at runtime easy. This design also reduces the complexity of the networking problems as now one machine can run a web-server and database, using standard web technologies, while client machines simply run a web browser, containing the Unity Web Player, and communicate with the server using standard web protocols.
 
-\subsection{Component Diagram}
+\subsection{Component Diagram {\color{green} BEN}}
 
 \tikzset{%
   block/.style    = {draw, thick, rectangle, minimum height = 3em, rounded corners,
@@ -63,7 +63,7 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 \end{tikzpicture}
 \end{center}
 
-\section{Back-end}
+\section{Back-end {\color{green} BEN}}
 
 The design of our back-end was focused around a simple REST API, while the implementation primarily involves NodeJS and its supporting libraries:
 	\begin{itemize}
