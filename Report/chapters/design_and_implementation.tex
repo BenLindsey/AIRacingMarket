@@ -4,9 +4,54 @@ Our first step, after reading the description of our project, was to decide what
 
 Once we began thinking about alternatives an obvious solution sprang to mind. A huge benifit of Unity is that it is highly portable and can be run on many different platforms. One of these platforms is the Unity Web Player, a browser plug-in that allows Unity applications to be run inside all modern web browsers. If we used the web player we would could pull all of the things that are difficult to do in Unity outside of the Unity application and into the web browser. Thus turning the task of creating an easy to use interface for uploading scripts into a web design problem, a domain that is a lot better suited to solve user interface tasks such as this. The Unity application is then only needed for running and visualising the races. Unity also provides features for communication with the web browser, in both directions, when running in the web player, making passing data to the Unity application at runtime easy. This design also reduces the complexity of the networking problems as now one machine can run a web-server and database, using standard web technologies, while client machines simply run a web browser, containing the Unity Web Player, and communicate with the server using standard web protocols.
 
-\subsection{Component Diagram TODO}
+\subsection{Component Diagram}
 
-[[DIAGRAM HERE!!!]]
+\tikzset{%
+  block/.style    = {draw, thick, rectangle, minimum height = 3em,
+    minimum width = 3em},
+  sum/.style      = {draw, circle, node distance = 2cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate}, % Output
+  db/.style  = {draw, cylinder, shape border rotate=90, aspect=0.25}
+}
+% Defining string as labels of certain blocks.
+\newcommand{\suma}{\Large$+$}
+\newcommand{\inte}{$\displaystyle \int$}
+\newcommand{\derv}{\huge$\frac{d}{dt}$}
+
+\begin{center}
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+	% Blocks of FRONT END:
+	\draw
+		node at (2, 0) [sum] (suma1) {Unity}
+		%node [sum, right of=input1] (suma1) {Unity}
+	;
+    	% Joining FRONT END:
+	%\draw[->](input1) -- node {$X(Z)$}(suma1);
+	
+	% Blocks of MIDDLE
+	\draw
+		node at (5.5,-4) [block, name=suma2] {REST API}
+	;
+
+        % Blocks of BACK END
+	\draw
+		node at (5.5,-8) [db, name=ret2] {\Large MongoDB}
+	;
+	% Joining BACK END
+	%\draw[->] (suma3) -- node {} (inte2);
+	%\draw[->] (inte2) -- node {} (suma4);
+	
+    	% Drawing nodes with \textbullet
+        %\draw node at (8,0) {\textbullet};
+        
+	% Boxing
+	\draw [color=gray,thick](-0.5,-3) rectangle (12.5,1);
+	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Front-End}};
+	\draw [color=gray,thick](-0.5,-9) rectangle (12.5,-5);
+	\node at (-0.5,-9) [below=5mm, right=0mm] {\textsc{Back-End}};
+\end{tikzpicture}
+\end{center}
 
 \section{Back-end}
 
