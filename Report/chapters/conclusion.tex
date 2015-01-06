@@ -25,7 +25,15 @@ have to use them in a certain way that differs from what we are used to.
 
 \section{What would we do differently? TODO}
 
-A problem we encountered with deploying the Unity side of the game was that the
+We feel that a lot of our initial project work went well, with a protoype
+quickly forming and features being organised quickly. Looking back now, it is
+easy to judge the tasks that will be more important that we could've worked on
+from the start, especially since G-Research have pointed out more of what they
+want as the project went on. Most of what we did went well and worked for us, so
+we wouldn't want to change how we worked drastically, but there were a few key
+issues that would've resulted in fewer problems for us later.
+
+One of these problems was with deploying the Unity side of the game. The
 compiled web build had to be made with the Unity editor, and so was included in
 the git repository as this is what was transferred to the VM our project ran on.
 This web build was very large, and resulted in significantly long build times,
@@ -41,6 +49,17 @@ project at an important time if we tried to alter this too much. However, this
 would be something we would strongly consider doing were we to do it again,
 since it would solve a vast amount of the annoyances we encountered above.
 
+Another problem was using the MongoDB database, although mostly at our own
+fault. We made some initial collections that we thought would be separate, but
+found later that we needed to 'join' them. However, this cannot be done easily
+with NoSQL, and eventually we created a new collection to house all the data. We
+felt slighly uncomfortable using something that didn't have relational data, and
+never really got used to the paradigm shift, so perhaps using a relational model
+would've sped up our working and avoided these problems. At the same time, it is
+good to know about NoSQL databases, and we would not have learnt about it during
+this project otherwise, so we would need to consider which tradeoffs are worth
+it.
+ 
 \begin{itemize}
     \item
         Try and stick better to agile?
@@ -51,8 +70,6 @@ since it would solve a vast amount of the annoyances we encountered above.
     \item
         Do more feedback sessions with users, i.e. do a few practice runs with
         groups of students to see if it's working well
-    \item
-        Use SQL instead of NoSQL - we are more used to relational databases
 \end{itemize}
 
 \section{Future extensions}
