@@ -1,17 +1,41 @@
-\section{What did you learn? TODO}
+\section{What did you learn?}
+
+The length and depth of this project allowed us to learn a great many things,
+consisting of new technologies and new work methodologies. Key to this is the
+agile workflow, which was required for this project. We all learnt how using
+agile methods can be better for quick prototyping and helping to focus our
+project early through frequent refinement. This was also necessary when our
+requirements changed throughout the project, which would've meant extensive
+rework if we weren't using agile.
+
+Some of the technologies new to us was the Unity game engine, which was required
+to use for the racing simulation. Only one group member had previously used this
+before, which helped a great deal with the initial work but other group members
+had to learn the framework and its intricacies. 
+
 \begin{itemize}
-    \item
-        Agile workflow
-    \item
-        Unity
-    \item
-        The whole client feedback process - how requirements can change over
-        time, links back to agile workflow
     \item
         How \textit{fun} asynchronous javascript is
 \end{itemize}
 
 \section{What would we do differently? TODO}
+
+A problem we encountered with deploying the Unity side of the game was that the
+compiled web build had to be made with the Unity editor, and so was included in
+the git repository as this is what was transferred to the VM our project ran on.
+This web build was very large, and resulted in significantly long build times,
+as well as causing us problems with disk space on the VM, since git would keep
+all previous versions of it as part of its history. Towards the end of the
+project, we found that there were ways of removing this build from previous
+commits, which would help with our disk space problems. We also managed to find
+a command line version of Unity that could compile the web build on the VM,
+although this would have to run on Windows, whether through another virtual
+machine or just having the one we used as Windows instead of Linux. We didn't
+change this around as we had almost finished, and it could potentially break our
+project at an important time if we tried to alter this too much. However, this
+would be something we would strongly consider doing were we to do it again,
+since it would solve a vast amount of the annoyances we encountered above.
+
 \begin{itemize}
     \item
         Try and stick better to agile?
