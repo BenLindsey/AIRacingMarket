@@ -8,7 +8,7 @@ project early through frequent refinement. This was also necessary when our
 requirements changed throughout the project, which would've meant extensive
 rework if we weren't using agile.
 
-Some of the technologies new to us was the Unity game engine, which was required
+One of the technologies new to us was the Unity game engine, which was required
 to use for the racing simulation. Only one group member had previously used this
 before, which helped a great deal with the initial work but other group members
 had to learn the framework and its intricacies. 
@@ -21,20 +21,20 @@ since the website had to send commands to our Unity game and vice versa.
 
 Working with MongoDB instead of an SQL database is also different, since we no
 longer have relational databases and store most things in the same collection;
-we managed to learn a bit more about the structure of NoSQL databases and how you
-have to use them in a certain way that differs from what we are used to.
+we managed to learn a bit more about the structure of NoSQL databases and how
+you have to use them in a certain way that differs from what we are used to.
 
 \section{Project Reflections/Improvements}
 % Some of this feels more like evaluation than reflecting back, although I
 % guess it could be both - perhaps consider shuffling things around?
 
-We feel that a lot of our initial project work went well, with a protoype
+We feel that a lot of our initial project work went well, with a prototype
 quickly forming and features being organised quickly. Looking back now, it is
-easy to judge the tasks that will be more important that we could've worked on
-from the start, especially since G-Research have pointed out more of what they
-want as the project went on. Most of what we did went well and worked for us, so
-we wouldn't want to change how we worked drastically, but there were a few key
-issues that would've resulted in fewer problems for us later.
+easy to judge the tasks that were more important that we could've worked on from
+the start, especially since G-Research have pointed out more of what they wanted
+as the project went on. Most of what we did went well and worked for us, so we
+wouldn't want to change how we worked drastically, but there were a few key
+issues that if solved early would've resulted in fewer problems for us later.
 
 One of these problems was with deploying the Unity side of the game. The
 compiled web build had to be made with the Unity editor, and so was included in
@@ -56,12 +56,12 @@ Another problem was using the MongoDB database, although mostly at our own
 fault. We made some initial collections that we thought would be separate, but
 found later that we needed to 'join' them. However, this cannot be done easily
 with NoSQL, and eventually we created a new collection to house all the data. We
-felt slighly uncomfortable using something that didn't have relational data, and
-never really got used to the paradigm shift, so perhaps using a relational model
-would've sped up our working and avoided these problems. At the same time, it is
-good to know about NoSQL databases, and we would not have learnt about it during
-this project otherwise, so we would need to consider which tradeoffs are worth
-it.
+felt slightly uncomfortable using something that didn't have relational data,
+and never really got used to the paradigm shift, so perhaps using a relational
+model would've sped up our working and avoided these problems. At the same time,
+it is good to know about NoSQL databases, and we would not have learnt about it
+during this project otherwise, so we would need to consider which tradeoffs are
+worth it.
 
 Whilst we tried to adhere to agile methods when working on this project, we
 found that we didn't do everything we could have done. Scrums weren't
@@ -70,7 +70,7 @@ necessary to always stop working and discuss working - instead they happened
 only when absolutely necessary (i.e. when designing a new feature). We also
 didn't rotate our team members a lot. Using more agile methods would've taught
 us a lot more about this way of working, as well as potentially improving the
-work we do.
+work we did.
 
 Our sprints were two weeks long, which seemed to work well due to the other work
 we had to complete in the timeframe (coursework and such), but more feedback
@@ -78,8 +78,6 @@ more frequently is always better, so perhaps shortening this would've improved
 our work.
 
 \section{Future Extensions}
-% There can probably be a lot for this... list the key features we would
-% want to add, or the ones we were planning on adding before we ran out of time
 
 Whilst we got the key features completed on time, there are a few things we were 
 thinking about doing towards the end of the project that we could do if we had
@@ -91,9 +89,11 @@ Below is a list of the extensions ideas we have and the reasons for them:
 
 \begin{itemize}
     \item
-        \textbf{More Extensive API} - Allowing more control over the car allows
-        for more complex and detailed AI scripts, and could help find the best
-        candidates who can use all the features. Examples of this include 
+        \textbf{More Extensive API} - Allowing more control over the car and the
+        world around it allows for more complex and detailed AI scripts, and
+        could help find the best candidates who can use all the features.
+        Examples of this include more environment awareness and more situational
+        awareness.
     \item
         \textbf{Better car physics} - Our simulated car physics could do with
         some improvements - for example when moving backwards the car has a
@@ -103,7 +103,7 @@ Below is a list of the extensions ideas we have and the reasons for them:
     \item
         \textbf{Cleaner setup} - Currently our deployment system consists of
         downloading the Github repository, and making sure to install the
-        prerequisites (MongoDB and Node), then running the web server. This
+        prerequisites (MongoDB and Node.js), then running the web server. This
         could be packaged up into an installer that bundles the compiled code
         and the prerequisites together for easy installation.
     \item
@@ -117,12 +117,12 @@ Below is a list of the extensions ideas we have and the reasons for them:
         some example scripts on how to use the API would definitely aid future
         users with how best to go about writing a racing AI.
     \item
-        \textbf{Improving other scripts} - this was originally part of the
+        \textbf{Improving other scripts} - This was originally part of the
         original specification, which wanted us to allow new players to see
         existing code and tweak it for better performance. We decided against
         this after we found this would be used at careers fairs to test
         candidates, as this would be unfair to the original authors of the
-        scripts, and may lead to unfair perfomance comparisons.
-        However, if the project were to be converted to more of a market than a
-        performance tool, then this could then be integrated.
+        scripts, and may lead to unfair performance comparisons. However, if the
+        project were to be converted to more of a market than a performance
+        tool, then this could then be integrated.
 \end{itemize}
