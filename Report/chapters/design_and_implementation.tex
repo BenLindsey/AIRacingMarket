@@ -209,12 +209,18 @@ We solved this problem by replacing the walls and proximity sensors with a splin
 
 \section{User Interface Design {\color{red} TOM}}
 
-Website layout / key design features
-\begin{itemize}
-\item Responsive edit screen
-\item Anonymous/logged in submit screens
-\item Admin accessible features
-\end{itemize}
+\subsection{Design Philosophy}
+
+At a a busy careers fair we expect students will have roughly 5-10 minutes sessions with AI Racing Market. Ideally students will have the chance to return and improve their scripts, yet this may be infeasible if there are a lot of interested students. Given students will be short on time, under pressure and likely new to the game, we focused on :
+\vspace{-1mm}
+\begin{enumerate} \itemsep -2pt 
+\item Simplicity
+\item Minimal Interactions
+\end{enumerate}
+
+We previously justified our use of Bootstrap by the provision of a familiar user experience. By providing the user with a simplistic and familiar interface, users need little explanation of website navigation and can simply focus on script editing and submission. 
+
+An example of how we achieved this was a common navigation bar seen on each web page. This functions as a website backbone, providing the user with access to all of the website's  features. Our template engine, Jade, made this incredibly simple (as shown below); we wrote a basic navigation template that extended our generic Bootstrap layout, which could then be included within the other templates (in Node.js, these are called {\it views}). 
 
 \begin{figure}[H]
 \centering
@@ -222,8 +228,26 @@ Website layout / key design features
 \caption{Jade navigator template included within each view.}
 \end{figure}
 
+\subsection{Responsive Script Editing}
 
-\subsection{Justification}
+\begin{enumerate}
+\item Iterative development - for collaboration with G-Research
+\item Immediate feedback - otherwise scripts submitted and left in the ether until tournament
+\end{enumerate}
+
+\subsection{Anonymous Script Submission}
+
+\begin{enumerate}
+\item Users dont need to register, submit straight after notes on handout
+\item Associated with script name, no need to feel like G-Research will judge 
+\end{enumerate}
+
+\subsection{Admin Features}
+
+\begin{enumerate}
+\item Ed wanted us to restrict access to multiplayer/leaderboard - they alter ELO
+\item Unrestricted REST endpoints
+\end{enumerate}
 
 \section{Script Execution and Sandboxing TODO {\color{green} BEN}}
 How did we convert javascript to unity script?
