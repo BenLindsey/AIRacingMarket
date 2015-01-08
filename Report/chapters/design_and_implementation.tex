@@ -128,7 +128,7 @@ Anticipation \& Mitigation
 \subsection{Challenges}
 Solutions
 
-\section{Browser Front-End {\color{red} TOM}}
+\section{Browser Front-End}
 
 For the browser front-end, i.e. website, we used three technologies : Jade, Bootstrap and the Ace editor.
 
@@ -213,7 +213,7 @@ To guide the car around the track we initially placed invisible walls along the 
 
 We solved this problem by replacing the walls and proximity sensors with a spline along the centre of the track and keeping a target position on this spline. The car will always steer toward this target position and the target will always be a small distance in front of the car. This ensures that the car will always drive the right way along the track. Another advantage of the splines is that if two cars take a corner too quickly, the car moving moving faster will end up further from the track and therefore lose more time than the slower car. With the old approach, both cars would have simply bounced off the walls and the slower car would have no advantage.
 
-\section{User Interface Design {\color{red} TOM}}
+\section{User Interface Design}
 
 \subsection{Design Philosophy}
 
@@ -234,32 +234,78 @@ An example of how we achieved this was a common navigation bar seen on each web 
 \caption{Jade navigator template included within each view.}
 \end{figure}
 
-\subsection{Responsive Script Editing}
-
-\begin{enumerate}
-\item Iterative development - for collaboration with G-Research
-\item Immediate feedback - otherwise scripts submitted and left in the ether until tournament
-\end{enumerate}
-
 \subsection{Anonymous Script Submission}
 
+Few things kill the excitement of a new game like a lengthy registration process, especially when handing over your email could spell nothing but more email spam. Although we trust that G-Research wont spam students using AI Racing Market, or sell their email addresses to third parties, we designed the script submission such that the users did not have to register. Not only does reduce the interactions needed for a new user to get involved with racing, but it allows the users to remain anonymous, removing the concern that a poor performing script tied to their email address will result in G-Research immediately dismissing their application. As shown below, the user simply associates their work with a script name, and can immediately create a script.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{anonymoussubmit.png}
+\caption{Admins will see additional features on their navigation bar after logging in.}
+\end{figure}
+
+As we discuss later in this section, G-Research wants to harvest user data.  Therefore we added an ``Optional Details" panel on the right hand side of the script submission screen, allowing users to provide G-Research with information if they wish. If these details are submitted, they are not tied to an account or script until a user registers with the same email address. This means G-Research can recognize that a student has attended their careers fair stand, however their performance can't be scrutinised. If a user is already logged in and wants to submit a new script, they will face the same screen as shown above, excluding the optional details pane.
+
+\subsection{Responsive Script Editing}
+
+Clearly the script submission screen presented above is limited; it provides basic syntax checking, however users will have no feedback on how their scripts perform prior to racing in the tournament. If a user has registered, they can navigate to a more responsive editing mode by clicking on of their submitted scripts, listed on their profile (shown below).
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{profiletoedit.png}
+\caption{Registered users have their scripts listed on their profile, these can be edited on click.}
+\end{figure}
+
+After selecting a script to edit, they are presented with not only an Ace editor, but a test race (shown below). Although the user cannot choose the car and track they test their scripts with, they can practice against an opponent script of their choice (without altering the leaderboard rankings). This allows for a more efficient and iterative development process, as the immediate responsive feedback to changes allows the user to incrementally improve their script. To improve usability, the script editing screen is incredibly similar to the script submission screen. 
+
+\begin{figure}[h]
+\makebox[\textwidth]
+{
+	\includegraphics[width=0.49\textwidth]{editscreen.png}
+	\hfill    
+	\includegraphics[width=0.49\textwidth]{editscreenhide.png}
+}
+\caption{Edit Screen - users can edit their scripts and test any changes made.}
+\end{figure}
+
+There are a few key differences between the script submission and editing screen, beyond the rather obvious Unity Web Player :
+
 \begin{enumerate}
-\item Users dont need to register, submit straight after notes on handout
-\item Associated with script name, no need to feel like G-Research will judge 
+\item Hide button - Now that the user can also view their script racing alongside the Ace editor, we provided a hide button which allows the user to collapse the editing pane, displaying the race without forcing the user to scroll down the page. We decided not to display the race alongside the editor on the screen, as this either requires an unrealistically wide screen resolution, or would reduce the size of the editor and Unity web player drastically. We tested the edit screen using tabs, with the editing pane on one and the race on the other, however we experienced issues resizing the  Unity Web Player and running it in the background.
+\item Restore button - After the editing pane has been collapsed, a large restore button is presented where the pane previously was. This is large to ensure that a new user does not accidentally hide the edit screen, struggle to restore it, and consequently leave the page without submitting changes. We could have used a more subtle restore button, and a  pop-up to notify the user of how to find it, but we did not want to obscure the Unity Web Player.
+\item Update/Submit/Reset buttons - These new buttons are clustered together in the bottom right of the editing pane, below the Ace editor, to ensure they are visible when the computer being used has a small monitor resolution or if the web-browser has a high zoom level. Although clustering these buttons risks users accidentally submitting changes, we ensured the buttons had contrasting colours to avoid confusion.
+	\begin{enumerate}
+	\item Submit button - As the user is logged in, submitting changes updates the user's script and returns them to their profile. They are greeted by a pop-up that notifies them that their changes had been made successfully.
+	\item Update button - Pressing the update button re-interprets the script, whether changes have been made or not. This allows the user to observe changes on demand, without restarting the race. 
+	\item Reset button - Pressing the reset button restarts the race, re-interpreting the script and changing the opponent to the one selected in the ``Enemy" drop-down menu.
+	\end{enumerate}
 \end{enumerate}
 
 \subsection{Admin Features}
 
-\begin{enumerate}
-\item Ed wanted us to restrict access to multiplayer/leaderboard - they alter ELO
-\item Unrestricted REST endpoints
-\end{enumerate}
+We restricted a few features from the average user, which are only accessible by a registered admin, i.e. G-Research employee. These features were the tournament mode and admin panel, as shown below.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{admintoolbar.png}
+\caption{Admins will see additional features on their navigation bar after logging in.}
+\end{figure}
+
+These REST end points {\tt/tournament} and {\tt/admin} aren't secured from other users or anonymous users, however we do not expect users to access these features. This is mostly because users will be supervised by G-Research recruiters, but also because users will simply not know the names of these routes, and could only access them by trial and error.
+
+The tournament button on the navigation bar will display a tournament, with races being run automatically with the leaderboard changes being displayed after each race. The admin button displays the user details of registered users, excluding passwords (shown below) - this feature was requested by our client. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{adminpanel.png}
+\caption{Admins can view the details of registered users.}
+\end{figure}
 
 \section{Script Execution and Sandboxing TODO {\color{green} BEN}}
 How did we convert javascript to unity script?
 How do we allow global state?
 Challenges to overcome: no objects. Direct control over unity objects, e.g. car teleportation. Allowing other languages.
 Risks: Dr Evil!!
+
 
 \section{Harvesting Personal Data TODO}
 One of the primary objectives of our project is the acquisition of personal data about potential employees. This includes information such as email address, university degree, etc.
