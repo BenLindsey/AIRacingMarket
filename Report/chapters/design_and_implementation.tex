@@ -62,8 +62,6 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 
 	% Boxing
 	%\draw [color=gray,thick, dotted] ($(passport.north west)+(-0.2,0.2)$) rectangle ($(monk.south east)+(0.2,-0.2)$);
-        %\node at (passport) [above=3mm, right=0mm] {\small If private};
-
 	\draw [color=gray,thick](-0.5,-3) rectangle (12.55,0);
 	\node at (-0.5,0) [above=5mm, right=0mm] {\textsc{Front-End}};
 	\draw [color=gray,thick](-0.5,-10.5) rectangle (12.55,-5);
@@ -144,10 +142,10 @@ As explained above, we chose to use the Node.js platform, and we next had to cho
 \caption{Jade template inheritance is simple and powerful.}
 \end{figure}
 
-\noindent Compared to other engines such as Swig and Hamljs, which have similar feature sets, Jade has had reported sluggish benchmarking performance \footnote{http://paularmstrong.github.io/node-templates/benchmarks.html} (obviously some benchmarks can't be treated as gospel). However, performance was not a concern for us; templating engines are very rarely a system bottleneck, and the decision to use Jade was founded upon it's usability and readability.
+\noindent Compared to other engines such as Swig and Hamljs, which have similar feature sets, Jade has had reported sluggish benchmarking performance \cite{benchmarks} (obviously some benchmarks can't be treated as gospel). However, performance was not a concern for us; templating engines are very rarely a system bottleneck, and the decision to use Jade was founded upon it's usability and readability.
 
 \subsection{Bootstrap}
-Given our limited experience using Jade/HTML and CSS, alongside our negligible artistic talent, we opted to use Twitter's Bootstrap to design our website. Bootstrap makes web design a breeze by providing the HTML and CSS templates for well-designed web components, including forms, buttons, navigation bars, JavaScript extensions and more. In particular, we used the Sandstone \footnote{http://bootswatch.com/sandstone/} template from Bootswatch (released under MIT license), demonstrated in the figure below. Although this may not give users with a particularly unique experience, it means providing users with a familiar experience that would allow them to utilise preconceived assumptions on how the website can be navigated - avoiding the need to explain the website explicitly.
+Given our limited experience using Jade/HTML and CSS, alongside our negligible artistic talent, we opted to use Twitter's Bootstrap to design our website. Bootstrap makes web design a breeze by providing the HTML and CSS templates for well-designed web components, including forms, buttons, navigation bars, JavaScript extensions and more. In particular, we used the Sandstone\cite{sandstone} template from Bootswatch (released under MIT license), demonstrated in the figure below. Although this may not give users with a particularly unique experience, it means providing users with a familiar experience that would allow them to utilise preconceived assumptions on how the website can be navigated - avoiding the need to explain the website explicitly.
 
 \begin{figure}[H]
 \centering
