@@ -4,7 +4,7 @@ Our first step, after reading the description of our project, was to decide what
 
 Once we began thinking about alternatives an obvious solution sprang to mind. A huge benifit of Unity is that it is highly portable and can be run on many different platforms. One of these platforms is the Unity Web Player, a browser plug-in that allows Unity applications to be run inside all modern web browsers. If we used the web player we would could pull all of the things that are difficult to do in Unity outside of the Unity application and into the web browser. Thus turning the task of creating an easy to use interface for uploading scripts into a web design problem, a domain that is a lot better suited to solve user interface tasks such as this. The Unity application is then only needed for running and visualising the races. Unity also provides features for communication with the web browser, in both directions, when running in the web player, making passing data to the Unity application at runtime easy. This design also reduces the complexity of the networking problems as now one machine can run a web-server and database, using standard web technologies, while client machines simply run a web browser, containing the Unity Web Player, and communicate with the server using standard web protocols.
 
-\subsection{Component Diagram {\color{green} BEN}}
+\subsection{Component Diagram}
 
 \tikzset{%
   block/.style    = {draw, thick, rectangle, minimum height = 3em, rounded corners,
@@ -20,12 +20,20 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 \begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
 	% Blocks of FRONT END:
 	\draw
-		node at (1, -1.5) [block] (unity) {Unity}
-		node at (11, -1.5) [block] (browser) {Browser}
+		node at (1, -1.7) [block] (unity) {Game \\ Objects}
+		node [block, right of=unity, right=-0.25cm] (webplayer) {Unity \\ Webplayer}
+		node [block, right of=webplayer, right=-0cm] (unityscript) {Unity \\ Script}
+		node [block, right of=unityscript, right=-0.35cm] (ai) {AI\\Script}
+		node [block, right of=ai, right=-0.5cm] (browser) {Browser}
 		%node [sum, right of=input1] (suma1) {Unity}
 	;
     	% Joining FRONT END:
-	%\draw[->](input1) -- node {$X(Z)$}(suma1);
+	\draw[->] (browser) -- node {} (ai);
+	\draw[->] (ai) -- node {} (unityscript);
+	\draw[->] (unityscript) -- node {} (webplayer);
+	\draw[->] (webplayer) -- node {} (unity);
+	\draw[-] (webplayer) |- node[right=3.5cm, above] {\small Request Commands } ($(browser.north) + (0, 0.5)$);
+	\draw[->] ($(browser.north) + (0, 0.5)$) -- node {} (browser);
 
 	% Blocks of MIDDLE
 	\draw
@@ -34,7 +42,7 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 
         % Blocks of BACK END
 	\draw
-	        node [block, below of=unity, below=2.5cm, name=express] {Express\\Router}
+	        node [block, below of=unity, below=2.3cm, name=express] {Express\\Router}
 	        node [block, right of=express, right=0cm, name=passport] {Passport \\ Auth.}
 	        node [db, below of=passport, below=0cm, name=mongo] {MongoDB}
 	        node [interface, above of=mongo, above=-1cm, name=monk] {Monk Adapter}
@@ -44,7 +52,7 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 	% Joining BACK END
 	\draw[->] (express) -- node {} (passport);
 	\draw[->] (rest) -| node {} (express);
-	\draw[->] ($(browser.south) + (-0.2, 0)$) |- node {} (rest);
+	\draw[->] ($(browser.south) + (-0.2, 0)$) |- node[left=2.25cm, below] {\small Request Page} (rest);
 	\draw[-, dotted] (passport) -- node[below right] {} (monk);
 	\draw[-] (monk) -- node {} (mongo);
 	\draw[->] (passport) -- node {} (routes);
@@ -56,9 +64,9 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 	%\draw [color=gray,thick, dotted] ($(passport.north west)+(-0.2,0.2)$) rectangle ($(monk.south east)+(0.2,-0.2)$);
         %\node at (passport) [above=3mm, right=0mm] {\small If private};
 
-	\draw [color=gray,thick](-0.5,-3) rectangle (12.5,0);
+	\draw [color=gray,thick](-0.5,-3) rectangle (12.55,0);
 	\node at (-0.5,0) [above=5mm, right=0mm] {\textsc{Front-End}};
-	\draw [color=gray,thick](-0.5,-10.5) rectangle (12.5,-5);
+	\draw [color=gray,thick](-0.5,-10.5) rectangle (12.55,-5);
 	\node at (-0.5,-10.5) [below=5mm, right=0mm] {\textsc{Back-End}};
 \end{tikzpicture}
 \end{center}
