@@ -72,9 +72,9 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 \section{Back-end}
 The architecture of our server revolves around providing a website to upload, manage and score AI scripts. We provide these services via a simple REST API, implemented with Node.js\cite{whynode} and its supporting libraries:
 	\begin{itemize}
-	        \item \textbf{Express} is a light-weight web application framework that supports the MVC design pattern using routes (controllers) and views.  
-		\item \textbf{Passport} handles authentication for our website. We currently use the 'local' package which provides account registration and login via our Mongo database. However, in the future we could easily slot in Facebook or Google packages to provide alternative login methods.	
-		\item \textbf{Monk} provides a simple adapter to access our Mongo database in JavaScript. It uses an asynchronous tactic of searching by a filter object (e.g. to find a user called Steve, you'd filter with a new user object with name Steve) combined with a closure to be invoked on the found objects. 
+	        \item \textbf{Express}\cite{express} is a light-weight web application framework that supports the MVC design pattern using routes (controllers) and views.  
+		\item \textbf{Passport}\cite{passport} handles authentication for our website. We currently use the 'local' package which provides account registration and login via our Mongo database. However, in the future we could easily slot in Facebook or Google packages to provide alternative login methods.	
+		\item \textbf{Monk}\cite{monk} provides a simple adapter to access our Mongo database in JavaScript. It uses an asynchronous tactic of searching by a filter object (e.g. to find a user called Steve, you'd filter with a new user object with name Steve) combined with a closure to be invoked on the found objects. 
 \begin{figure}[H]
 \centering
 \begin{lstlisting}[language=JavaScript]
@@ -115,7 +115,8 @@ Why use MongoDB?
 
 Although MongoDB is a non relational database, we can still model the data storage as such:
 
-\begin{center}
+\begin{figure}[H]
+\centering
 \begin{tikzpicture}[node distance=7 em]
 \node [entity] (person) {User};
 \node [relationship] (has) [right of=person] {Owns};
@@ -133,7 +134,9 @@ Although MongoDB is a non relational database, we can still model the data stora
 \path[every node/.style={font=\sffamily\small}] (person) edge node [above] {0..N} (has);
 \path[every node/.style={font=\sffamily\small}] (script) edge node [above] {1..1} (has);
 \end{tikzpicture}
-\end{center}
+\caption{ER diagram for our database.}
+\label{fig:ER}
+\end{figure}
 
 \subsection{Risks}
 Anticipation \& Mitigation
@@ -147,7 +150,7 @@ For the browser front-end, i.e. website, we used three technologies : Jade, Boot
 
 
 \subsection{Jade}
-As explained above, we chose to use the Node.js platform, and we next had to chose a template engine for it's web template system. We chose to use Node's default engine, Jade, which is written in JavaScript and specifically a templating language for HTML. It simplifies writing web pages as it is less verbose than HTML, and allows template inheritance (demonstrated below) alongside other dynamic constructs such as conditionals and loops.
+As explained above, we chose to use the Node.js platform, and we next had to chose a template engine for it's web template system. We chose to use Node's default engine, Jade\cite{jade}, which is written in JavaScript and specifically a templating language for HTML. It simplifies writing web pages as it is less verbose than HTML, and allows template inheritance (demonstrated below) alongside other dynamic constructs such as conditionals and loops.
 \vspace{-2mm}
 \begin{figure}[H]
 \centering
@@ -167,7 +170,7 @@ Given our limited experience using Jade/HTML and CSS, alongside our negligible a
 \end{figure}
 
 \subsection{Ace}
-Apart from the most cavalier advocates of text editors, programmers shudder at the idea of coding in a plain text area. To simplify the process of reading, writing and submitting scripts, we chose to use a web-based code editor. There are few open-source editors that can rival the performance, features and simplicity of Ace (a standalone editor written in JavaScript). Ace is actively developed for use in the online Cloud9 IDE, yet can be embedded in any web page (see picture below) given its BSD license.
+Apart from the most cavalier advocates of text editors, programmers shudder at the idea of coding in a plain text area. To simplify the process of reading, writing and submitting scripts, we chose to use a web-based code editor. There are few open-source editors that can rival the performance, features and simplicity of Ace (a standalone editor written in JavaScript). Ace\cite{ace} is actively developed for use in the online Cloud9 IDE, yet can be embedded in any web page (see picture below) given its BSD license.
 
 \begin{figure}[H]
 \centering
