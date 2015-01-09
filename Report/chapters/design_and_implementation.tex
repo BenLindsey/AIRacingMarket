@@ -111,9 +111,9 @@ Route & Request &  Response & Explanation\\\hline\hline
 Comment on the table.
 
 \subsection{MongoDB}
-Why use MongoDB?
+For our database persistence we use an open source, document based solution - MongoDB\cite{mongo}. Mongo provides fast, scalable data storage with rich, object based queriers.
 
-Although MongoDB is a non relational database, we can still model the data storage as such:
+Our main motivation for using MongoDB was the flexibility its schema-less design offered\cite{whymongo}. Rapidly prototyping new ideas and concepts is much more productive when the updating and deployment of database schemas can be ignored. During such development data entries can frequently gain and lose attributes, which requires no interaction with the database when Mongo is used. Furthermore, by using the Monk adapter we can implement our full back-end in a single language, JavaScript, without complicated SQL statements.
 
 \begin{figure}[H]
 \centering
@@ -134,15 +134,11 @@ Although MongoDB is a non relational database, we can still model the data stora
 \path[every node/.style={font=\sffamily\small}] (person) edge node [above] {0..N} (has);
 \path[every node/.style={font=\sffamily\small}] (script) edge node [above] {1..1} (has);
 \end{tikzpicture}
-\caption{ER diagram for our database.}
+\caption{ER diagram for our data persistence.}
 \label{fig:ER}
 \end{figure}
 
-\subsection{Risks}
-Anticipation \& Mitigation
-
-\subsection{Challenges}
-Solutions
+From Figure \ref{fig:ER} you can see another justification for our use of NoSQL technologies: the relationship is very simple. Document based technologies such as Mongo can struggle to provide simple modelling of complicated relationships, in these situations SQL based implementations typically offer a better solution. 
 
 \section{Browser Front-End}
 
