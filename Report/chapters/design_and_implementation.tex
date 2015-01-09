@@ -184,18 +184,19 @@ It is rare for websites and web applications to function identically or appear t
 
 \subsubsection{Mobile Compatibility}
 
-At careers fair, may be nothing stopping user from submitting a script by their phone/tablet following using the handout etc.... (G-Research may encourage etc)... Compatibility!
+Although users will not be able to run the game itself from a mobile device, it may be possible for students to submit their AI scripts from mobile devices at a careers fair (assuming G-Research permits it, given they will be hosting a local network). This could reduce queues for workstations at the stand. Unfortunately we did not develop our website with mobile users on mind, and some website components are coded such that they would perform poorly on small-resolution devices. This means there is a considerable risk of poor compatibility on mobile devices, that could greatly detract from a mobile user's experience. For example, the Ace editors do not resize gracefully, and as a result the user may struggle to view their scripts with full line width.
 
 \subsection{Challenges}
-Solutions
 
 \subsubsection{Streamlining User Interactions}
 
-We didn't want users to dilly dally, see UI section
+To prevent queues to play AI Racing Market at the G-Research stand, we focused on minimizing the user interactions needed to reach the script submission screen. As we were inexperienced web developers at the start of the project, we relied heavily on Bootstrap to provide web components, hence were limited in how unique the user experience could be. Compared to any bespoke solution, using an off-the-shelf alternative (Bootstrap) posed the challenge of ensuring we could design an intuitive website. We describe our design philosophy and how we tackled this challenge in the User Interface Design section, later in this chapter.
 
 \subsubsection{Unity Web-player Loading Times}
 
-On edit screen, as we will describe further in X, we load unity web player. THis is slow as fuck, and during development would freeze/some other excuse. Now we do X which somehow works...
+The majority of our website was lightweight, with simple components and little dynamic content. However, the Unity web player (which runs and displays the racing), loaded slowly and can occasionally freeze somebody's browser. This is largely out of our control, and we faced the challenge of ensuring a smooth user experience. When running a multiplayer race or a tournament, the user will be waiting for the race to start, and simply waiting for the Unity web-player's loading bar to fill. However, on the edit screen (described later in the User Interface Design section), the user is presented with not only the web-player, but an Ace editor, so that they can make changes to their script and get immediate feedback. 
+
+It was clear to us that we had to avoid re-launching the Unity web-player when the user made changes to their script, as this could potentially freeze and crash someone's browser before they are able to save their updated script. This meant we had to run the Unity web-player in the background, or alongside the editor. We chose to run the web-player underneath the editor for two main reasons: computers with a large screen resolution will be able to view both their script and the editor, creating a more responsive editing experience; and the obvious approach to hiding the Unity web-player without restarting it was minimizing it to a 1x1 pixel resolution, however this resulted in Unity engine errors when initialising the web-player, making the approach infeasible. 
 
 \section{Unity Application {\color{blue} CHRISTOPHE}}
 No external tech used except for a few of Unity's basic script assets, e.g. smooth follow cam.
