@@ -11,12 +11,20 @@ block content
           th Degree
           th University
           th Year
+          th Scripts
         tbody
         - if (users && users.length) {
-        each entry, i in users
-          tr
-            td= entry.local.email
-            td= entry.local.degree
-            td= entry.local.university
-            td= entry.local.year
+          each entry, i in users
+            tr
+              td= entry.local.email
+              td= entry.local.degree
+              td= entry.local.university
+              td= entry.local.year
+              td
+                - if (entry.local.scripts && entry.local.scripts.length) {
+                  table.table.table-hover(style="border: 1px solid black")
+                    each scriptEntry, j in entry.local.scripts
+                      tr
+                        td= scriptEntry
+                - }
         - }
