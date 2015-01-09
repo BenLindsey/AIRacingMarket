@@ -69,13 +69,26 @@ Once we began thinking about alternatives an obvious solution sprang to mind. A 
 \end{tikzpicture}
 \end{center}
 
-\section{Back-end {\color{green} BEN}}
-
-The design of our back-end was focused around a simple REST API, while the implementation primarily involves NodeJS and its supporting libraries:
+\section{Back-end}
+The architecture of our server revolves around providing a website to upload, manage and score AI scripts. We provide these services via a simple REST API, implemented with Node.js\cite{whynode} and its supporting libraries:
 	\begin{itemize}
-	        \item Express
-		\item Passport (passport-local)
-		\item Monk
+	        \item \textbf{Express} is a light-weight web application framework that supports the MVC design pattern using routes (controllers) and views.  
+		\item \textbf{Passport} handles authentication for our website. We currently use the 'local' package which provides account registration and login via our Mongo database. However, in the future we could easily slot in Facebook or Google packages to provide alternative login methods.	
+		\item \textbf{Monk} provides a simple adapter to access our Mongo database in JavaScript. It uses an asynchronous tactic of searching by a filter object (e.g. to find a user called Steve, you'd filter with a new user object with name Steve) combined with a closure to be invoked on the found objects. 
+\begin{figure}[H]
+\centering
+\begin{lstlisting}[language=JavaScript]
+router.get('/script/:name', function(req, res) {
+    db.get('scriptcollection').findOne({scriptName:req.params.name},  
+        function(e, doc) { res.send(doc.script, 200); }
+    );
+}
+\end{lstlisting}
+\caption{Example use of Express (router.) \& Monk (db.) to GET a script.}
+\label{fig:getscript}
+\end{figure}
+		
+		\item \textbf{Forever} solves one of the main limitations of Node.js: that in the event of an exception the website will crash and shut down. Forever is a simple way to keep a script, and thus the website it controls, operating continuously. In the event of an uncaught exception, server restart or otherwise fatal condition Forever will restart the website immediately. Forever also maintains a log of such circumstances to help track down the cause.
 	\end{itemize}
 
 \subsection{REST API}
@@ -88,7 +101,7 @@ Below you can see some example interactions with our REST API:\\
 Route & Request &  Response & Explanation\\\hline\hline
 /script & GET & View & Show the create new script page\\\hline
 /script & POST & None & Store a new script to the server\\\hline
-/script/DrEvil & GET & String & Get the code for script DrEvil\\\hline
+/script/DrEvil & GET & String & Get the code for script DrEvil [see Figure \ref{fig:getscript}]\\\hline
 /edit/DrEvil & GET & View & Show the live edit script page\\\hline
 /tournament & GET & View & Show the next tournament match\\\hline
 /tournament & POST & View & Store the match result and show the next \\\hline
@@ -311,15 +324,3 @@ How did we convert javascript to unity script?
 How do we allow global state?
 Challenges to overcome: no objects. Direct control over unity objects, e.g. car teleportation. Allowing other languages.
 Risks: Dr Evil!!
-
-
-\section{Harvesting Personal Data TODO}
-One of the primary objectives of our project is the acquisition of personal data about potential employees. This includes information such as email address, university degree, etc.
-\subsection{Non-invasive authentication}
-We don't want to scare users away to early...
-Allow anonymous script posting..
-\subsection{Risks}
-We must avoid leaking personal data...
-For example, when designing our leaderboard we had to bare in mind we didn't want to display user's emails to passing strangers...
-
-
