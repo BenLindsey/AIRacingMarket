@@ -198,13 +198,13 @@ The majority of our website was lightweight, with simple components and little d
 
 It was clear to us that we had to avoid re-launching the Unity web-player when the user made changes to their script, as this could potentially freeze and crash someone's browser before they are able to save their updated script. This meant we had to run the Unity web-player in the background, or alongside the editor. We chose to run the web-player underneath the editor for two main reasons: computers with a large screen resolution will be able to view both their script and the editor, creating a more responsive editing experience; and the obvious approach to hiding the Unity web-player without restarting it was minimizing it to a 1x1 pixel resolution, however this resulted in Unity engine errors when initialising the web-player, making the approach infeasible. 
 
-\section{Unity Application {\color{blue} CHRISTOPHE}}
+\section{Unity Application}
 No external tech used except for a few of Unity's basic script assets, e.g. smooth follow cam.
 
-Main design points:
-Designing the Script API
-Managing and recording race data e.g. checkpoints, hud
-Comunication with browser i.e. starting race, where scripts are exectued, how many calls per frame
+%Main design points:
+%Designing the Script API
+%Managing and recording race data e.g. checkpoints, hud
+%Comunication with browser i.e. starting race, where scripts are exectued, how many calls per frame
 
 Unity applications are based around a system of scenes that can be switched between at runtime. We used this in our application to have a seperate scene for each racetrack we had built. As, in our case, each time the application is loaded only
 
@@ -213,25 +213,21 @@ The key component of the Unity application is the scripting API and our first st
 
 Finally, we added a few more features which scripts can use to distinguish themselves: the distance to the next corner, the curvature of that corner and a ``boost'' ability which gives the car a large speed increase but may only be used every few seconds. A good script can make use of these features by boosting along straight sections and slowing down according to the sharpness of the corner.
 
-\subsection{Race Data}
-
-\subsection{Browser Communication}
-
 \subsection{Risks}
-Spending ages on
+%Spending ages on
 
-splines from timeboxed spikes section?
+%Anticipation \& Mitigation
 
-Anticipation \& Mitigation
+
 
 \subsection{Challenges}
-Designing the script API
+%Designing the script API
 
-Initially we had a very simplistic system of controlling and receiving environment information from the car.
+%Initially we had a very simplistic system of controlling and receiving environment information from the car.
 
-steering and throttle control for control. Proximity sensors (ray casting) for position information.
+%steering and throttle control for control. Proximity sensors (ray casting) for position information.
 
-Solutions
+%Solutions
 
 \subsubsection{Steering the Car}
 To guide the car around the track we initially placed invisible walls along the edge of the track and created proximity sensors on either side of the car to measure the distance to these walls. The output of the sensors was used to steer the car toward the current lane. The main problem with this approach was that the cars would always drive forward even when pointing the wrong way after skidding or a crash causing the cars to drive the wrong way around the track.
@@ -242,7 +238,7 @@ We solved this problem by replacing the walls and proximity sensors with a splin
 % Define "ranking of the cars" for the reader?
 Users are able to submit scripts which cannot finish a race in a reasonable time or which will never finish e.g. cars which flip over in corners, cars which only drive backwards or stay at the start line and cars which override the default steering and go off track. So our tournament must be able to terminate a race before all cars have finished if necessary and still provide a good ranking of the cars.
 
-We accomplished this by placing invisible checkpoints to split each track into short straight sections. We keep maintain the next checkpoint and the time since the last checkpoint was completed for each car. From this we can tell if a car has finished (when the last checkpoint in the race is completed for the third time) or if the car has timed out (if the last checkpoint was completed more than 30 seconds ago). The 30 second time limit is very generous and even a cautious script can easily complete each checkpoint in this time, so a car which times out will belong to an incorrect script. The tournament is ended when all cars have either completed the race or have timed out. Cars which completed the race will be ranked by their time while cars which have timed out will be ranked according to the number of checkpoints completed, if this is equal, then the straight line distance to the next checkpoint is used instead.
+We accomplished this by placing invisible checkpoints to split each track into short straight sections. We keep maintain the next checkpoint and the time since the last checkpoint was completed for each car. From this we can tell if a car has finished (when the last checkpoint in the race is completed for the third time) or if the car has timed out (if the last checkpoint was completed more than 30 seconds ago). The 30 second time limit is very generous and even a cautious script can easily complete each checkpoint in this time, so a car which times out will belong to an incorrect script. The tournament is ended when all cars have either completed the race or have timed out. Cars which completed the race will be ranked by their time, while cars which have timed out will be ranked according to the number of checkpoints completed, if this is equal, the straight line distance to the next checkpoint is used instead.
 
 \section{User Interface Design}
 
