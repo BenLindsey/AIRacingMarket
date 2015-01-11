@@ -156,9 +156,11 @@ One of the mechanisms that we used to tackle this problem was the use of timebox
 \subsection{Prototypes}
 Another thing that we used to ensure that we were spending our time on the right things was the use of paper prototypes. When developing new front end systems or features it can be a great time saver to nail down what you want a UI to look like before you begin working on it. Otherwise, a first iteration could be built and then when it's shown to a stakeholder, the design might turn out to be sub-optimal. The UI may then have to be rebuilt from scratch, in the worst case. Paper prototypes can be used to minimise this wasted time by getting feedback before any time has been spent building it. For example, here is a paper prototype that we used for the script submission page (from the perspective of an anonymous user):
 
-\begin{center}
+\begin{figure}[H]
+\centering
 \includegraphics[scale=0.7]{mockup.png}
-\end{center}
+\caption{Paper prototype of script submission screen.}
+\end{figure}
 
 In our case this was simply used among our team to decide on a design. Which, while not as useful as getting direct customer feedback, allowed us to save time on any later redesigns due to any differences in the imagined look of the site between team members. 
 
@@ -169,11 +171,21 @@ From our experience using UI prototyping software such as Fluid UI, it is rigid 
 
 We integrated testing into our project lifecycle, ensuring that we tested often, and consequently kept the code in a releasable state. Automated testing helped us identify issues early and fix them immediately - this flexible response to change is key in agile software development, the development approach we have adopted. 
 
-As previously detailed in section {\bf X}, we used TeamCity to management continuous integration, including automated unit testing. To test the functionality of our website, we used two Node.s modules alongside the TeamCity Node plugin: Zombie.js and Mocha. Zombie.js is a lightweight framework for client-side Javascript testing, and facilitates headless full-stack testing. In other words, Zombie.js let us programatically interact with a browser (without a graphical user interface). Mocha is also a Javascript testing framework, that simplifies test-driven and behaviour-driven development. Mocha provides an asynchronous test runner alongside interfaces such as {\tt describe, before, after, beforeEach} that simplify the declaration of test specifications.
+We used TeamCity\cite{teamcity} to manage continuous integration, including automated unit testing. To test the functionality of our website, we used two Node.s modules alongside the TeamCity Node plugin\cite{teamcitynode}: Zombie.js\cite{zombie} and Mocha\cite{mocha}. Zombie.js is a lightweight framework for client-side Javascript testing, and facilitates headless full-stack testing. In other words, Zombie.js let us programatically interact with a browser (without a graphical user interface). Mocha is also a Javascript testing framework, that simplifies test-driven and behaviour-driven development. Mocha provides an asynchronous test runner alongside interfaces such as {\tt describe, before, after, beforeEach} that simplify the declaration of test specifications.
 
-Below is an example test and the corresponding Mocha report. This demonstrates the readability of Mocha results, alongside the highly abstracted headless interactions that Zombie.js facilitates.  \\
+Below is an example test for our login page followed by the corresponding section of the Mocha report. This demonstrates the readability of Mocha results, alongside the highly abstracted headless interactions that Zombie.js facilitates.  
 
-{\bf INSERT UNIT TESTING SCREENSHOT }
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{zombietest.png}
+\caption{Setup and example unit test for login page.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{mochareport.png}
+\caption{Login page section of a Mocha report.}
+\end{figure}
 
 \section{Usability Testing}
 
@@ -183,7 +195,7 @@ One way of evaluating our project's usability was to evaluate the quality of the
 
 \subsection{Hallway Testing}
 
-Hallway testing was our primary testing method since our target audience, Computing/Maths students, is too small to find reliable statistics through techniques such as the random sampling in A/B testing. Instead, we set up a mock G-Research careers fair stand with two laptops, and invited random students to write AI scripts.
+Hallway testing was our primary testing method since our target audience, Computing/Maths students, is too small to find reliable statistics through techniques such as the random sampling in A/B testing. Instead, we set up a mock G-Research careers fair stand with two workstations, and invited random students to write AI scripts.
 
 We encouraged students to take around 5-10 minutes to write their scripts, as we believed this is representative of how long a student will have at a busy careers fair. As requested by our customer, we also provided handouts containing an API reference, short tutorial and space for making notes. Whilst a student waits for a turn on the laptop, this lets them think about the problem and potentially discuss it with other candidates or the recruiters. 
 
@@ -264,7 +276,26 @@ Creating this graph initially revealed an alarming trend of an increase in the n
 
 \subsection{Product Metrics}
 
-Unleash the bullshit
+Quantitative metrics can also provide an insight into product usage, although we did not use these extensively. However, we did identify some metrics that are easy to gather, which G-Research may find useful for product analysis following the product handover. In this section we outline both the metrics currently being collected, and how we used them, alongside a set of proposed metrics. 
+
+\subsubsection{Race Performance Metrics}
+
+In order to update our leaderboard, the final racing positions of each script are analysed and the performance rating of each script is updated (the rating system is described in Appendix A.1); these ratings are stored in each Script record on MongoDB. Beyond this, AI Racing Market could easily be extended to record how many times each script has raced, and information such as racing times and the number of times the car has flipped. This information could be stored temporally, in order to gauge how script performance improves over time as they are edited by the user. Ideally, we would expect users to see their scripts improve over time, and this may not be reflected by rank alone as competitor scripts may also be edited. 
+
+\subsubsection{User Details}
+
+As described previously in the User Interface Design section, we were asked to produce an administration panel (with restricted access) that lists each user, their university and degree details, alongside each of their scripts. Users do not have to upload any university and degree details, and can remove these details. Our client from G-Research did not outline how these details would be used. These could provide numerous insights into product usage. For example : we attempted to make our project accessible for all programming ability levels, however G-Research may find that mostly third and fourth year Computing students play AI Racing Market. This may indicate that less experienced developers, i.e. those from younger years or different courses, may find the prospect of competitive coding daunting. This would indicate flaws in our product design, that would need addressing.
+
+\subsubsection{API Usage}
+
+In the future, when plenty of scripts have been submitted, trends may emerge regarding API usage. This could be users not using the more advanced and challenging functionality, such as sharpness of corners (see {\tt api.GetNextCornerAmount()} in Appendix A.2), or users simply using the API object and ignoring the event API. These insights could be compared against script rating, and may indicate unbalanced, unusable or useless features of the API - it is clear that these features would need addressing. G-Research could gather data on API coverage at numerous stages of the script development lifecycle, such as on script submission or during script parsing.
+
+\subsubsection{Website Usage Analysis}
+
+In order to evaluate website usage, G-Research could use a tool such as Google Analytics \cite{googleanalytics}, examining usage and producing dashboards containing key performance indicators. Google Analytics would provide an insight into website events, for example time spent on the Unity web-player and how many times it gets reloaded; in-page analytics such as link tracking, for example whether users are accessing the login through the navigation bar button, or following a prompt elsewhere; and simple statistics such as exit rate (percentage of page views that were in a users last session) and bounce rate (percentage of single-page sessions).
+
+We did not use tools like Google Analytics during development, as website visits from the development team would have inevitably skewed the statistics - we frequently re-visited specific pages that were being worked on intensively over short periods of time. We also decided not to use it during both hallway and collaborative testing, as we wouldn't have surveyed a sufficient user base to make any reliable statistical deductions on website properties. 
+
 
 %We need to be able to evaluate how good a feature is, and quantitatively measure this so we can use it as feedback. There are a few methods for achieving this - for instance, for the website, we can record how long a user spends on a particular page, or how often they visit said page - this represents how popular the feature on the page is. 
 %
