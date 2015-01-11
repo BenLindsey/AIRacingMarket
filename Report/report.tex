@@ -31,10 +31,30 @@
 	
 \usepackage{amssymb}
 
+\usepackage{float}
+
 % Tabular stuffs
 \usepackage{tabularx}
 \usepackage{adjustbox}
 \usepackage{array,multirow}
+
+% Listing javascript
+\usepackage{listings}
+\usepackage{float}
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
 
 \newcommand{\project}{AI Racing Market }
 
@@ -60,7 +80,7 @@
 \title{	
   {\huge \project}\\
   {\large Dr Evil is watching.}\\[2em]
-  {\includegraphics[scale=0.5]{G-Research.jpg}}
+  {\centering \includegraphics[width=0.9\textwidth]{coverpic.png}}
 }
 \author{Ben Lindsey, Thomas Kaplan}
 
@@ -78,17 +98,17 @@
 \chapter{Project Management TODO UPDATE TENSE/CHANGES}
 \input{chapters/project_management}
 
-\chapter{Design and Implementation TODO REFERENCE WEBSITES OF TOOLS }
+\chapter{Design and Implementation}
 \input{chapters/design_and_implementation}
 
 \chapter{Evaluation TODO MOVE SOME TO DESIGN?}
 \input{chapters/evaluation}
 
-\chapter{Conclusion TODO CONVERT NOTES TO TEXT}
+\chapter{Conclusion}
 \input{chapters/conclusion}
 
 \chapter{Bibliography}
-\printbibliography
+\printbibliography[heading=none]
 
 \appendix
 \chapter{Appendix}
