@@ -327,8 +327,46 @@ The tournament button on the navigation bar will display a tournament, with race
 \caption{Admins can view the details of registered users.}
 \end{figure}
 
-%\section{Script Execution and Sandboxing TODO {\color{green} BEN}}
-%How did we convert javascript to unity script?
-%How do we allow global state?
-%Challenges to overcome: no objects. Direct control over unity objects, e.g. car teleportation. Allowing other languages.
-%Risks: Dr Evil!!
+\section{Script Execution}
+The architecture of our first prototype was significantly different from that of the final product. Originally, we required users to write their AI scripts in Unity Script - a bastardisation of JavaScript. These scripts were then directly inserted into the Unity engine and executed on the car objects. While this design proved easy to implement, it offered some serious flaws:
+\begin{enumerate}
+\item Unity Script, while syntactically similar to JavaScript, has several key differences. For example, Unity Script does not offer the dynamic objects that are a core component of JavaScript. These slight differences would need to be taught to users.
+\item Passing state between sequential executions of the script (such as, has a car recently been overtaken?) had to be done with a predefined global hash table. Users were unable to add their own variables to global scope.
+\item Executing directly on a game object offers serious security concerns. Users with basic knowledge of unity could bypass our defined API and access the car's private data. Particularly cunning users could modify the car's x and y coordinates, teleporting the car to the finish line!
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+\begin{lstlisting}[language=JavaScript]  
+global["speed"] = 20;
+
+if(farFromCorner) {
+  global["speed"] 
+    = global["speed"] + 1;
+}
+
+\end{lstlisting}
+  \caption{Unity Script}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+\begin{lstlisting}[language=JavaScript]  
+var speed = 20;
+
+if(farFromCorner) {
+  speed++;
+}
+\end{lstlisting}
+  \caption{JavaScript}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Comparison of prototype AI script and modern AI script.}
+\label{fig:unityvsjava}
+\end{figure}
+
+To solve these issues we redesigned our front-end architecture by uncoupling the game object and AI script - replacing the direct calls with proxies. Now the AI script remains in the browser, never seen by unity, where it receives a serialised view of the game state and outputs a list of moves. This abstraction immediately solves (3) since the the proxy prevents any potentially dangerous requests like teleportation. 
+
+Now that a proxy has been defined the AI script can be in any language we choose, provided it handles the requests dispatched by unity. As the most popular web language, JavaScript is a natural choice for this - solving (1). Finally, now that we're in a JavaScript context global variables can be easily stored in the browser. The only problem remaining to solve (1) is isolating scripts global state (for example two scripts may both have a global "speed" variable, which should be sperate). We achieve this by binding each script inside a anonymous lambda, faking global state by using function local state.
