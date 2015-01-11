@@ -92,11 +92,9 @@ router.get('/script/:name', function(req, res) {
 	\end{itemize}
 
 \subsection{REST API}
-Why use REST API?
-
-Below you can see some example interactions with our REST API:\\
-
-\begin{center}
+A Representational State Transfer (REST) design provides us with a stateless, cacheable interface for accessing our server. It unifies the various responsibilities of our back-end, such as providing webpages and updating script scores, behind a single vocabulary of HTTP requests:
+\begin{figure}[H]
+\centering
 \begin{tabular}{| l | l | l | l |}\hline
 Route & Request &  Response & Explanation\\\hline\hline
 /script & GET & View & Show the create new script page\\\hline
@@ -106,9 +104,11 @@ Route & Request &  Response & Explanation\\\hline\hline
 /tournament & GET & View & Show the next tournament match\\\hline
 /tournament & POST & View & Store the match result and show the next \\\hline
 \end{tabular}
-\end{center}
+\caption{Example interactions specified by our REST API.}
+\label{fig:api}
+\end{figure}
 
-Comment on the table.
+Figure \ref{fig:api} demonstrates the loosely-coupled nature of REST APIs. There are no inherant requirements placed on either the front or back end implementations. Our website could be accessed by a mobile or desktop device, while our server could be a local laptop, a VM cluster or a teapot\cite{rfc}. This allows us to update, or even completely scrap, either side of our architecture without having to fix the other.
 
 \subsection{MongoDB}
 For our database persistence we use an open source, document based solution - MongoDB\cite{mongo}. Mongo provides fast, scalable data storage with rich, object based queriers.
