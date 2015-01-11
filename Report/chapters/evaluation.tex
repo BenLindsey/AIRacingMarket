@@ -280,7 +280,7 @@ Quantitative metrics can also provide an insight into product usage, although we
 
 \subsubsection{Race Performance Metrics}
 
-In order to update our leaderboard, the final racing positions of each script are analysed and the performance rating of each script is updated (these are stored in each Script record on MongoDB). Beyond this, AI Racing Market could easily be extended to record how many times each script has raced, and information such as racing times and the number of times the car has flipped. This information could be stored temporally, in order to gauge how script performance improves over time as they are edited by the user. Ideally, we would expect users to see their scripts improve over time, and this may not be reflected by rank alone as competitor scripts may also be edited. 
+In order to update our leaderboard, the final racing positions of each script are analysed and the performance rating of each script is updated (the rating system is described in Appendix A.1); these ratings are stored in each Script record on MongoDB. Beyond this, AI Racing Market could easily be extended to record how many times each script has raced, and information such as racing times and the number of times the car has flipped. This information could be stored temporally, in order to gauge how script performance improves over time as they are edited by the user. Ideally, we would expect users to see their scripts improve over time, and this may not be reflected by rank alone as competitor scripts may also be edited. 
 
 \subsubsection{User Details}
 
@@ -288,7 +288,7 @@ As described previously in the User Interface Design section, we were asked to p
 
 \subsubsection{API Usage}
 
-In the future, when plenty of scripts have been submitted, trends may emerge regarding API usage. This could be users not using the more advanced and challenging functionality, such as sharpness of corners (see {\tt api.GetNextCornerAmount()} in Appendix A.1), or users simply using the API object and ignoring the event API. These insights could be compared against script rating, and may indicate unbalanced, unusable or useless features of the API - it is clear that these features would need addressing. G-Research could gather data on API coverage at numerous stages of the script development lifecycle, such as on script submission or during script parsing.
+In the future, when plenty of scripts have been submitted, trends may emerge regarding API usage. This could be users not using the more advanced and challenging functionality, such as sharpness of corners (see {\tt api.GetNextCornerAmount()} in Appendix A.2), or users simply using the API object and ignoring the event API. These insights could be compared against script rating, and may indicate unbalanced, unusable or useless features of the API - it is clear that these features would need addressing. G-Research could gather data on API coverage at numerous stages of the script development lifecycle, such as on script submission or during script parsing.
 
 \subsubsection{Website Usage Analysis}
 
