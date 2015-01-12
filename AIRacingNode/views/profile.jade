@@ -41,14 +41,13 @@ block content
           h3.
             Update your Details
         br
-
+      - if(!anonymous) {
         form#newScriptForm.form-horizontal(method='post')
             fieldset
               .form-group
                   label.col-lg-2.control-label(for='inputEmailAddress') Email Address
                   .col-lg-8
                       input#inputEmailAddress.form-control(value=userEmail, placeholder='Enter your Email Address', type='email', name="emailaddress", readonly="true")
-            - if(!anonymous) {
               .form-group
                   label.col-lg-2.control-label(for='inputUniversityName') University Name
                   .col-lg-8
@@ -69,4 +68,4 @@ block content
                 .col-lg-6.col-lg-offset-2
                   .btn-group
                     button.btn.btn-primary(type='submit') Update
-            - }
+      - }
