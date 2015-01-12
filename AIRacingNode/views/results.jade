@@ -3,7 +3,8 @@ include ./basic_navigator.jade
 block content
     script.
         var positions = ["First", "Second", "Third", "Fourth"];
-        var scripts = !{JSON.stringify(scripts)};
+
+    - console.log("scripts: " + scripts);
 
     - if (scripts && scripts.length > 0) {
     table.table.table-striped.table-hover
