@@ -3,7 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 
 /* GET user profile. */
-router.get('/', function(req, res) {
+router.get('/', isLoggedIn, function(req, res) {
     var collection = req.db.get('scriptcollection');
 
     collection.find({email : req.user.local.email}, {sort : { scriptName : 1 }}, function(e, docs) {
