@@ -40,12 +40,14 @@ block content
         .div(align='center')
           if anonymous
             h3.
-              Update your Details
+              Register or Login to protect your scripts!
           else 
             h3.
-              Register or Login to protect your scripts!
-        br
-        form#newScriptForm.form-horizontal(method='post')
+              Update your Details
+        if anonymous
+        else
+          br
+          form#newScriptForm.form-horizontal(method='post')
             fieldset
               .form-group
                   label.col-lg-2.control-label(for='inputEmailAddress') Email Address
