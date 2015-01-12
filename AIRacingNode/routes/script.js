@@ -12,7 +12,7 @@ router.get('/edit/:name', function(req, res) {
     collection.find({}, function(e, docs) {
         collection.findOne({scriptName:req.params.name, email : email},  function(e, doc) {
             if (err) {
-                res.send("Script " + req.params.name " not found for " + (anon ? "anonymous" : email));
+                res.send("Script " + req.params.name + " not found for " + (anon ? "anonymous" : email));
             } else {
                 res.render('edit', {
                     script : doc.script,
