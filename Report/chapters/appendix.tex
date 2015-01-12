@@ -72,7 +72,7 @@ When.CarInFront().Then(Ram).Boost()
 var PhysicsUpdate = function(api) { 
     var distance = api.GetDistanceToNextCorner(); 
     
-    if (distance > 85 && distance < 100) { 
+    if (distance > 85) { 
         api.Boost(); 
     }
     
@@ -116,7 +116,7 @@ When.CarInFront().Then(Ram).Boost()
 PhysicsUpdate = (api) -> 
     distance = api.GetDistanceToNextCorner() 
     
-    if distance > 85 and distance < 100 
+    if distance > 85
         api.Boost(); 
 
     if maxSpeed != RAMMING_SPEED 
