@@ -107,7 +107,7 @@ block content
                         select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
                             - if (allScripts.length) {
                             each entry, i in allScripts
-                                option(selected=entry.name == !{JSON.stringify(scriptName)})= entry.scriptName
+                                option= entry.scriptName
                             - }
                       .col-lg-1
                       .col-lg-6.col-lg-offset-2
