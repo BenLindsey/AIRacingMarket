@@ -5,12 +5,13 @@ var User = require('../models/user');
 /* GET user profile. */
 router.get('/', function(req, res) {
     var collection = req.db.get('scriptcollection');
-
-    collection.find({email : req.user.local.email}, {sort : { scriptName : 1 }}, function(e, docs) {
+    
+    var anon = req.user.local == undefined;
+    var email = anon ? {"$exists" : false} : req.user.local.email;
+    
+    collection.find({email : email}, {sort : { scriptName : 1 }}, function(e, docs) {
       var submitted_recently = req.session.submitted;
       req.session.submitted = false;
-      
-      var anon = req.user.local == undefined;
       
       res.render('profile', {
           "scripts"   : docs,
