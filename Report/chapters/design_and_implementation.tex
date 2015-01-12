@@ -376,3 +376,21 @@ if(farFromCorner) {
 To solve these issues we redesigned our front-end architecture by uncoupling the game object and AI script - replacing the direct calls with proxies. Now the AI script remains in the browser, never seen by unity, where it receives a serialised view of the game state and outputs a list of moves. This abstraction immediately solved (3) since the the proxy prevents any potentially dangerous requests like teleportation. 
 
 Once a proxy had been defined, the AI script could be in any language, provided it handles the requests dispatched by Unity. As the most popular web language, JavaScript is a natural choice for this - solving (1). Finally, now that the script is run in a JavaScript context, global variables can be easily stored in the browser window. Thus, the only problem remaining to solve (2) is isolating script's global state (for example two scripts may both have a global ``speed" variable, which should be separate). We achieved this by binding each script inside an anonymous lambda, faking global state by using function local state.
+
+Despite our protections there are still some flaws in our design. Figure \ref{fig:drevil} shows an attack made by script Dr Evil. It finds the global scripts array and attaches an intercept to the "SetThrottle" command of each AI Script. This will slow down every non-Dr Evil script - a subtle way to rig games. More aggresive attacks could flip every other car's direction, causing them to run the track backwards.
+\begin{figure}[H]
+\begin{lstlisting}[language=JavaScript]  
+  for(var script in scripts) {
+    if(scripts[script].name != "Dr Evil") {
+      scripts[script].update = function(previous, throttle) { 
+        return function(api) {
+          api.SetThrottle = function(arg) { throttle(arg - 20); };
+          previous(api);
+        };
+      }(scripts[script].update, api.SetThrottle);
+    }
+  }
+\end{lstlisting}
+\caption{Dr Evil - proof of concept attack}
+\label{fig:drevil}
+\end{figure}
