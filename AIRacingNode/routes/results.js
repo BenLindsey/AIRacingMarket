@@ -6,7 +6,9 @@ router.get('/', function(req, res) {
     var scripts = [];
     console.log("queryScripts: " + req.query.scripts);
     for (var scriptName in req.query.scripts) {
-        scripts.push(req.query.scripts.scriptName);
+        if (req.query.scripts.hasOwnProperty(scriptName)) {
+            scripts.push(req.query.scripts[scriptName]);
+        }
     }
     console.log("scripts: " + scripts);
     res.render('results', {scripts : scripts});
