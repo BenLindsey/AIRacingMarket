@@ -31,9 +31,13 @@ block content
           var script = document.getElementById('newScriptForm').elements["inputScript"].value;   
           
           if(language == "CoffeeScript") {
-              $.post("/compile", { script: script },  function(data) { 
-                  mapScripts(data); 
-              });
+              $.post("/compile", { script: script })
+                 .done(function(data) { 
+                   mapScripts(data); 
+                 })
+                 .fail(function(xhr, textStatus, errorThrown) {
+                   alert("Failed to compile! " + xhr.responseText);
+                 });
           } else {
               mapScripts(script);
           }  

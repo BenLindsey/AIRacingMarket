@@ -5,7 +5,7 @@ block content
 
   .row
     .div.col-lg-4
-      h1 Welcome #{user.local.email}
+      h1 Welcome #{userEmail}
     .div.col-lg-3
       if submitted
         .alert.alert-dismissable.alert-success
@@ -38,11 +38,16 @@ block content
     .div.col-lg-5
       div.well.bs-component
         .div(align='center')
-          h3.
-            Update your Details
-        br
-
-        form#newScriptForm.form-horizontal(method='post')
+          if anonymous
+            h3.
+              Register or Login to protect your scripts!
+          else 
+            h3.
+              Update your Details
+        if anonymous
+        else
+          br
+          form#newScriptForm.form-horizontal(method='post')
             fieldset
               .form-group
                   label.col-lg-2.control-label(for='inputEmailAddress') Email Address
