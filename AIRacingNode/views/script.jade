@@ -20,6 +20,12 @@ block content
     h1.
         Create your Racing Script
 
+    if notLoggedIn
+        .alert.alert-dismissable.alert-success
+          button.close(type='button', data-dismiss='alert') ×
+          strong You are not logged in! 
+          | Anyone can claim/edit your submission.
+
     form#newScriptForm.form-horizontal(method='post')
         fieldset
           .row
