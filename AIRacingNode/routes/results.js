@@ -4,9 +4,9 @@ var router = express.Router();
 /* GET user profile. */
 router.get('/', function(req, res) {
     var scripts = [];
-    for (var scriptName in req.query.scripts) {
-        if (req.query.scripts.hasOwnProperty(scriptName)) {
-            scripts.push(req.query.scripts[scriptName]);
+    for (var scriptName in req.query.previous) {
+        if (req.query.previous.hasOwnProperty(scriptName)) {
+            scripts.push(req.query.previous[scriptName]);
         }
     }
     res.render('results', { scripts   : scripts,
