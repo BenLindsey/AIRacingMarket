@@ -38,7 +38,7 @@ Nicolas is a 3rd year BEng Computing student looking for a graduate role as a de
 He plans to attend the Technology Careers Fair to find companies he would like to work at and apply to. He will attend the stalls of various well known companies, such as Google and Facebook. He is less inclined to talk with smaller companies unless their stand has a specific draw. Nicolas doesn't want to commit to being at a stand for long time, any activity that takes longer than 10 minutes might dissuade him from visiting a company. 
 
 \section{Value Proposition Canvas}
-We used our personas to create a Value Proposition Canvas that summarizes our understanding of the customer, the product we are producing and the explicit ways it is creating value for both G-Research and the students who will use it. It is clear that the gains/pains and their respective solutions, detailed below, are essentially hypotheses. As we moved forwards with user testing it was interesting to evaluate these proposed gain creators and pain relievers, and pivot development accordingly. We discuss our hallway testing later in the chapter (section 5.5). 
+We used our personas to create a Value Proposition Canvas that summarizes our understanding of the customer, the product we are producing and the explicit ways it is creating value for both G-Research and the students who will use it. It is clear that the gains/pains and their respective solutions, detailed below, are essentially hypotheses. As we moved forwards with user testing it was interesting to evaluate these proposed gain creators and pain relievers, and pivot development accordingly. We discuss our hallway testing later in the chapter. 
 
 \subsection{Customer Segment}
 \begin{tabularx}{\textwidth}{| c | X | X | X |}
@@ -85,7 +85,7 @@ We used our personas to create a Value Proposition Canvas that summarizes our un
 \end{tabularx}
 
 \subsection{Value Proposition}
-We can summarise our proposed product/service, before analysing how it influences our customers : 
+We can summarise our proposed product/service, before analysing how it influences our customers: 
 \\[+1em]
 \begin{tabular}{ r | l}
 {\bf AI Racing Market} & Interactive multiplayer racing game \\
@@ -148,7 +148,7 @@ To put it in development terms, continuous feedback from our customer for our ev
 \section{Managing and Prioritising Requirements}
 After confirming, or adding, requirements during our customer meeting, the next task was to plan how we would tackle the requirements. As mentioned in the section above, we tried to find out during our meetings which features were the highest priority for the customer. This was a good starting point for our internal prioritisation and planning. After a customer meeting we tried to meet as a group to prune our product backlog and estimate the size and priorities of our stories for the coming sprint (backlog refinement). You might expect that this is an easy process, as we had found out feature priorities directly from our customer, however this was not the case. With new features it is very difficult to estimate their difficulty. This affects their priority as the amount of time a task takes affects how achievable they are within a tight timescale. 
 
-A very easy mistake to make would be to jump straight into implementing a new exciting feature that was mentioned in a customer meeting. We avoiding falling into this trap by strictly following the task prioritisation as detailed on our Trello scrum board. For example, before attempting to implement turbo boosts we had to ensure users could edit their AI scripts. Our team may have spent days on implementing turbo boosts, slowly realising that it's a lot more of a challenge than we initially thought. By the end of the sprint, only half of the new feature may have been built, and the important changes to script editing may not have been made. Script editing is unexciting compared to power-ups, but without it a user's experience could be made difficult and our own testing would be slowed down.
+A very easy mistake to make would be to jump straight into implementing a new exciting feature that was mentioned in a customer meeting. We avoided falling into this trap by strictly following the task prioritisation as detailed on our Trello scrum board. For example, before attempting to implement turbo boosts we had to ensure users could edit their AI scripts. Our team may have spent days on implementing turbo boosts, slowly realising that it's a lot more of a challenge than we initially thought. By the end of the sprint, only half of the new feature may have been built, and the important changes to script editing may not have been made. Script editing is unexciting compared to power-ups, but without it a user's experience could be made difficult and our own testing would be slowed down.
 
 \subsection{Timeboxed Spikes}
 One of the mechanisms that we used to tackle this problem was the use of timeboxed spikes. There were several occasions in our project where we had difficulty in estimating how long a task would take and thus been apprehensive to begin their implementation. With these tasks it was useful to put some time aside for someone to jump in and see how feasible it is to complete. For example, during our penultimate sprint one of our tasks was to upgrade our racing AI API from a raycast system to a spline-following system. This change was designed to improve the smoothness of the car's movement and allow for our API to be more easily expanded and simplified. However, we were unsure of how easy this change would be and what benefits it would provide. Therefore, we set aside one afternoon for a member of the team to look into how the change would be made and begin its implementation. We decided that if no decent progress or results had been achieved during this time then we would not continue with the task. Luckily for us, we managed to get one racetrack working with the new system fairly quickly and found out that it did provide many benefits. We then went on to add full support for the system and implemented it on other racetracks.
@@ -164,14 +164,14 @@ Another thing that we used to ensure that we were spending our time on the right
 
 In our case this was simply used among our team to decide on a design. Which, while not as useful as getting direct customer feedback, allowed us to save time on any later redesigns due to any differences in the imagined look of the site between team members. 
 
-From our experience using UI prototyping software such as Fluid UI, it is rigid and takes only a little less time to create a prototype than drafting up an actual web page. Paper prototypes give the impression that it is a work in process, whereas realistic prototypes can give the impression that too much time and effort has been vested in a UI for it to be changed. We consequently opted for paper prototyping to ensure we received honest feedback from Ed.
+From our experience using UI prototyping software such as Fluid UI, it is rigid and takes only a little less time to create a prototype than drafting up an actual web page. Paper prototypes give the impression that it is a work in progress, whereas realistic prototypes can give the impression that too much time and effort has been vested in a UI for it to be changed. We consequently opted for paper prototyping to ensure we received honest feedback from Ed.
 
 
 \section{Automated Testing}
 
 We integrated testing into our project lifecycle, ensuring that we tested often, and consequently kept the code in a releasable state. Automated testing helped us identify issues early and fix them immediately - this flexible response to change is key in agile software development, the development approach we have adopted. 
 
-We used TeamCity\cite{teamcity} to manage continuous integration, including automated unit testing. To test the functionality of our website, we used two Node.s modules alongside the TeamCity Node plugin\cite{teamcitynode}: Zombie.js\cite{zombie} and Mocha\cite{mocha}. Zombie.js is a lightweight framework for client-side Javascript testing, and facilitates headless full-stack testing. In other words, Zombie.js let us programatically interact with a browser (without a graphical user interface). Mocha is also a Javascript testing framework, that simplifies test-driven and behaviour-driven development. Mocha provides an asynchronous test runner alongside interfaces such as {\tt describe, before, after, beforeEach} that simplify the declaration of test specifications.
+We used TeamCity\cite{teamcity} to manage continuous integration, including automated unit testing. To test the functionality of our website, we used two Node.js modules alongside the TeamCity Node plugin\cite{teamcitynode}: Zombie.js\cite{zombie} and Mocha\cite{mocha}. Zombie.js is a lightweight framework for client-side Javascript testing, and facilitates headless full-stack testing. In other words, Zombie.js let us programatically interact with a browser (without a graphical user interface). Mocha is also a JavaScript testing framework, that simplifies test-driven and behaviour-driven development. Mocha provides an asynchronous test runner alongside interfaces such as {\tt describe, before, after, beforeEach} that simplify the declaration of test specifications.
 
 Below is an example test for our login page followed by the corresponding section of the Mocha report. This demonstrates the readability of Mocha results, alongside the highly abstracted headless interactions that Zombie.js facilitates.  
 
@@ -189,7 +189,7 @@ Below is an example test for our login page followed by the corresponding sectio
 
 \section{Usability Testing}
 
-Players have limited means of learning the API given the unconventional setting of a careers fair, so it was important that users would find the game intuitive and accessible. It was crucial to produce a API that was easy to use, and supported by helpful tutorials and example/starter scripts. 
+Players have limited means of learning the API given the unconventional setting of a careers fair, so it was important that users would find the game intuitive and accessible. It was crucial to produce an API that was easy to use, and supported by helpful tutorials and example/starter scripts. 
 
 One way of evaluating our project's usability was to evaluate the quality of the scripts produced by users. For example, we knew the tutorials or API needed improving if most students were submitting simple scripts (e.g. low constant speed scripts) or close variations of the example scripts. Beyond evaluating the quality of the scripts produced, we asked students to rate the quality of the API, tutorials and example scripts.
 
@@ -197,18 +197,18 @@ One way of evaluating our project's usability was to evaluate the quality of the
 
 Hallway testing was our primary testing method since our target audience, Computing/Maths students, is too small to find reliable statistics through techniques such as the random sampling in A/B testing. Instead, we set up a mock G-Research careers fair stand with two workstations, and invited random students to write AI scripts.
 
-We encouraged students to take around 5-10 minutes to write their scripts, as we believed this is representative of how long a student will have at a busy careers fair. As requested by our customer, we also provided handouts containing an API reference, short tutorial and space for making notes. Whilst a student waits for a turn on the laptop, this lets them think about the problem and potentially discuss it with other candidates or the recruiters. 
+We encouraged students to take around 5-10 minutes to write their scripts, as we believed this is representative of how long a student will have at a busy careers fair. As requested by our customer, we also provided handouts containing an API reference, short tutorial and space for making notes (see Appendix A.2). Whilst a student waits for a turn on the laptop, this lets them think about the problem and potentially discuss it with other candidates or the recruiters. Following their turn with AI Racing Market, we asked the students for free-form feedback, and asked questions according to their responses.
 
-Although we did not prescribe a specific testing strategy, we had a few key measures:
+Although we did not formalise this testing strategy, we had a few key measures:
 \vspace*{-6mm}
 \begin{enumerate} \itemsep -1pt 
-\item Time spent by a student at the stand : We knew we would need to improve our project if all students spent five minutes on their scripts and left immediately afterwards. Instead, we hoped students would ask for more time, or stay to watch other scripts compete in tournaments.
-\item Students interaction with those running the stand : Primarily this project's goal is to promote G-Research, so we wanted to observe whether the AI Racing Market was simply a fun distraction for students or a valuable means of connecting with prospective G-Research candidates.
+\item Time spent by a student at the stand: we knew we would need to improve our project if all students spent five minutes on their scripts and left immediately afterwards. Instead, we hoped students would ask for more time to update their scripts, or stay to watch other scripts compete in tournaments. 
+\item Students interaction with those running the stand: primarily this project's goal is to promote G-Research, so we wanted to observe whether the AI Racing Market was simply a fun distraction for students or a valuable means of connecting with prospective G-Research candidates. 
 \end{enumerate}
 
 \subsubsection{Key Observations}
 
-Here are some of the observations we made during hallway testing, and the ways in which we responded to improve our product : \\
+Here are some of the observations we made during hallway testing, and the ways in which we responded to improve our product: \\
 
 \begin{tabularx}{\textwidth}{ | X | p{.70\textwidth} |}
 \hline
@@ -229,11 +229,11 @@ When reading the handout, students consistently questioned specific API function
 
 As stated on our value proposition canvas, the opportunity for students to collaborate with other students or G-Research employees when playing AI Racing market could be incredibly valuable. For example, a G-Research employee could use the opportunity to demonstrate how they work collaboratively on a daily basis - this is a more informative insight into how G-Research works than any dustbin-destined panflet.
 
-To gauge whether collaboration worked with the AI Racing Market, we introduced individuals (of varying programming ability) to the game and pair-programmed to iteratively produce an advanced script. We did this with individuals of different programming ability levels, for example : a second-year Computing student (advanced), third-year Geophysics student (intermediate), and two secondary-school students (inexperienced). 
+To gauge whether collaboration worked with the AI Racing Market, we introduced individuals (of varying programming ability) to the game and pair-programmed to iteratively produce an advanced script. We did this with individuals of different programming ability levels, for example: a second-year Computing student (advanced), third-year Geophysics student (intermediate), and two secondary-school students (inexperienced). 
 
 \subsubsection{Key Observations}
 
-Here are some of the observations we made during collaborative testing, and the ways in which we responded to improve our product : \\
+Here are some of the observations we made during collaborative testing, and the ways in which we responded to improve our product: \\
 
 \begin{tabularx}{\textwidth}{ | X | X | p{.55\textwidth} |}
 \hline
@@ -247,12 +247,12 @@ Inexperienced
 	& There is very little feedback between the Ace editor and Unity player itself, and it was infeasible to bridge this gap within our time limitations. Working collaboratively does improve the debugging process, as one individual can simply observe as the other drives.\\  \hline
 Intermediate 
 & Confusion over program scope 
-	& Unlike the inexperienced users who simply related the main script body to a while-loop, a student questioned the construct and struggled to understand the game loop. We attempted to iron this kind of confusion out through strong documentation. \\ \cline{2-3}
+	& Unlike the inexperienced users who simply related the main script body to a while-loop, a student questioned the construct and struggled to understand the game loop. We attempted to iron this kind of confusion out through stronger documentation. \\ \cline{2-3}
 & Struggle using advanced API 
 	& Occasionally it was hard to produce an advanced script within a reasonable time frame. This was expected, as it is important the API caters for all ability levels whilst allowing advanced individuals to produce complex scripts.\\ \hline
 Advanced 
 & Lateral thinking 
-	& We were pleasantly surprised by out-of-the-box thinking used by the advanced students. For example, before adding boost to our API ({\tt ApiBoost()}), a user was measuring game cycles to achieve a boost at the start of the race - similar to that seen in many computer games.  \\
+	& We were pleasantly surprised by out-of-the-box thinking used by the advanced students. For example, before adding boost to our event API ({\tt RaceStarts().Boost()}), a user was measuring game cycles to achieve a boost at the start of the race - similar to that seen in many computer games.  \\
 \hline
 \end{tabularx}
 
@@ -272,7 +272,7 @@ Our tasks on Trello had story points associated with them, as measures of task c
 \caption{Burndown charts as project progressed to final sprint (right hand side)}
 \end{figure}
 
-Creating this graph initially revealed an alarming trend of an increase in the number of hours remaining (see left hand side of figure 4.1). However it was not an immediate cause for concern; this was due to extra stories being brought into scope after successful meetings with our customer, where we had exceed expectations and taken on stretch requirements. Reassuringly, our hours completed was fairly linear at this early stage; this helped us estimate how productive our team was each week ($\sim$10 story points) and simplify planning for the following sprints. As shown on the right hand side of figure 4.1, we eventually reached a final set of requirements and progressed at a similar working rate of towards the end of our final sprint. 
+Creating this graph initially revealed an alarming trend of an increase in the number of hours remaining (see left hand side of figure 4.4). However it was not an immediate cause for concern; this was due to extra stories being brought into scope after successful meetings with our customer, where we had exceeded expectations and taken on stretch requirements. Reassuringly, our hours completed was fairly linear at this early stage; this helped us estimate how productive our team was each week ($\sim$10 story points) and simplify planning for the following sprints. As shown on the right hand side of figure 4.4, we eventually reached a final set of requirements and progressed at a similar working rate of towards the end of our final sprint. 
 
 \subsection{Product Metrics}
 
@@ -284,7 +284,7 @@ In order to update our leaderboard, the final racing positions of each script ar
 
 \subsubsection{User Details}
 
-As described previously in the User Interface Design section, we were asked to produce an administration panel (with restricted access) that lists each user, their university and degree details, alongside each of their scripts. Users do not have to upload any university and degree details, and can remove these details. Our client from G-Research did not outline how these details would be used. These could provide numerous insights into product usage. For example : we attempted to make our project accessible for all programming ability levels, however G-Research may find that mostly third and fourth year Computing students play AI Racing Market. This may indicate that less experienced developers, i.e. those from younger years or different courses, may find the prospect of competitive coding daunting. This would indicate flaws in our product design, that would need addressing.
+As described previously in the User Interface Design section, we were asked to produce an administration panel (with restricted access) that lists each user, their university and degree details, alongside each of their scripts. Users do not have to upload any university and degree details, and can remove these details. Our client from G-Research did not outline how these details would be used. These could provide numerous insights into product usage. For example: we attempted to make our project accessible for all programming ability levels, however G-Research may find that mostly third and fourth year Computing students play AI Racing Market. This may indicate that less experienced developers, i.e. those from younger years or different courses, may find the prospect of competitive coding daunting. This would indicate flaws in our product design, that would need addressing.
 
 \subsubsection{API Usage}
 
@@ -292,7 +292,7 @@ In the future, when plenty of scripts have been submitted, trends may emerge reg
 
 \subsubsection{Website Usage Analysis}
 
-In order to evaluate website usage, G-Research could use a tool such as Google Analytics \cite{googleanalytics}, examining usage and producing dashboards containing key performance indicators. Google Analytics would provide an insight into website events, for example time spent on the Unity web-player and how many times it gets reloaded; in-page analytics such as link tracking, for example whether users are accessing the login through the navigation bar button, or following a prompt elsewhere; and simple statistics such as exit rate (percentage of page views that were in a users last session) and bounce rate (percentage of single-page sessions).
+In order to evaluate website usage, G-Research could use a tool such as Google Analytics \cite{googleanalytics}, examining usage and producing dashboards containing key performance indicators. Google Analytics would provide an insight into website events, for example time spent on the Unity Web Player and how many times it gets reloaded; in-page analytics such as link tracking, for example whether users are accessing the login through the navigation bar button, or following a prompt elsewhere; and simple statistics such as exit rate (percentage of page views that were in a user's last session) and bounce rate (percentage of single-page sessions).
 
 We did not use tools like Google Analytics during development, as website visits from the development team would have inevitably skewed the statistics - we frequently re-visited specific pages that were being worked on intensively over short periods of time. We also decided not to use it during both hallway and collaborative testing, as we wouldn't have surveyed a sufficient user base to make any reliable statistical deductions on website properties. 
 
