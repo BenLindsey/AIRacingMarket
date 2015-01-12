@@ -4,14 +4,14 @@ block content
     script.
         var positions = !{["First", "Second", "Third", "Fourth"]};
 
-    - if (req.query.scripts.length > 0) {
+    - if (scripts.length > 0) {
     table.table.table-striped.table-hover
       thead
         tr
           th Position
           th Script
         tbody
-        each entry, i in req.query.scripts
+        each entry, i in scripts
           tr
             td= positions[i]
             td= entry.name
