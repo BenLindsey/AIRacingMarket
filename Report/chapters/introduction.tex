@@ -8,7 +8,7 @@ G-Research, who attend careers fairs at Imperial and various other universities,
 	\item Generating interest from potential applicants
 	\item Evaluating aptitude of candidates
 \end{itemize}
-By having a exciting stall G-Research would attract greater attention during the fair which could lead to more enthusiastic discussion, or at the very least instigate some Google searches from students later that evening. Some companies use quizzes during career fairs, perhaps to serve as a fast-track through the recruitment process for particularly promising individuals. G-Research's idea to improve their stall is this project - the AI Racing Market. This solves the two challenges above, as it would be a fun activity which students should be enthusiastic about getting involved in, and the competitive aspect of the game will allow smart candidates to excel. Additionally, employees present will be able to interact with the players as they are writing code, giving them a glimpse of the day-to-day software engineering environment at G-Research.
+By having a exciting stall G-Research would attract greater attention during the fair which could lead to more enthusiastic discussion, or at the very least instigate some Google searches from students later that evening. Some companies use quizzes during career fairs, perhaps to serve as a fast-track through the recruitment process for particularly promising individuals. G-Research's idea to improve their stall is this project - AI Racing Challenege. This solves the two challenges above, as it would be a fun activity which students should be enthusiastic about getting involved in, and the competitive aspect of the game will allow smart candidates to excel. Additionally, employees present will be able to interact with the players as they are writing code, giving them a glimpse of the day-to-day software engineering environment at G-Research.
 \section{Objectives}
 Our objective was to create an AI Racing Game using the Unity framework that allows users to design an AI to race a car around a track.
 
@@ -53,19 +53,34 @@ User accounts store some optional personal information interested students can f
 
 \subsection{Scripts}
 \centerline{\includegraphics[scale=0.5]{script}}
-Scripts can be written in either JavaScript or CoffeeScript and are very easy to code. Above is a trivial two line script which can be implemented in seconds, and will drive around a track at a constant speed holding the inside lane. There are many more API calls available to design superior scripts with greater complexity, such as using boost, getting proximity of nearby cars, and determining sharpness of the next corner. Full API documentation is available in Appendix A.2. While editing scripts users can run test races to see how their AI stacks up against others and get quick feedback on any changes they make.
+Scripts can be written in either JavaScript or CoffeeScript and are very easy to code. Above is a trivial two line script which can be implemented in seconds, and will drive around a track at a constant speed holding the inside lane. There are many more API calls available to design superior scripts with greater complexity, such as using boost, getting proximity of nearby cars, and determining sharpness of the next corner. Full API documentation is available in A.3. While editing scripts users can run test races to see how their AI stacks up against others and get quick feedback on any changes they make.
 
 \subsection{Leaderboard}
 \centerline{\includegraphics[scale=0.35]{leaderboard}}
 A leaderboard displays the Elo ratings (see Appendix \ref{Elo}) of each script, calculated after each race. With enough races the best scripts will rise to the top.
 
 \subsection{Match Mode}
-\centerline{\includegraphics[scale=0.45]{pizza}}
-Custom races can be created with up to four cars on a variety of different tracks. Once options have been selected, the race is run in Unity and the users can cheer their scripts on. The camera moves between the different cars and the HUD tracks the lap number and positions of the cars. At the end of the race the results are sent to the database and the updated leaderboard is shown to the user.
 
-\centerline{\includegraphics[scale=0.405]{race}}
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+\centerline{\includegraphics[width=.8\textwidth]{pizza}}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+\centerline{\includegraphics[width=.8\textwidth]{race}}
+  \label{fig:sub2}
+\end{subfigure}
+\label{fig:unityvsjava}
+\caption{Match mode}
+\end{figure}
+
+Custom races can be created with up to four cars on a variety of different tracks. Once options have been selected, the race is run in Unity and the users can cheer their scripts on. The camera moves between the different cars and the HUD tracks the lap number and positions of the cars. At the end of the race the results are sent to the database and the updated leaderboard is shown to the user.
 
 \subsection{Tournament Mode}
 Another way for races to run is using tournament mode. While tournament mode is active, races will be run non-stop, using four random scripts. This would be set up on a large screen during a careers fair and pit scripts written over the course of the evening against each other. The constant action will draw attention to the stand and completing many races will populate the leaderboard, allowing the Elo ratings to be accurate reflections of a scripts ability. After each race the leaderboard shows the rating changes briefly before starting up another random race.
-
-\centerline{\includegraphics[scale=0.35]{elochange2}}
+\begin{figure}[H]
+\includegraphics[scale=0.35]{elochange2}
+\end{figure}
