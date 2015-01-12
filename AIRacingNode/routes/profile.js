@@ -55,6 +55,7 @@ router.post('/', function(req, res) {
             return done(err);
           }
           console.log("Saved changes.");
+          res.redirect('/profile');
         });
       });
     }
