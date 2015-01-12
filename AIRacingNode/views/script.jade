@@ -16,19 +16,19 @@ block content
 
             setMode(language == "CoffeeScript" ? "coffee" : "javascript");
         }
-
+    
+    if notLoggedIn
+      .row
+        .div.col-lg-4
+        .div.col-lg-3
+            .alert.alert-dismissable.alert-warning
+              button.close(type='button', data-dismiss='alert') ×
+              strong You are not logged in! 
+              | Anyone can edit your submission.
+        .div.col-lg-5
+        
     h1.
         Create your Racing Script
-    
-    .row
-      .div.col-lg-4
-      .div.col-lg-3
-        if notLoggedIn
-          .alert.alert-dismissable.alert-warning
-            button.close(type='button', data-dismiss='alert') ×
-            strong You are not logged in! 
-            | Anyone can edit your submission.
-      .div.col-lg-5
 
     form#newScriptForm.form-horizontal(method='post')
         fieldset
