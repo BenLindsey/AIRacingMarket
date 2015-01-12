@@ -378,7 +378,7 @@ To solve these issues we redesigned our front-end architecture by uncoupling the
 
 Once a proxy had been defined the AI script could be in any language we choose, provided it handles the requests dispatched by unity. As the most popular web language, JavaScript is a natural choice for this - solving (1). Finally, now that the script is run in a JavaScript context, global variables can be easily stored in the browser window. Thus, the only problem remaining to solve (2) is isolating scripts global state (for example two scripts may both have a global "speed" variable, which should be sperate). We achieved this by binding each script inside a anonymous lambda, faking global state by using function local state.
 
-Despite our protections there are still some flaws in our design. Figure \ref{fig:drevil} shows an attack made by script Dr Evil. It finds the global scripts array and attaches an intercept to the "SetThrottle" command of each AI Script. This will slow down every non-Dr Evil script, a subtle way to rig games. More aggresive attacks could flip every other car's direction, causing them to run the track backwards.
+Despite our protections there are still some flaws in our design. Figure \ref{fig:drevil} shows an attack made by script Dr Evil. It finds the global scripts array and attaches an intercept to the "SetThrottle" command of each AI Script. This will slow down every non-Dr Evil script - a subtle way to rig games. More aggresive attacks could flip every other car's direction, causing them to run the track backwards.
 \begin{figure}[H]
 \begin{lstlisting}[language=JavaScript]  
   for(var script in scripts) {
