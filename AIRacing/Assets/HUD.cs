@@ -429,7 +429,7 @@ public class HUD : MonoBehaviour {
 
         private void Redirect(RaceMode mode, string queryParams) {
             string leaderboardUrl = GetURL() + ((mode == RaceMode.Multiplayer)
-                ? "profile" : "tournament/next" + queryParams);
+                ? "results" : "tournament/next") + queryParams;
 
             Debug.Log("Redirecting to \"" + leaderboardUrl + "\" . . . ");
             Application.OpenURL(leaderboardUrl);
