@@ -9,8 +9,7 @@ public class OurCar : MonoBehaviour {
         public Vector3 originalPosition;
         public bool canSteer;
         public bool isPowered;
-
-        public TrailRenderer currentSkidmark;
+        public int lastSkidmarkIndex;
     }
 
 	public Transform centerOfMass;
@@ -25,7 +24,7 @@ public class OurCar : MonoBehaviour {
     public AntiRollBar rearAntiRoll;
 
     public Material brakeLights;
-    public Material skidmark;
+    public Material skidmarkMaterial;
 
     public Camera camera;
 
@@ -64,6 +63,8 @@ public class OurCar : MonoBehaviour {
     // Boost variables/components
     public ParticleSystem[] exhausts;
 
+    private Skidmarks skidmarks;
+
     private const int MAX_BOOST = 300;
     private const int BOOST_MULTIPLIER = 20;
     private int boostCooldown = 0;
@@ -79,6 +80,15 @@ public class OurCar : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        skidmarks = FindObjectOfType<Skidmarks>();
+
+        // Create an object with the skidmarks script if no such object exists.
+        if (skidmarks == null) {
+            GameObject skidmarkObject = new GameObject("Skidmark Object");
+            skidmarks = skidmarkObject.AddComponent<Skidmarks>();
+            skidmarkObject.GetComponent<MeshRenderer>().material = skidmarkMaterial;
+        }
 
 		rigidbody.centerOfMass = centerOfMass.localPosition;
 
@@ -208,6 +218,7 @@ public class OurCar : MonoBehaviour {
         wheel.canSteer  = isFront;
         wheel.isPowered = isPowered;
         wheel.originalPosition = wheelTransform.localPosition;
+        wheel.lastSkidmarkIndex = -1;
 
         return wheel;
     }
@@ -256,35 +267,21 @@ public class OurCar : MonoBehaviour {
         const float minSkidSpeed = 3.0f;
 
         // Check if the wheel is on the ground and skidding enough to draw a skidmark.
-        bool isWheelCurrentlySlipping = isTouchingGround
-            && (hit.sidewaysSlip > minSkidSpeed || hit.forwardSlip > minSkidSpeed);
+        float slipSpeed = new Vector2(hit.forwardSlip, hit.sidewaysSlip).magnitude;
+        bool isWheelCurrentlySlipping = isTouchingGround && slipSpeed > minSkidSpeed;
         isSkidding |= isWheelCurrentlySlipping;
 
-        // If the wheel has now stopped slipping, move the trail renderer out of the car
-        // to stop drawing new skidmarks.
-        if (wheel.currentSkidmark != null && !isWheelCurrentlySlipping) {
-
-            wheel.currentSkidmark.transform.parent = null;
-            wheel.currentSkidmark = null;
-        }
-
-        // If the wheel has just started skidding, create a new trail renderer on a new
-        // game object as a child of the wheel.
-        else if (wheel.currentSkidmark == null && isWheelCurrentlySlipping) {
-
-            // Create a new game object on the bottom of the wheel to hold the trail renderer.
-            GameObject trailRendererObject = new GameObject("Skidmark");
-            trailRendererObject.transform.position = new Vector3(wheel.transform.position.x,
-                wheel.transform.position.y - wheel.collider.radius / 2, wheel.transform.position.z);
-            trailRendererObject.transform.parent = wheel.transform.parent;
-
-            // Setup the new trail renderer.
-            wheel.currentSkidmark = trailRendererObject.AddComponent<TrailRenderer>();
-            wheel.currentSkidmark.time = 30;
-            wheel.currentSkidmark.startWidth = 0.3f;
-            wheel.currentSkidmark.endWidth = wheel.currentSkidmark.startWidth;
-            wheel.currentSkidmark.material = skidmark;
-            wheel.currentSkidmark.autodestruct = true; // Remove the game object when it stops drawing.
+        if (isWheelCurrentlySlipping) {
+            // Draw the mark slightly above the ground to avoid clipping with the
+            // road surface at long draw distances. Increase the intensity of the
+            // texture with the slip speed.
+            wheel.lastSkidmarkIndex = skidmarks.AddSkidMark(
+                hit.point + rigidbody.velocity * Time.fixedDeltaTime + 0.1f * hit.normal,
+                hit.normal, Mathf.Clamp01((slipSpeed - minSkidSpeed) / 10),
+                wheel.lastSkidmarkIndex);
+            // TODO: Add smoke effect.
+        } else {
+            wheel.lastSkidmarkIndex = -1;
         }
     }
 
