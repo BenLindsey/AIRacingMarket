@@ -6,7 +6,7 @@ var User = require('../models/user');
 router.get('/', function(req, res) {
     var collection = req.db.get('scriptcollection');
     
-    var anon = req.user.local == undefined;
+    var anon = req.user == undefined;
     var email = anon ? {"$exists" : false} : req.user.local.email;
     
     collection.find({email : email}, {sort : { scriptName : 1 }}, function(e, docs) {
