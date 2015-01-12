@@ -7,20 +7,15 @@ public class ApiTest : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        api.SteerToLeft();
+        api.SteerToMiddle();
+		api.Boost();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        float distance = api.GetDistanceToNextCorner();
 
-        if (distance > 100) {
-            api.Boost();
-        }
-
-        float maxSpeed = (distance / 8) + 20;
-
-        Debug.Log(maxSpeed);
+        float maxSpeed = 23;
+	
 
         if (api.GetSpeed() < maxSpeed) {
             api.SetThrottle(70f);

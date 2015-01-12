@@ -9,28 +9,37 @@ block content
   script(type='text/javascript', src='/events.js')
   script.
       var editScript = !{JSON.stringify(scriptName)};
-  
+      var language = !{JSON.stringify(language)};
+      var csScript = !{JSON.stringify(csScript)};
       var scripts = [{name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}},
                      {name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}} ];
       var levelname = "OvalTrack";
       var carname = "Catamount";
-      var updateScript = function() {
-          console.log("Update!");
-          scripts = scripts.map(function(s) {
-              console.log("Mapping " + s.name);
+    
+      var mapScripts = function(script) {
+         scripts = scripts.map(function(s) {
               if(s.name == !{JSON.stringify(scriptName)}) {
-                  s.content = document.getElementById('newScriptForm').elements["inputScript"].value;
-                  console.log("Set content to " + s.content);
-
-                  s.update = buildUpdate(s.content);
+                  s.content = script;
+                  s.update = buildUpdate(s.content); 
               }
 
               return s;
           });
+      }
+
+      var updateScript = function() {
+          var script = document.getElementById('newScriptForm').elements["inputScript"].value;   
+          
+          if(language == "CoffeeScript") {
+              $.post("/compile", { script: script },  function(data) { 
+                  mapScripts(data); 
+              });
+          } else {
+              mapScripts(script);
+          }  
       };
       
-      var gamemode = "Test";
-      
+      var gamemode = "Test";     
       var restartRace = function() {
           console.log("Restart!");
           //This function is replaced when unity is built!
@@ -53,6 +62,14 @@ block content
               }
           }
       };
+      
+      var updateLanguage = function() {
+          var select = document.getElementById("selectLanguage");
+          var language = select.options[select.selectedIndex].text;
+          //language = JavaScript or CoffeeScript
+            
+          //TODO UPDATE EDITOR SYNTAX HIGHLIGHTING
+      }
 
   #editor
     .div(align='left')
@@ -69,6 +86,16 @@ block content
                       button.btn.btn-default(type='button')#hide-editor Hide
                       .col-lg-1
                     .form-group
+                      label.col-lg-1.control-label(for='selectLanguage') Language
+                      .col-lg-5
+                        select#selectLanguage.form-control(placeholder='Select Language', name="language", readonly="true")
+                          - if (language != "CoffeeScript") {
+                          option JavaScript
+                          - } else {
+                          option CoffeeScript
+                          - }
+                      .col-lg-1
+                    .form-group
                       label.col-lg-1.control-label(for='inputScript')
                       .col-lg-10
                         textarea#inputScript(name='script',data-editor="javascript")
@@ -80,7 +107,7 @@ block content
                         select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
                             - if (allScripts.length) {
                             each entry, i in allScripts
-                                option= entry.scriptName
+                                option(selected=entry.scriptName == scriptName)= entry.scriptName
                             - }
                       .col-lg-1
                       .col-lg-6.col-lg-offset-2
@@ -140,10 +167,18 @@ block content
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());
         });
+       
+        var lang = !{JSON.stringify(language)};
 
-        editor.getSession().setValue(!{JSON.stringify(script)});
+        if(!lang || lang != "CoffeeScript") {
+          editor.getSession().setValue(!{JSON.stringify(script)});
+          editor.getSession().setMode("ace/mode/javascript");
+        } else {
+          editor.getSession().setValue(!{JSON.stringify(csScript)});
+          editor.getSession().setMode("ace/mode/coffee");
+        }
+
         editor.resize();
-        editor.getSession().setMode("ace/mode/" + mode);
         editor.renderer.setShowGutter(true);
         editor.renderer.setVScrollBarAlwaysVisible(true);
         editor.setFontSize("14px");

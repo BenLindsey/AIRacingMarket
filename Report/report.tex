@@ -1,0 +1,121 @@
+\documentclass[11pt]{report}  
+
+% ---- Packages ----
+
+\usepackage[margin=2cm]{geometry} 
+\geometry{a4paper}  
+
+\usepackage {tikz}
+% Architecture Diagram
+\usepackage{textcomp}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{calc}
+% ER Diagram
+\usetikzlibrary {er}
+\tikzset{multi attribute/.style ={attribute, double distance=1.5 pt}}
+\tikzset{derived attribute/.style={attribute, dashed}}
+\tikzset{total/.style={ double distance=1.5 pt}}
+\tikzset{every entity/.style={draw=orange, fill=orange!20}}
+\tikzset{every attribute/.style={draw=purple, fill=purple!20}}
+\tikzset{every relationship/.style={draw=yellow, fill=yellow!20}}
+\newcommand{\key}[1]{ \underline {#1}}
+
+ 
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-50pt}{40pt}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }	
+	
+\usepackage{amssymb}
+
+\usepackage{float}
+
+% Tabular stuffs
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{array,multirow}
+
+% Listing javascript
+\usepackage{listings}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{numbers=left}
+
+\newcommand{\project}{AI Racing Challenge }
+
+% ---- Headers ---- 
+% Config: [L]eft/[R]ight/[C]entre of [O]dd pages/[E]ven pages
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LO,LE]{Chapter \thechapter}  
+\fancyhead[RO,RE]{AI Racing Market}   
+\fancyfoot{}
+\fancyfoot[CE,CO]{\thepage}
+%\fancyfoot[LO,LE]{Chapter \thechapter}
+%\fancyfoot[RO,RE]{Author}
+
+% ---- Citations ----
+% Usage: \cite{KEY}
+\usepackage[backend=bibtex]{biblatex}
+\addbibresource{references.bib}
+
+% ---- Document ----
+
+\title{	
+  {\huge \project}\\
+  {\large Dr Evil is watching.}\\[2em]
+  {\centering \includegraphics[width=0.9\textwidth]{coverpic.png}}
+}
+\author{Christophe Steininger, Finlay Curran, Jaime Lennox,\\ Ben Lindsey, Louis Mackie, Thomas Kaplan}
+
+\begin{document}
+\maketitle
+
+\chapter*{Executive Summary}
+\input{chapters/executive_summary}
+
+\tableofcontents
+
+\chapter{Introduction}
+\input{chapters/introduction}
+
+\chapter{Project Management}
+\input{chapters/project_management}
+
+\chapter{Design and Implementation}
+\input{chapters/design_and_implementation}
+
+\chapter{Evaluation}
+\input{chapters/evaluation}
+
+\chapter{Conclusion}
+\input{chapters/conclusion}
+
+\chapter{Bibliography}
+\printbibliography[heading=none]
+
+\appendix
+\chapter{Appendix}
+\input{chapters/appendix}
+
+\end{document}  
