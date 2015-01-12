@@ -39,9 +39,13 @@ block content
       div.well.bs-component
         .div(align='center')
           h3.
+          - if(anonymous) {
             Register or Login to protect your scripts!
-        br
+          - } else {
+            Update your Details
+          - }
       - if(!anonymous) {
+        br
         form#newScriptForm.form-horizontal(method='post')
             fieldset
               .form-group
