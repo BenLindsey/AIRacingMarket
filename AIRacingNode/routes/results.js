@@ -4,14 +4,13 @@ var router = express.Router();
 /* GET user profile. */
 router.get('/', function(req, res) {
     var scripts = [];
-    console.log("queryScripts: " + req.query.scripts);
     for (var scriptName in req.query.scripts) {
         if (req.query.scripts.hasOwnProperty(scriptName)) {
             scripts.push(req.query.scripts[scriptName]);
         }
     }
-    console.log("scripts: " + scripts);
-    res.render('results', {scripts : scripts});
+    res.render('results', { scripts   : scripts,
+                            positions : ["First", "Second", "Third", "Fourth"]});
 });
 
 module.exports = router;
