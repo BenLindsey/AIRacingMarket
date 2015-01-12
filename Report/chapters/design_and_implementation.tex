@@ -230,7 +230,7 @@ To guide the car around the track we initially placed invisible walls along the 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{spline.png}
+\includegraphics[width=0.65\textwidth]{spline.png}
 \caption{The centre spline as seen in the Unity editor window.}
 \end{figure}
 
@@ -242,7 +242,7 @@ Users are able to submit scripts which cannot finish a race in a reasonable time
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{HUD.png}
+\includegraphics[width=0.65\textwidth]{HUD.png}
 \caption{Cars which have completed the race are shown in grey, cars which have timed out are in red.}
 \end{figure}
 
@@ -380,6 +380,7 @@ Once a proxy had been defined, the AI script could be in any language, provided 
 Despite our protections there are still some flaws in our design. Figure \ref{fig:drevil} shows an attack made by script Dr Evil. It finds the global scripts array and attaches an intercept to the "SetThrottle" command of each AI Script. This will slow down every non-Dr Evil script - a subtle way to rig games. More aggresive attacks could flip every other car's direction, causing them to run the track backwards.
 \begin{figure}[H]
 \begin{lstlisting}[language=JavaScript]  
+var PhysicsUpdate = function(api) { 
   for(var script in scripts) {
     if(scripts[script].name != "Dr Evil") {
       scripts[script].update = function(previous, throttle) { 
@@ -390,6 +391,7 @@ Despite our protections there are still some flaws in our design. Figure \ref{fi
       }(scripts[script].update, api.SetThrottle);
     }
   }
+};
 \end{lstlisting}
 \caption{Dr Evil - proof of concept attack}
 \label{fig:drevil}

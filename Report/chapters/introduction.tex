@@ -60,12 +60,27 @@ Scripts can be written in either JavaScript or CoffeeScript and are very easy to
 A leaderboard displays the Elo ratings (see Appendix \ref{Elo}) of each script, calculated after each race. With enough races the best scripts will rise to the top.
 
 \subsection{Match Mode}
-\centerline{\includegraphics[scale=0.45]{pizza}}
-Custom races can be created with up to four cars on a variety of different tracks. Once options have been selected, the race is run in Unity and the users can cheer their scripts on. The camera moves between the different cars and the HUD tracks the lap number and positions of the cars. At the end of the race the results are sent to the database and the updated leaderboard is shown to the user.
 
-\centerline{\includegraphics[scale=0.405]{race}}
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+\centerline{\includegraphics[width=.8\textwidth]{pizza}}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+\centerline{\includegraphics[width=.8\textwidth]{race}}
+  \label{fig:sub2}
+\end{subfigure}
+\label{fig:unityvsjava}
+\caption{Match mode}
+\end{figure}
+
+Custom races can be created with up to four cars on a variety of different tracks. Once options have been selected, the race is run in Unity and the users can cheer their scripts on. The camera moves between the different cars and the HUD tracks the lap number and positions of the cars. At the end of the race the results are sent to the database and the updated leaderboard is shown to the user.
 
 \subsection{Tournament Mode}
 Another way for races to run is using tournament mode. While tournament mode is active, races will be run non-stop, using four random scripts. This would be set up on a large screen during a careers fair and pit scripts written over the course of the evening against each other. The constant action will draw attention to the stand and completing many races will populate the leaderboard, allowing the Elo ratings to be accurate reflections of a scripts ability. After each race the leaderboard shows the rating changes briefly before starting up another random race.
-
-\centerline{\includegraphics[scale=0.35]{elochange2}}
+\begin{figure}[H]
+\includegraphics[scale=0.35]{elochange2}
+\end{figure}
