@@ -21,10 +21,10 @@ block content
         Create your Racing Script
 
     if notLoggedIn
-        .alert.alert-dismissable.alert-success
+        .alert.alert-dismissable.alert-warning
           button.close(type='button', data-dismiss='alert') ×
           strong You are not logged in! 
-          | Anyone can claim/edit your submission.
+          | Anyone can edit your submission.
 
     form#newScriptForm.form-horizontal(method='post')
         fieldset
