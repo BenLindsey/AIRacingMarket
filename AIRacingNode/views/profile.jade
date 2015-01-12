@@ -38,10 +38,11 @@ block content
     .div.col-lg-5
       div.well.bs-component
         .div(align='center')
-          h3.
-            if anonymous
+          if anonymous
+            h3.
               Update your Details
-            else 
+          else 
+            h3.
               Register or Login to protect your scripts!
         br
         form#newScriptForm.form-horizontal(method='post')
