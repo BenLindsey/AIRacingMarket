@@ -5,7 +5,7 @@ block content
 
   .row
     .div.col-lg-4
-      h1 Welcome #{user.local.email}
+      h1 Welcome #{userEmail}
     .div.col-lg-3
       if submitted
         .alert.alert-dismissable.alert-success
@@ -48,6 +48,7 @@ block content
                   label.col-lg-2.control-label(for='inputEmailAddress') Email Address
                   .col-lg-8
                       input#inputEmailAddress.form-control(value=userEmail, placeholder='Enter your Email Address', type='email', name="emailaddress", readonly="true")
+            - if(!anonymous) {
               .form-group
                   label.col-lg-2.control-label(for='inputUniversityName') University Name
                   .col-lg-8
@@ -68,3 +69,4 @@ block content
                 .col-lg-6.col-lg-offset-2
                   .btn-group
                     button.btn.btn-primary(type='submit') Update
+            - }
