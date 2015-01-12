@@ -9,13 +9,17 @@ router.get('/', function(req, res) {
     collection.find({email : req.user.local.email}, {sort : { scriptName : 1 }}, function(e, docs) {
       var submitted_recently = req.session.submitted;
       req.session.submitted = false;
+      
+      var anon = req.user.local == undefined;
+      
       res.render('profile', {
           "scripts"   : docs,
           "submitted" : submitted_recently,
-          "userYear"  : req.user.local.year,
-          "userEmail" : req.user.local.email,
-          "userUni"   : req.user.local.university,
-          "userDeg"   : req.user.local.degree
+          "anonymous" : anon,
+          "userYear"  : anon ? "" : req.user.local.year,
+          "userUni"   : anon ? "" : req.user.local.university,
+          "userDeg"   : anon ? "" : req.user.local.degree,
+          "userEmail" : anon ? "Anonymous" : req.user.local.email
       });
     });
 });
