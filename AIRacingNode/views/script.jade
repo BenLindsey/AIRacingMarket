@@ -50,33 +50,7 @@ block content
                     .btn-group
                       button.btn.btn-default(type='reset') Reset
                       button.btn.btn-primary(type='submit') Submit
-            .col-lg-4
-              if notLoggedIn
-                div.well.bs-component
-                    h2.
-                      Optional Details :
-                    br
-                    .form-group
-                      label.col-lg-3.control-label(for='inputEmailAddress') Email Address
-                      .col-lg-8
-                        input#inputEmailAddress.form-control(placeholder='Enter your Email Address', type='email', name="emailaddress")
-                    .form-group
-                      label.col-lg-3.control-label(for='inputUniversityName') University Name
-                      .col-lg-8
-                        input#inputUniversityName.form-control(placeholder='Which University do you attend?', type='text', name="university")
-                    .form-group
-                      label.col-lg-3.control-label(for='inputCourse') Course
-                      .col-lg-8
-                        input#inputCourse.form-control(placeholder='What do you study?', type='text', name="course")
-                    .form-group
-                      label.col-lg-3.control-label(for='inputYearGroup') Year Group
-                      .col-lg-8
-                        select#inputYearGroup.form-control
-                            option 1st Year
-                            option 2nd Year
-                            option 3rd Year
-                            option 4th Year 
-
+                      
     script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
     script(type='text/javascript').
       $(document).ready(function () {
