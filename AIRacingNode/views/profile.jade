@@ -39,7 +39,10 @@ block content
       div.well.bs-component
         .div(align='center')
           h3.
-            Update your Details
+            if anonymous
+              Update your Details
+            else 
+              Register or Login to protect your scripts!
         br
         form#newScriptForm.form-horizontal(method='post')
             fieldset
