@@ -39,12 +39,7 @@ block content
       div.well.bs-component
         .div(align='center')
           h3.
-          - if(anonymous) {
-            Register or Login to protect your scripts!
-          - } else {
             Update your Details
-          - }
-      - if(!anonymous) {
         br
         form#newScriptForm.form-horizontal(method='post')
             fieldset
@@ -72,4 +67,3 @@ block content
                 .col-lg-6.col-lg-offset-2
                   .btn-group
                     button.btn.btn-primary(type='submit') Update
-      - }
