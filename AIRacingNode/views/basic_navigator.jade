@@ -1,7 +1,7 @@
 extends layout
 
 block head
-    -var menu = {'API' : '/api', 'Submit Script' : '/script', 'Multiplayer' : '/multiplayer', 'Leaderboard' : '/leaderboard', 'Profile' : '/profile'};
+    -var menu = {'API' : '/api', 'Submit Script' : '/script', 'Race!' : '/multiplayer', 'Leaderboard' : '/leaderboard', 'Profile' : '/profile'};
     - if (user && user.local.admin) menu['Tournament'] = '/tournament/next';
     - if (user && user.local.admin) menu['Admin'] = '/admin';
 
