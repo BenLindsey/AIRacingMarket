@@ -13,11 +13,15 @@ public class HUD : MonoBehaviour {
         public int lap;
         public int stage;
         public string name;
+        public string originalName; // Name without the frequency count.
 
         public float flipStartTime;
         private float lastCheckpointTime;
 
-        public bool HasCarStopped { get { return Time.time - lastCheckpointTime >= MAX_CHECKPOINT_TIME; } }
+        public bool HasCarStopped
+        {
+            get { return Time.time - lastCheckpointTime>= MAX_CHECKPOINT_TIME; }
+        }
 
         public void ResetCheckpointTime() {
             lastCheckpointTime = Time.time;
@@ -116,6 +120,7 @@ public class HUD : MonoBehaviour {
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
                 carStates[i].flipStartTime = -1;
+                carStates[i].originalName = ourCar.Name;
                 carStates[i].ResetCheckpointTime();
 
                 // If there are multiple cars with the same name, then add the
@@ -133,6 +138,17 @@ public class HUD : MonoBehaviour {
             endOfRaceObject.CheckRaceOver(carStates, raceMode);
 
             UpdateCarPositions();
+
+            // Check if the script names have changed during a test.
+            if (raceMode == RaceMode.Test) {
+                for (int i = 0; i < carStates.Length; i++) {
+                    if (carStates[i].originalName != carStates[i].car.Name) {
+                        // This is horrible, everything should just use 'carStates[i].car.Name' instead.
+                        carStates[i].name = carStates[i].car.Name;
+                        carStates[i].originalName = carStates[i].car.Name;
+                    }
+                }
+            }
         }
     }
 
@@ -157,9 +173,52 @@ public class HUD : MonoBehaviour {
         Color carRacingColor = Color.white;
         Color carTimedOutColor = Color.red;
 
+        // Calculate the distance between the camera and each car for the next loop.
+        float[] distancesToCamera = new float[carStates.Length];
+        for (int i = 0; i < carStates.Length; i++) {
+            distancesToCamera[i] = (carStates[i].car.transform.position
+                - carCamera.transform.position).magnitude;
+        }
+
+        // Draw the labels above the cars. Draw the labels furthest away first.
+        for (int step = 0; step < carStates.Length; step++) {
+            // Find the furthest car from the camera without a label
+            int maxIndex = 0;
+            for (int i = 1; i < carStates.Length; i++) {
+                if (distancesToCamera[i] > distancesToCamera[maxIndex]) {
+                    maxIndex = i;
+                }
+            }
+
+            // Remember not to label this car again in future iterations.
+            distancesToCamera[maxIndex] = -1;
+
+            // Draw the label over this car if it is in front of the camera.
+            Vector3 screenPosition = carCamera.WorldToScreenPoint(
+                carStates[maxIndex].car.transform.position + 2.5f * Vector3.up);
+            if (screenPosition.z > 0) {
+                // Use 'minSize' as the font size if the car is further than 'farZ' from the
+                // camera. If the car is closer than 'nearZ' use 'maxSize', otherwise linearly
+                // scale the font size between these points.
+                int originalFontSize = style.fontSize;
+                float maxSize = originalFontSize;
+                float minSize = 10;
+                float nearZ = 5;
+                float farZ = 40;
+                style.fontSize = (int)Mathf.Clamp((minSize - maxSize) / (farZ - nearZ)
+                    * (screenPosition.z - nearZ) + maxSize, minSize, maxSize);
+
+                float xOffset = style.CalcSize(new GUIContent(carStates[maxIndex].name)).x / 2;
+                DrawOutlinedText(new Rect(screenPosition.x - xOffset,
+                    carCamera.pixelHeight - screenPosition.y, 200, 100),
+                    carStates[maxIndex].name, Color.white, style);
+                style.fontSize = originalFontSize;
+            }
+        }
+
         // Draw the lap number for the current car.
         if (raceMode != RaceMode.Test) {
-            string text = "Lap " + (currentState.lap + 1);
+            string text = "Lap " + (currentState.lap + 1) + " / " + LAPS_IN_RACE;
             float textWidth = style.CalcSize(new GUIContent(text)).x;
             DrawOutlinedText(new Rect(carCamera.pixelWidth - textWidth - 10, y, textWidth, 100),
                 text, Color.white, style);
@@ -179,34 +238,12 @@ public class HUD : MonoBehaviour {
             DrawOutlinedText(ordinalRect, ordinals[i], Color.white, ordinalStyle);
         }
 
+        // Draw the car names next to the place names in the correct order.
         for (int i = 0; i < carStates.Length; i++) {
             int position = carStates[i].position + 1;
             Color textColor = (carStates[i].position < carsFinished)
                 ? carFinishedColor
                 : ((carStates[i].HasCarStopped) ? carTimedOutColor : carRacingColor);
-
-            // Draw the car's name over its model if it's in front of the camera.
-            Vector3 screenPosition = carCamera.WorldToScreenPoint(
-                carStates[i].car.transform.position + 2.5f * Vector3.up);
-            if (screenPosition.z > 0) {
-
-                // Use 'minSize' as the font size if the car is further than 'farZ' from the
-                // camera. If the car is closer than 'nearZ' use 'maxSize', otherwise linearly
-                // scale the font size between these points.
-                int originalFontSize = style.fontSize;
-                float maxSize = originalFontSize;
-                float minSize = 10;
-                float nearZ = 5;
-                float farZ = 40;
-                style.fontSize = (int)Mathf.Clamp((minSize - maxSize) / (farZ - nearZ)
-                    * (screenPosition.z - nearZ) + maxSize, minSize, maxSize);
-
-                float xOffset = style.CalcSize(new GUIContent(carStates[i].name)).x / 2;
-                DrawOutlinedText(new Rect(screenPosition.x - xOffset,
-                    carCamera.pixelHeight - screenPosition.y, 200, 100), carStates[i].name,
-                    Color.white, style);
-                style.fontSize = originalFontSize;
-            }
 
             // Draw the car's row on the leaderboard.
             DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * (position - 1), 200, 100),
