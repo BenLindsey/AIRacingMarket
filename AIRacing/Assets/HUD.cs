@@ -13,11 +13,15 @@ public class HUD : MonoBehaviour {
         public int lap;
         public int stage;
         public string name;
+        public string originalName; // Name without the frequency count.
 
         public float flipStartTime;
         private float lastCheckpointTime;
 
-        public bool HasCarStopped { get { return Time.time - lastCheckpointTime >= MAX_CHECKPOINT_TIME; } }
+        public bool HasCarStopped
+        {
+            get { return Time.time - lastCheckpointTime>= MAX_CHECKPOINT_TIME; }
+        }
 
         public void ResetCheckpointTime() {
             lastCheckpointTime = Time.time;
@@ -116,6 +120,7 @@ public class HUD : MonoBehaviour {
                 carStates[i].lap = 0;
                 carStates[i].stage = 0;
                 carStates[i].flipStartTime = -1;
+                carStates[i].originalName = ourCar.Name;
                 carStates[i].ResetCheckpointTime();
 
                 // If there are multiple cars with the same name, then add the
@@ -133,6 +138,17 @@ public class HUD : MonoBehaviour {
             endOfRaceObject.CheckRaceOver(carStates, raceMode);
 
             UpdateCarPositions();
+
+            // Check if the script names have changed during a test.
+            if (raceMode == RaceMode.Test) {
+                for (int i = 0; i < carStates.Length; i++) {
+                    if (carStates[i].originalName != carStates[i].car.Name) {
+                        // This is horrible, everything should just use 'carStates[i].car.Name' instead.
+                        carStates[i].name = carStates[i].car.Name;
+                        carStates[i].originalName = carStates[i].car.Name;
+                    }
+                }
+            }
         }
     }
 
