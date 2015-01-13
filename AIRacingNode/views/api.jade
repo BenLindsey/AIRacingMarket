@@ -79,7 +79,7 @@ block content
   br
   .row
     a(name="snippet4")
-    .col-lg-5
+    .col-lg-10
       p.
         Opponent Information
       textarea(name='snip4', data-editor="javascript"). 
@@ -90,7 +90,17 @@ block content
   h2.
       Event API
   br
+  .row
+    a(name="snippet5")
+    .col-lg-10
+      p.
+        Usage
+      textarea(name='snip5', data-editor="javascript").
+          Event commands take the form : When.EVENT.ACTION
 
+          For example, When.RaceStarts().Boost();
+                       When.SpeedMoreThan(90).SetBrake(100);
+  br
   .row
     a(name="snippet5")
     .col-lg-10
@@ -108,7 +118,6 @@ block content
           NextCornerDistanceBetween()
           NextCornerDistanceLessThan()
           NextCornerDistanceMoreThan()
-
   br
   .row
     a(name="snippet6")
