@@ -397,19 +397,20 @@ public class HUD : MonoBehaviour {
             string queryParams = "";
             for (int i = 0; i < states.Length; i++) {
                 form.AddField(i.ToString(), carNames[i]);
-                
+
                 queryParams += (i == 0) ? "?" : "&";
                 queryParams += "previous[" + (char)('A' + i) + "]=" + WWW.EscapeURL(carNames[i]);
             }
 
-            outerClass.StartCoroutine(WaitForSend(form, mode, queryParams));
+            if (mode == RaceMode.Tournament) {
+                outerClass.StartCoroutine(WaitForSend(form));
+            }
+
+            Redirect(mode, queryParams);
         }
 
-        private IEnumerator WaitForSend(WWWForm form, RaceMode mode, string queryParams) {
-            string url = GetURL();
-            string scoreUrl = url + "score";
-            string leaderboardUrl = url + ((mode == RaceMode.Multiplayer)
-                ? "leaderboard" : "tournament/next" + queryParams);
+        private IEnumerator WaitForSend(WWWForm form) {
+            string scoreUrl = GetURL() + "score";
 
             // Send the the result of the race.
             Debug.Log("Sending \"" + System.Text.Encoding.Default.GetString(form.data)
@@ -424,6 +425,11 @@ public class HUD : MonoBehaviour {
             } else {
                 Debug.LogError("Error sending: " + www.error);
             }
+        }
+
+        private void Redirect(RaceMode mode, string queryParams) {
+            string leaderboardUrl = GetURL() + ((mode == RaceMode.Multiplayer)
+                ? "results" : "tournament/next") + queryParams;
 
             Debug.Log("Redirecting to \"" + leaderboardUrl + "\" . . . ");
             Application.OpenURL(leaderboardUrl);

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET next game */
-router.get('/next', function(req, res) {
+router.get('/next', [isLoggedIn, isAdmin], function(req, res) {
     var collection = req.db.get('scriptcollection');
 
     console.log("Next!");
@@ -61,6 +61,13 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the login page
     res.redirect('/login');
+}
+
+function isAdmin(req, res, next) {
+    if (req.user && req.user.local.admin)
+        return next();
+
+    res.send(401, 'Unauthorized');
 }
 
 module.exports = router;

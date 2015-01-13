@@ -33,6 +33,7 @@ var score = require('./routes/score');
 var admin = require('./routes/admin');
 var tournament = require('./routes/tournament');
 var compile = require('./routes/compile');
+var results = require('./routes/results');
 
 var app = express();
 
@@ -76,6 +77,7 @@ app.use('/score', score);
 app.use('/admin', admin);
 app.use('/tournament', tournament);
 app.use('/compile', compile);
+app.use('/results', results);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

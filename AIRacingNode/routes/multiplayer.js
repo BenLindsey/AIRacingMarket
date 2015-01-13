@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET multiplayer form */
-router.get('/', isLoggedIn, function(req, res) {
+router.get('/', function(req, res) {
     var collection = req.db.get('scriptcollection');
 
     collection.find({}, {sort : { scriptName : 1 }}, function(e, docs) {
@@ -13,7 +13,7 @@ router.get('/', isLoggedIn, function(req, res) {
 });
 
 /* POST to start multiplayer */
-router.post('/', isLoggedIn, function(req, res) {
+router.post('/', function(req, res) {
     var size = parseInt(req.body.scriptcount, 10);
 
     // Build the inputs to unity
@@ -35,18 +35,5 @@ router.post('/', isLoggedIn, function(req, res) {
     // And forward to success page
     res.redirect(url);
 });
-
-function isLoggedIn(req, res, next) {
-
-    req.session.redirect = '/multiplayer';
-
-    // if user is authenticated in the session, pass to GET/POST handlers
-    if (req.isAuthenticated()) {
-        return next();
-    }
-
-    // if they aren't redirect them to the login page
-    res.redirect('/login');
-}
 
 module.exports = router;
