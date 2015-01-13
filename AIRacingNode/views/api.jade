@@ -22,13 +22,17 @@ block content
         Event API  :
       ul
         li
-          a(href="#snippet5") Event Stuffs
+          a(href="#snippet5") Events
+        li
+          a(href="#snippet6") Actions
     .col-lg-3  
       small.
         Example Scripts  :
       ul
         li
-          a(href="#example1") Example Stuffs
+          a(href="#snippet7") Stay Left
+        li
+          a(href="#snippet8") Stay Left (using events)
     
   hr
   h2.
@@ -54,7 +58,7 @@ block content
       textarea(name='snip2', data-editor="javascript"). 
         api.SteerToRight()    \\Sets your car to follow right lane
         api.SteerToMiddle()   \\Sets your car to follow middle lane
-        api.SteerToLane()     \\Sets your car to follow left lane
+        api.SteerToLeft()     \\Sets your car to follow left lane
         api.ChangeLaneRight() \\Changes lane to the right
         api.ChangeLaneLeft()  \\Changes lane to the left 
   br
@@ -84,11 +88,80 @@ block content
         api.CarOnLeft()  \\Returns true if a car is on your left
   hr
   h2.
-    Event API
+      Event API
+  br
+
+  .row
+    a(name="snippet5")
+    .col-lg-10
+      p.
+        Events
+      textarea(name='snip5', data-editor="javascript").
+          CarOnRight()
+          CarOnLeft()
+          CarInFront()
+          RaceStarts()
+          SpeedLessThan(20)
+          SpeedMoreThan(20)
+          NextCornerLeft()
+          NextCornerRight()
+          NextCornerDistanceBetween()
+          NextCornerDistanceLessThan()
+          NextCornerDistanceMoreThan()
+
+  br
+  .row
+    a(name="snippet6")
+    .col-lg-10
+      p.
+        Actions
+      textarea(name='snip6', data-editor="javascript").
+          SetBrake(50)
+          SetThrottle(70)
+          ChangeLaneRight()
+          ChangeLaneLeft()
+          SteerToMiddle()
+          SteerToLeft()
+          SteerToRight()
+          Boost()
   hr
   h2.
-    Example Scripts
+      Example Scripts
+
   br
+  .row
+    a(name="snippet7")
+    .col-lg-10
+      p.
+        Stay Left 
+      textarea(name='snip7', data-editor="javascript").
+          var maxSpeed = 18;
+
+          var PhysicsUpdate = function(api) {
+            api.ChangeLaneLeft();
+            
+            if (api.GetSpeed() > maxSpeed) {
+                api.SetThrottle(0);
+            } else {
+                api.SetThrottle(70);
+            }
+          };
+  br
+  .row
+    a(name="snippet8")
+    .col-lg-10
+      p.
+        Stay Left (using events)
+      textarea(name='snip8', data-editor="javascript").
+          var maxSpeed = 18;
+
+          When.SpeedLessThan(maxSpeed).SetThrottle(70);
+          When.SpeedMoreThan(maxSpeed).SetThrottle(0);
+
+          var PhysicsUpdate = function(api) {
+            api.ChangeLaneLeft();
+          };
+  hr
 
   script(src="http://ajaxorg.github.io/ace-builds/src/ace.js")
   script(type='text/javascript').
