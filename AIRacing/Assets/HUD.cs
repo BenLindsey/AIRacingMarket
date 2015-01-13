@@ -173,45 +173,12 @@ public class HUD : MonoBehaviour {
         Color carRacingColor = Color.white;
         Color carTimedOutColor = Color.red;
 
-        // Draw the lap number for the current car.
-        if (raceMode != RaceMode.Test) {
-            string text = "Lap " + (currentState.lap + 1) + " / " + LAPS_IN_RACE;
-            float textWidth = style.CalcSize(new GUIContent(text)).x;
-            DrawOutlinedText(new Rect(carCamera.pixelWidth - textWidth - 10, y, textWidth, 100),
-                text, Color.white, style);
-        }
-
-        // Draw the place numbers.
-        string[] ordinals = new string[] { "st", "nd", "rd", "th" };
-        float nameLocation = float.MinValue;
-        for (int i = 0; i < carStates.Length; i++) {
-            float numberWidth = style.CalcSize(new GUIContent((i + 1).ToString())).x;
-            Rect ordinalRect = new Rect(15 + numberWidth, y + yDiff * i, 200, 100);
-            nameLocation = Math.Max(nameLocation, style.CalcSize(new GUIContent(ordinals[i])).x
-                + ordinalRect.xMin);
-
-            DrawOutlinedText(new Rect(13, y + yDiff * i, 200, 100), (i + 1).ToString(),
-                Color.white, style);
-            DrawOutlinedText(ordinalRect, ordinals[i], Color.white, ordinalStyle);
-        }
-
-        // Draw the car names next to the place names in the correct order.
+        // Calculate the distance between the camera and each car for the next loop.
         float[] distancesToCamera = new float[carStates.Length];
         for (int i = 0; i < carStates.Length; i++) {
-            // Calculate the distance between the camera and the car for the next loop.
             distancesToCamera[i] = (carStates[i].car.transform.position
                 - carCamera.transform.position).magnitude;
-
-            int position = carStates[i].position + 1;
-            Color textColor = (carStates[i].position < carsFinished)
-                ? carFinishedColor
-                : ((carStates[i].HasCarStopped) ? carTimedOutColor : carRacingColor);
-
-            // Draw the car's row on the leaderboard.
-            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * (position - 1), 200, 100),
-                carStates[i].name, textColor, style);
         }
-        y += yDiff * carStates.Length;
 
         // Draw the labels above the cars. Draw the labels furthest away first.
         for (int step = 0; step < carStates.Length; step++) {
@@ -248,6 +215,41 @@ public class HUD : MonoBehaviour {
                 style.fontSize = originalFontSize;
             }
         }
+
+        // Draw the lap number for the current car.
+        if (raceMode != RaceMode.Test) {
+            string text = "Lap " + (currentState.lap + 1) + " / " + LAPS_IN_RACE;
+            float textWidth = style.CalcSize(new GUIContent(text)).x;
+            DrawOutlinedText(new Rect(carCamera.pixelWidth - textWidth - 10, y, textWidth, 100),
+                text, Color.white, style);
+        }
+
+        // Draw the place numbers.
+        string[] ordinals = new string[] { "st", "nd", "rd", "th" };
+        float nameLocation = float.MinValue;
+        for (int i = 0; i < carStates.Length; i++) {
+            float numberWidth = style.CalcSize(new GUIContent((i + 1).ToString())).x;
+            Rect ordinalRect = new Rect(15 + numberWidth, y + yDiff * i, 200, 100);
+            nameLocation = Math.Max(nameLocation, style.CalcSize(new GUIContent(ordinals[i])).x
+                + ordinalRect.xMin);
+
+            DrawOutlinedText(new Rect(13, y + yDiff * i, 200, 100), (i + 1).ToString(),
+                Color.white, style);
+            DrawOutlinedText(ordinalRect, ordinals[i], Color.white, ordinalStyle);
+        }
+
+        // Draw the car names next to the place names in the correct order.
+        for (int i = 0; i < carStates.Length; i++) {
+            int position = carStates[i].position + 1;
+            Color textColor = (carStates[i].position < carsFinished)
+                ? carFinishedColor
+                : ((carStates[i].HasCarStopped) ? carTimedOutColor : carRacingColor);
+
+            // Draw the car's row on the leaderboard.
+            DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * (position - 1), 200, 100),
+                carStates[i].name, textColor, style);
+        }
+        y += yDiff * carStates.Length;
     }
 
     private void DrawOutlinedText(Rect location, string text, Color textColor, GUIStyle style) {
