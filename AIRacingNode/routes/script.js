@@ -10,19 +10,25 @@ router.get('/edit/:name', function(req, res) {
 
     var collection = db.get('scriptcollection');
     collection.find({}, function(e, docs) {
-        collection.findOne({scriptName:req.params.name, email : email},  function(e, doc) {
+        var isAdmin = req.user && req.user.local.admin
+ 
+        collection.findOne(isAdmin ? {scriptName:req.params.name} : {scriptName:req.params.name, email : email},  function(e, doc) {
             if (e) {
-                res.send("Script " + req.params.name + " not found for " + (anon ? "anonymous" : email));
+                res.send("Script " + req.params.name + " not found for " + (anon ? "anonymous" : email), 401);
             } else {
-                res.render('edit', {
+                if(doc) {
+                  res.render('edit', {
                     script : doc.script,
                     csScript : doc.csScript == undefined ? "" : doc.csScript,
                     language : doc.language == undefined? "JavaScript" : doc.language,
                     scriptName : req.params.name,
                     allScripts : docs
-                });
+                  });
+                } else {
+                  res.send("Script " + req.params.name + " not found for " + (anon ? "anonymous" : email), 401);
+                }
             }
-        });
+       });
     });
 });
 

@@ -31,9 +31,6 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
 
             // I miss SQL. I never thought I'd say it.
 
-            console.log("Final docs: ");
-            console.log(docs);
-
             res.render('admin', {
                 "users" : docs
             });
