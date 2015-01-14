@@ -241,9 +241,14 @@ public class HUD : MonoBehaviour {
         // Draw the car names next to the place names in the correct order.
         for (int i = 0; i < carStates.Length; i++) {
             int position = carStates[i].position + 1;
-            Color textColor = (carStates[i].position < carsFinished)
-                ? carFinishedColor
-                : ((carStates[i].HasCarStopped) ? carTimedOutColor : carRacingColor);
+            Color textColor;
+            if (raceMode == RaceMode.Test) {
+                textColor = carRacingColor;
+            } else {
+                textColor = (carStates[i].position < carsFinished)
+                    ? carFinishedColor
+                    : ((carStates[i].HasCarStopped) ? carTimedOutColor: carRacingColor);
+            }
 
             // Draw the car's row on the leaderboard.
             DrawOutlinedText(new Rect(nameLocation + 2, y + yDiff * (position - 1), 200, 100),
