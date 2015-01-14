@@ -33,8 +33,6 @@ router.get('/edit/:name', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-    req.session.redirect = '/script';
-    
     res.render('script', { script : 
         "// The vehicle can be controlled by calling functions on the\n" +
         "// api object, e.g. api.SetThrottle()\n" +
