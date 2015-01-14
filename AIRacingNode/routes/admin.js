@@ -16,6 +16,8 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
             console.log("Script docs: ");
             console.log(scriptdocs);
 
+            docs.push({local:{}});
+
             // Append scripts for each email to the retrieved documents.
             scriptdocs.forEach(function (scriptdoc) {
                for (var i = 0; i < docs.length; i++) {
@@ -27,8 +29,10 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
                        docs[i].local.scripts.push(scriptdoc.scriptName);
                    }
                }
+               
             });
 
+            docs[docs.length-1].local.email = "Anonymous";
             // I miss SQL. I never thought I'd say it.
 
             res.render('admin', {
