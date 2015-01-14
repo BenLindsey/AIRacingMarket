@@ -52,7 +52,7 @@ router.get('/next', [isLoggedIn, isAdmin], function(req, res) {
 
 function isLoggedIn(req, res, next) {
 
-    req.session.redirect = '/tournament';
+    req.session.redirect = '/tournament/next';
 
     // if user is authenticated in the session, pass to GET/POST handlers
     if (req.isAuthenticated()) {
