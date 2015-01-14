@@ -1,6 +1,34 @@
 include ./basic_navigator.jade
 
 block content
+
+  script.
+    var deleteScripts = function(user) {
+      $.post("/admin/deletescripts", { user : user })
+       .done(function(data) {
+         location.reload();
+       })
+       .fail(function(xhr, textStatus, errorThrown) {
+         alert("Failed to delete! " + xhr.responseText);
+       });      
+    };
+ 
+    var deleteUser = function(user) {
+      $.post("/admin/deletescripts", { user : user })
+       .done(function(data) {
+         $.post("/admin/deleteuser", { user : user })
+          .done(function(data) {
+            location.reload();
+          })
+          .fail(function(xhr, textStatus, errorThrown) {
+            alert("Failed to delete! " + xhr.responseText);
+          }); 
+       })
+       .fail(function(xhr, textStatus, errorThrown) {
+         alert("Failed to delete! " + xhr.responseText);
+       }); 
+    };
+
   h1.
     User Details
   div
@@ -12,6 +40,7 @@ block content
           th University
           th Year
           th Scripts
+          th Control
         tbody
         - if (users && users.length) {
           each entry, i in users
@@ -25,6 +54,10 @@ block content
                   table.table.table-hover(style="border: 1px solid black")
                     each scriptEntry, j in entry.local.scripts
                       tr
-                        td= scriptEntry
+                        td(onclick='window.location.replace("/script/edit/#{scriptEntry}")')= scriptEntry
                 - }
+              td
+                .btn-group 
+                  button.btn.btn-warning(type='button', onclick='deleteScripts("#{entry.local.email}")') Delete Scripts
+                  button.btn.btn-danger(type='button', onclick='deleteUser("#{entry.local.email}")') Delete User
         - }

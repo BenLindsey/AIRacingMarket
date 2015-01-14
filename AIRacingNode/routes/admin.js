@@ -41,6 +41,32 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
     });
 });
 
+router.post('/deleteuser', [isLoggedIn, isAdmin], function(req, res) {
+    var collection = req.db.get('users');
+   
+    console.log("deleting " + req.body.user); 
+    collection.remove({"local.email":req.body.user}, function (err, doc) {
+        if (err) {
+            res.send("There was a problem deleting user");
+        } else {
+           res.sendStatus(200);
+        }
+    });
+});
+
+router.post('/deletescripts', [isLoggedIn, isAdmin], function(req, res) {
+    var collection = req.db.get('scriptcollection');
+   
+    console.log("deleting scripts for " + req.body.user); 
+    collection.remove({"email":req.body.user}, function (err, doc) {
+        if (err) {
+            res.send("There was a problem deleting user");
+        } else {
+           res.sendStatus(200);
+        }
+    });
+});
+
 function isLoggedIn(req, res, next) {
 
     req.session.redirect = '/admin';
