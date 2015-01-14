@@ -80,6 +80,15 @@
 			    	u.getUnity().SendMessage("StartingGrid", "ResetRace", "")
 			    	};
 			    }
+			    
+			    try {
+			    	sendOpponentNameToUnity = function(name) {
+			           u.getUnity().SendMessage("StartingGrid", "SetScriptName", name);
+			           console.log("Setting opponent name to "  + name);
+			    	}
+			    } catch(err) {
+			      console.log("Failed to build opponent name function");
+			    }
 
 			    u.getUnity().SendMessage("StartingGrid", "StartRace", "");
 			}
