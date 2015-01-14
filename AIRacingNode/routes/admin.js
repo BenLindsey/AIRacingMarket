@@ -64,6 +64,19 @@ router.post('/deletescripts', [isLoggedIn, isAdmin], function(req, res) {
     });
 });
 
+router.post('/deletescript', [isLoggedIn, isAdmin], function(req, res) {
+    var collection = req.db.get('scriptcollection');
+   
+    console.log("deleting scripts for " + req.body.user); 
+    collection.remove({"scriptName":req.body.script}, function (err, doc) {
+        if (err) {
+            res.send("There was a problem deleting script");
+        } else {
+           res.sendStatus(200);
+        }
+    });
+});
+
 function isLoggedIn(req, res, next) {
 
     req.session.redirect = '/admin';

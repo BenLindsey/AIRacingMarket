@@ -3,6 +3,16 @@ include ./basic_navigator.jade
 block content
 
   script.
+    var deleteScript = function(script) {
+      $.post("/admin/deletescript", { script : script })
+       .done(function(data) {
+         location.reload();
+       })
+       .fail(function(xhr, textStatus, errorThrown) {
+         alert("Failed to delete! " + xhr.responseText);
+       }); 
+    }
+
     var deleteScripts = function(user) {
       $.post("/admin/deletescripts", { user : user })
        .done(function(data) {
@@ -55,9 +65,11 @@ block content
                     each scriptEntry, j in entry.local.scripts
                       tr
                         td(onclick='window.location.replace("/script/edit/#{scriptEntry}")')= scriptEntry
+                        td
+                          button.btn.btn-danger.btn-xs(type='button', onclick='deleteScript("#{scriptEntry}")') Delete
                 - }
               td
                 .btn-group 
-                  button.btn.btn-warning.btn-sm(type='button', onclick='deleteScripts("#{entry.local.email}")') Delete All Scripts
-                  button.btn.btn-danger.btn-sm(type='button', onclick='deleteUser("#{entry.local.email}")') Delete User
+                  button.btn.btn-warning.btn-xs(type='button', onclick='deleteScripts("#{entry.local.email}")') Delete All Scripts
+                  button.btn.btn-danger.btn-xs(type='button', onclick='deleteUser("#{entry.local.email}")') Delete User
         - }
