@@ -64,9 +64,11 @@ block content
                   table.table.table-hover(style="border: 1px solid black")
                     each scriptEntry, j in entry.local.scripts
                       tr
-                        td(onclick='window.location.replace("/script/edit/#{scriptEntry}")')= scriptEntry
+                        td= scriptEntry
                         td
-                          button.btn.btn-danger.btn-xs(type='button', onclick='deleteScript("#{scriptEntry}")') Delete
+                          .btn-group
+                            button.btn.btn-default.btn-xs(onclick='window.location.replace("/script/edit/#{scriptEntry}")') View
+                            button.btn.btn-danger.btn-xs(type='button', onclick='deleteScript("#{scriptEntry}")') Delete
                 - }
               td
                 .btn-group 
