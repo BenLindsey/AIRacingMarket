@@ -4,16 +4,19 @@ block content
 
   script.
     var deleteScript = function(script) {
-      $.post("/admin/deletescript", { script : script })
-       .done(function(data) {
-         location.reload();
-       })
-       .fail(function(xhr, textStatus, errorThrown) {
-         alert("Failed to delete! " + xhr.responseText);
-       }); 
+      if (window.confirm("Are you sure want to delete " + script + "?")) {
+        $.post("/admin/deletescript", { script : script })
+         .done(function(data) {
+           location.reload();
+         })
+         .fail(function(xhr, textStatus, errorThrown) {
+           alert("Failed to delete! " + xhr.responseText);
+         });
+      } 
     }
 
     var deleteScripts = function(user) {
+      if (window.confirm("Are you sure want to delete all scripts for " + user + "?")) {
       $.post("/admin/deletescripts", { user : user })
        .done(function(data) {
          location.reload();
@@ -21,9 +24,11 @@ block content
        .fail(function(xhr, textStatus, errorThrown) {
          alert("Failed to delete! " + xhr.responseText);
        });      
+      }
     };
  
     var deleteUser = function(user) {
+      if (window.confirm("Are you sure want to delete user " + user + "?")) {
       $.post("/admin/deletescripts", { user : user })
        .done(function(data) {
          $.post("/admin/deleteuser", { user : user })
@@ -37,6 +42,7 @@ block content
        .fail(function(xhr, textStatus, errorThrown) {
          alert("Failed to delete! " + xhr.responseText);
        }); 
+      }
     };
 
   h1.
