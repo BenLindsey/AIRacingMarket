@@ -16,6 +16,8 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
             console.log("Script docs: ");
             console.log(scriptdocs);
 
+            docs.push({local:{}});
+
             // Append scripts for each email to the retrieved documents.
             scriptdocs.forEach(function (scriptdoc) {
                for (var i = 0; i < docs.length; i++) {
@@ -27,17 +29,55 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
                        docs[i].local.scripts.push(scriptdoc.scriptName);
                    }
                }
+               
             });
 
+            docs[docs.length-1].local.email = "Anonymous";
             // I miss SQL. I never thought I'd say it.
-
-            console.log("Final docs: ");
-            console.log(docs);
 
             res.render('admin', {
                 "users" : docs
             });
         });
+    });
+});
+
+router.post('/deleteuser', [isLoggedIn, isAdmin], function(req, res) {
+    var collection = req.db.get('users');
+   
+    console.log("deleting " + req.body.user); 
+    collection.remove({"local.email":req.body.user}, function (err, doc) {
+        if (err) {
+            res.send("There was a problem deleting user");
+        } else {
+           res.sendStatus(200);
+        }
+    });
+});
+
+router.post('/deletescripts', [isLoggedIn, isAdmin], function(req, res) {
+    var collection = req.db.get('scriptcollection');
+   
+    console.log("deleting scripts for " + req.body.user); 
+    collection.remove({"email":req.body.user}, function (err, doc) {
+        if (err) {
+            res.send("There was a problem deleting user");
+        } else {
+           res.sendStatus(200);
+        }
+    });
+});
+
+router.post('/deletescript', [isLoggedIn, isAdmin], function(req, res) {
+    var collection = req.db.get('scriptcollection');
+   
+    console.log("deleting scripts for " + req.body.user); 
+    collection.remove({"scriptName":req.body.script}, function (err, doc) {
+        if (err) {
+            res.send("There was a problem deleting script");
+        } else {
+           res.sendStatus(200);
+        }
     });
 });
 

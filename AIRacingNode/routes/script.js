@@ -2,20 +2,33 @@ var express = require('express');
 var router = express.Router();
 var coffeeScript = require('coffee-script');
 
-router.get('/edit/:name', isLoggedInProfile, function(req, res) {
+router.get('/edit/:name', function(req, res) {
     var db = req.db;
+
+    var anon = req.user == undefined;
+    var email = anon ? {"$exists" : false} : req.user.local.email;
 
     var collection = db.get('scriptcollection');
     collection.find({}, function(e, docs) {
-        collection.findOne({scriptName:req.params.name, email : req.user.local.email},  function(e, doc) {
-            res.render('edit', {
-                script : doc.script,
-                csScript : doc.csScript == undefined ? "" : doc.csScript,
-                language : doc.language == undefined? "JavaScript" : doc.language,
-                scriptName : req.params.name,
-                allScripts : docs
-            });
-        });
+        var isAdmin = req.user && req.user.local.admin
+ 
+        collection.findOne(isAdmin ? {scriptName:req.params.name} : {scriptName:req.params.name, email : email},  function(e, doc) {
+            if (e) {
+                res.send("Script " + req.params.name + " not found for " + (anon ? "anonymous" : email), 401);
+            } else {
+                if(doc) {
+                  res.render('edit', {
+                    script : doc.script,
+                    csScript : doc.csScript == undefined ? "" : doc.csScript,
+                    language : doc.language == undefined? "JavaScript" : doc.language,
+                    scriptName : req.params.name,
+                    allScripts : docs
+                  });
+                } else {
+                  res.send("Script " + req.params.name + " not found for " + (anon ? "anonymous" : email), 401);
+                }
+            }
+       });
     });
 });
 
@@ -70,14 +83,8 @@ router.post('/', function(req, res) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
-            var url;
-            if (req.isAuthenticated()) {
-              url = "/profile";
-              req.session.submitted = true;
-            }
-            else {
-              url = "/";
-            }
+            var url = "/profile";
+            req.session.submitted = true;
 
             console.log("Redirecting user to: " + url);
             // If it worked, set the header so the address bar doesn't still say /script
@@ -88,7 +95,7 @@ router.post('/', function(req, res) {
     });
 });
 
-router.post('/edit/:name', isLoggedInProfile, function(req, res) {
+router.post('/edit/:name', function(req, res) {
     var collection = req.db.get('scriptcollection');
 
     console.log("Editing " + req.body.scriptname);
@@ -102,8 +109,10 @@ router.post('/edit/:name', isLoggedInProfile, function(req, res) {
     } else {
         updatedScript.script = req.body.script;
     }
-
-    updatedScript.email = req.user.local.email;
+ 
+    if(req.user != undefined) {
+        updatedScript.email = req.user.local.email;
+    }
 
     collection.update({
         "scriptName" : req.body.scriptname

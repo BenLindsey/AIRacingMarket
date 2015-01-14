@@ -5,7 +5,7 @@ block content
 
   .row
     .div.col-lg-4
-      h1 Welcome #{user.local.email}
+      h1 Welcome #{userEmail}
     .div.col-lg-3
       if submitted
         .alert.alert-dismissable.alert-success
@@ -22,6 +22,8 @@ block content
       .div(align='center')
         h3.
           Scripts
+        h4.
+          Click below to edit.
       table.table.table-striped.table-hover
           thead
               tr
@@ -38,11 +40,16 @@ block content
     .div.col-lg-5
       div.well.bs-component
         .div(align='center')
-          h3.
-            Update your Details
-        br
-
-        form#newScriptForm.form-horizontal(method='post')
+          if anonymous
+            h3.
+              Register or Login to submit protected scripts.
+          else 
+            h3.
+              Update your Details
+        if anonymous
+        else
+          br
+          form#newScriptForm.form-horizontal(method='post')
             fieldset
               .form-group
                   label.col-lg-2.control-label(for='inputEmailAddress') Email Address
@@ -59,11 +66,11 @@ block content
               .form-group
                   label.col-lg-2.control-label(name="year", for='inputYearGroup') Year Group
                   .col-lg-8
-                      select#inputYearGroup.form-control(value=userYear, name="year")
-                          option 1st Year
-                          option 2nd Year
-                          option 3rd Year
-                          option 4th Year
+                      select#inputYearGroup.form-control(name="year")
+                          option(selected=userYear=="1st Year") 1st Year
+                          option(selected=userYear=="2nd Year") 2nd Year
+                          option(selected=userYear=="3rd Year") 3rd Year
+                          option(selected=userYear=="4th Year") 4th Year
               .form-group
                 .col-lg-6.col-lg-offset-2
                   .btn-group

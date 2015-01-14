@@ -3,19 +3,26 @@ var router = express.Router();
 var User = require('../models/user');
 
 /* GET user profile. */
-router.get('/', isLoggedIn, function(req, res) {
+router.get('/', function(req, res) {
+    req.session.redirect = '/profile';
+    
     var collection = req.db.get('scriptcollection');
-
-    collection.find({email : req.user.local.email}, {sort : { scriptName : 1 }}, function(e, docs) {
+    
+    var anon = req.user == undefined;
+    var email = anon ? {"$exists" : false} : req.user.local.email;
+    
+    collection.find({email : email}, {sort : { scriptName : 1 }}, function(e, docs) {
       var submitted_recently = req.session.submitted;
       req.session.submitted = false;
+      
       res.render('profile', {
           "scripts"   : docs,
           "submitted" : submitted_recently,
-          "userYear"  : req.user.local.year,
-          "userEmail" : req.user.local.email,
-          "userUni"   : req.user.local.university,
-          "userDeg"   : req.user.local.degree
+          "anonymous" : anon,
+          "userYear"  : anon ? "" : req.user.local.year,
+          "userUni"   : anon ? "" : req.user.local.university,
+          "userDeg"   : anon ? "" : req.user.local.degree,
+          "userEmail" : anon ? "Anonymous" : req.user.local.email
       });
     });
 });
@@ -50,6 +57,7 @@ router.post('/', function(req, res) {
             return done(err);
           }
           console.log("Saved changes.");
+          res.redirect('/profile');
         });
       });
     }

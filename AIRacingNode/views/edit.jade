@@ -3,7 +3,7 @@ include ./basic_navigator.jade
 block content
 
   .div(align='left')
-    h3.
+    h1.
       Edit your Racing Script
 
   script(type='text/javascript', src='/events.js')
@@ -31,9 +31,13 @@ block content
           var script = document.getElementById('newScriptForm').elements["inputScript"].value;   
           
           if(language == "CoffeeScript") {
-              $.post("/compile", { script: script },  function(data) { 
-                  mapScripts(data); 
-              });
+              $.post("/compile", { script: script })
+                 .done(function(data) { 
+                   mapScripts(data); 
+                 })
+                 .fail(function(xhr, textStatus, errorThrown) {
+                   alert("Failed to compile! " + xhr.responseText);
+                 });
           } else {
               mapScripts(script);
           }  
@@ -79,42 +83,41 @@ block content
               .row
                   .col-lg-14
                     .form-group
-                      label.col-lg-1.control-label(for='inputScriptName') Script
-                      .col-lg-5
+                      label.col-lg-1.control-label(for='inputScriptName') Script Name
+                      .col-lg-3
                         input#inputScriptName.form-control(value=scriptName, type='text', name="scriptname", readonly="true")
-                      .col-lg-4
-                      button.btn.btn-default(type='button')#hide-editor Hide
-                      .col-lg-1
-                    .form-group
+                      
                       label.col-lg-1.control-label(for='selectLanguage') Language
-                      .col-lg-5
+                      .col-lg-3
                         select#selectLanguage.form-control(placeholder='Select Language', name="language", readonly="true")
                           - if (language != "CoffeeScript") {
                           option JavaScript
                           - } else {
                           option CoffeeScript
                           - }
-                      .col-lg-1
+                      .col-lg-2
+                      .col-lg-3(align="right")
+                        button.btn.btn-default(type='button')#hide-editor Hide
                     .form-group
-                      label.col-lg-1.control-label(for='inputScript')
-                      .col-lg-10
-                        textarea#inputScript(name='script',data-editor="javascript")
-                      .col-lg-1
+                      label.col-lg-1.control-label(for='inputScript') Script
+                      .col-lg-7
+                        textarea#inputScript(name='script', data-editor="javascript")
+                      .col-lg-6
                     .form-group
                       br
                       label.col-lg-1.control-label(for='inputAIName') Enemy
-                      .col-lg-5
+                      .col-lg-3
                         select#selectOpponent.form-control(placeholder='Select Script', name="opponent", onchange='handleOpponentChange()')
                             - if (allScripts.length) {
                             each entry, i in allScripts
                                 option(selected=entry.scriptName == scriptName)= entry.scriptName
                             - }
                       .col-lg-1
-                      .col-lg-6.col-lg-offset-2
-                      .btn-group
-                        button.btn.btn-default(type='button', onclick='updateScript()') Update
-                        button.btn.btn-primary(type='submit') Submit
-                        button.btn.btn-danger(type='button', onclick='restartRace()') Restart
+                      .col-lg-6(align="right")
+                        .btn-group
+                          button.btn.btn-default(type='button', onclick='updateScript()') Update
+                          button.btn.btn-primary(type='submit') Submit
+                          button.btn.btn-danger(type='button', onclick='restartRace()') Restart
   #restore-editor
     button.btn-default.btn-lg.btn-block(type='button')#show-editor Restore Editor
     br
@@ -162,7 +165,8 @@ block content
         var editor = ace.edit(editDiv[0]);
 
         editor.setOptions({
-          maxLines:15
+          maxLines:15,
+          minLines:10
         });
         editor.getSession().on('change', function(){
           textarea.val(editor.getSession().getValue());

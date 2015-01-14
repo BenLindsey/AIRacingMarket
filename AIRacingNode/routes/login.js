@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
         }
 
         if (!req.session.redirect) {
-          return res.redirect('/');
+          return res.redirect('/profile');
         }
         return res.redirect(req.session.redirect);
       });
