@@ -25,7 +25,7 @@ router.get('/next', [isLoggedIn, isAdmin], function(req, res) {
         var levels = ["OvalTrack","TheWinder", "EightTrack"];
         var levelIndex =  Math.floor(Math.random() * levels.length); 
          
-        var url = "/webbuild?levelname=" + levels[levelIndex]
+        var url = "/webbuild?levelname=TheWinder" //+ levels[levelIndex]
                 + "&gamemode=Tournament"
                 + "&carname=Catamount";
 
