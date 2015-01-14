@@ -15,6 +15,8 @@ block content
                      {name: !{JSON.stringify(scriptName)}, content:!{JSON.stringify(script)}} ];
       var levelname = "OvalTrack";
       var carname = "Catamount";
+      
+      var sendOpponentNameToUnity = function (name) { };
     
       var mapScripts = function(script) {
          scripts = scripts.map(function(s) {
@@ -62,6 +64,7 @@ block content
 
               if(s.scriptName == opponent) {
                   scripts[1] = {name : s.scriptName, content : s.script, update : buildUpdate(s.script)};
+                  sendOpponentNameToUnity(opponent);
                   break;
               }
           }
