@@ -4,6 +4,8 @@ var User = require('../models/user');
 
 /* GET user profile. */
 router.get('/', function(req, res) {
+    req.session.redirect = '/profile';
+    
     var collection = req.db.get('scriptcollection');
     
     var anon = req.user == undefined;
