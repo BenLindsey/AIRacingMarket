@@ -118,6 +118,7 @@
 				}
                 		// Execute script
 				scripts[state.car].update(api);
+				console.log(commands);
 
                 // Post commands to unity
 				u.getUnity().SendMessage("StartingGrid", "ExecuteCommands", JSON.stringify(commands));
