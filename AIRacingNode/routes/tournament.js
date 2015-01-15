@@ -22,10 +22,10 @@ router.get('/next', [isLoggedIn, isAdmin], function(req, res) {
         }
          
         //Select random level
-        var levels = ["OvalTrack","TheWinder", "EightTrack"];
+        var levels = ["OvalTrack","TheWinder", "EightTrack", "Jump"];
         var levelIndex =  Math.floor(Math.random() * levels.length); 
          
-        var url = "/webbuild?levelname=TheWinder" //+ levels[levelIndex]
+        var url = "/webbuild?levelname=" + levels[levelIndex]
                 + "&gamemode=Tournament"
                 + "&carname=Catamount";
 
