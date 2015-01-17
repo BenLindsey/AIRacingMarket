@@ -8,11 +8,11 @@ module.exports = function(db) {
 };
 
 function setupScripts(db) {
-    var glob = require('glob');
     var scriptCollection = db.get('scriptcollection');
 
     scriptCollection.count({}, function(err, count) {
         if (count === 0) {
+            var glob = require('glob');
             glob('scripts/*', function (err, scriptfiles) {
                 var scripts = [];
 
