@@ -16,6 +16,7 @@
     "express": "~4.9.0",
     "express-session": "*",
     "fs": "*",
+    "glob": "*",
     "jade": "~1.6.0",
     "mocha": "*",
     "mongodb": "*",

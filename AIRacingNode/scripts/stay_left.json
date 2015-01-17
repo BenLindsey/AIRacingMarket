@@ -1,0 +1,5 @@
+{
+    "scriptName" : "StayLeft",
+    "language" : "JavaScript",
+    "script" : "// The vehicle can be controlled by calling functions on the\r\n// api object, e.g. api.SetThrottle()\r\n\r\n// Global state can be initialised here\r\nvar maxSpeed = 18;\r\n\r\nvar PhysicsUpdate = function(api) {\r\n    api.ChangeLaneLeft();\r\n    \r\n    if(api.GetSpeed() > maxSpeed) {\r\n        api.SetThrottle(0);\r\n    } else {\r\n        api.SetThrottle(70);\r\n    }\r\n};"
+}

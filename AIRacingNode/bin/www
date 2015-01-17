@@ -5,6 +5,8 @@ var app = require('../app');
 var monk = require('monk');
 var db = monk(require('../config/database').url);
 
+require('../config/setupdb')(db);
+
 // Fetch the branch name from the environment
 var branch = process.env.BRANCH;
 console.log("Found branch " + branch);
