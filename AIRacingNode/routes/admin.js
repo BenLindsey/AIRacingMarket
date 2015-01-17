@@ -58,10 +58,11 @@ router.post('/deleteuser', [isLoggedIn, isAdmin], function(req, res) {
 router.post('/deletescripts', [isLoggedIn, isAdmin], function(req, res) {
     var collection = req.db.get('scriptcollection');
    
-    console.log("deleting scripts for " + req.body.user); 
-    collection.remove({"email":req.body.user}, function (err, doc) {
+    console.log("deleting scripts for " + req.body.user);
+    var email = req.body.user === 'Anonymous' ? null : req.body.user;
+    collection.remove({"email":email}, function (err, doc) {
         if (err) {
-            res.send("There was a problem deleting user");
+            res.send("There was a problem deleting scripts");
         } else {
            res.sendStatus(200);
         }
