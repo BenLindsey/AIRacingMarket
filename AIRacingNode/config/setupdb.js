@@ -4,6 +4,7 @@
 
 module.exports = function(db) {
     setupScripts(db);
+    setupAdmin(db);
 };
 
 function setupScripts(db) {
@@ -22,5 +23,16 @@ function setupScripts(db) {
                 scriptCollection.insert(scripts);
             });
         }
+    });
+}
+
+function setupAdmin(db) {
+    var users = db.get('users');
+
+    users.findOne({ 'local.email' : 'Admin'}, function(err, admin) {
+        if (!admin) {
+            // Create admin
+        }
+
     });
 }
