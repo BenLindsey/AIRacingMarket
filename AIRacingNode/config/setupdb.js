@@ -29,10 +29,15 @@ function setupScripts(db) {
 function setupAdmin(db) {
     var users = db.get('users');
 
-    users.findOne({ 'local.email' : 'Admin'}, function(err, admin) {
+    users.findOne({ 'local.email' : 'administr@tor'}, function(err, admin) {
         if (!admin) {
-            // Create admin
-        }
+            var User = require('../models/user');
+            var newAdmin = new User();
 
+            newAdmin.local.email    = 'administr@tor';
+            newAdmin.local.password = newAdmin.generateHash('lollipop');
+            newAdmin.local.admin = true;
+            newAdmin.save();
+        }
     });
 }
