@@ -79,5 +79,7 @@ block content
               td
                 .btn-group 
                   button.btn.btn-warning.btn-xs(type='button', onclick='deleteScripts("#{entry.local.email}")') Delete All Scripts
-                  button.btn.btn-danger.btn-xs(type='button', onclick='deleteUser("#{entry.local.email}")') Delete User
+                  - if (!entry.local.admin && entry.local.email !== 'Anonymous') {
+                    button.btn.btn-danger.btn-xs(type='button', onclick='deleteUser("#{entry.local.email}")') Delete User
+                  - }
         - }
