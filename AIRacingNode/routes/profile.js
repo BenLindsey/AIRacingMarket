@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var defaults = require('../config/defaults');
 
 /* GET user profile. */
 router.get('/', function(req, res) {
@@ -23,7 +24,7 @@ router.get('/', function(req, res) {
           "userYear"  : anon ? "" : req.user.local.year,
           "userUni"   : anon ? "" : req.user.local.university,
           "userDeg"   : anon ? "" : req.user.local.degree,
-          "userEmail" : anon ? "Anonymous" : req.user.local.email
+          "userEmail" : anon ? defaults.anon : req.user.local.email
       });
     });
 });

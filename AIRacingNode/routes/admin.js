@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var defaults = require('../config/defaults');
 
 /* GET user profile. */
 router.get('/', [isLoggedIn, isAdmin], function(req, res) {
@@ -32,11 +33,11 @@ router.get('/', [isLoggedIn, isAdmin], function(req, res) {
                
             });
 
-            docs[docs.length-1].local.email = "Anonymous";
-            // I miss SQL. I never thought I'd say it.
+            docs[docs.length-1].local.email = defaults.anon;
 
             res.render('admin', {
-                "users" : docs
+                "users"    : docs,
+                "defaults" : defaults
             });
         });
     });
@@ -59,7 +60,7 @@ router.post('/deletescripts', [isLoggedIn, isAdmin], function(req, res) {
     var collection = req.db.get('scriptcollection');
    
     console.log("deleting scripts for " + req.body.user);
-    var email = req.body.user === 'Anonymous' ? null : req.body.user;
+    var email = req.body.user === defaults.anon ? null : req.body.user;
     collection.remove({"email":email}, function (err, doc) {
         if (err) {
             res.send("There was a problem deleting scripts");

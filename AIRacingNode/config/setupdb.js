@@ -2,6 +2,8 @@
 // -- Basic scripts.
 // -- Default admin account
 
+var defaults = require('./defaults');
+
 module.exports = function(db) {
     setupScripts(db);
     setupAdmin(db);
@@ -29,12 +31,12 @@ function setupScripts(db) {
 function setupAdmin(db) {
     var users = db.get('users');
 
-    users.findOne({ 'local.email' : 'administr@tor'}, function(err, admin) {
+    users.findOne({ 'local.email' : defaults.admin}, function(err, admin) {
         if (!admin) {
             var User = require('../models/user');
             var newAdmin = new User();
 
-            newAdmin.local.email    = 'administr@tor';
+            newAdmin.local.email    = defaults.admin;
             newAdmin.local.password = newAdmin.generateHash('lollipop');
             newAdmin.local.admin = true;
             newAdmin.save();
