@@ -19,6 +19,7 @@ router.get('/', function(req, res) {
           "scripts"   : docs,
           "submitted" : submitted_recently,
           "anonymous" : anon,
+          "admin"     : anon ? false : req.user.local.admin,
           "userYear"  : anon ? "" : req.user.local.year,
           "userUni"   : anon ? "" : req.user.local.university,
           "userDeg"   : anon ? "" : req.user.local.degree,

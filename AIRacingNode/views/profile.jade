@@ -37,41 +37,42 @@ block content
                               =entry.scriptName
               - }
     .div.col-lg-2
-    .div.col-lg-5
-      div.well.bs-component
-        .div(align='center')
+    if !admin
+      .div.col-lg-5
+        div.well.bs-component
+          .div(align='center')
+            if anonymous
+              h3.
+                Register or Login to submit protected scripts.
+            else
+              h3.
+                Update your Details
           if anonymous
-            h3.
-              Register or Login to submit protected scripts.
-          else 
-            h3.
-              Update your Details
-        if anonymous
-        else
-          br
-          form#newScriptForm.form-horizontal(method='post')
-            fieldset
-              .form-group
-                  label.col-lg-2.control-label(for='inputEmailAddress') Email Address
-                  .col-lg-8
-                      input#inputEmailAddress.form-control(value=userEmail, placeholder='Enter your Email Address', type='email', name="emailaddress", readonly="true")
-              .form-group
-                  label.col-lg-2.control-label(for='inputUniversityName') University Name
-                  .col-lg-8
-                      input#inputUniversityName.form-control(value=userUni, placeholder='Which University do you attend?', type='text', name="university")
-              .form-group
-                  label.col-lg-2.control-label(for='inputCourse') Course
-                  .col-lg-8
-                      input#inputCourse.form-control(value=userDeg, placeholder='What do you study?', type='text', name="course")
-              .form-group
-                  label.col-lg-2.control-label(name="year", for='inputYearGroup') Year Group
-                  .col-lg-8
-                      select#inputYearGroup.form-control(name="year")
-                          option(selected=userYear=="1st Year") 1st Year
-                          option(selected=userYear=="2nd Year") 2nd Year
-                          option(selected=userYear=="3rd Year") 3rd Year
-                          option(selected=userYear=="4th Year") 4th Year
-              .form-group
-                .col-lg-6.col-lg-offset-2
-                  .btn-group
-                    button.btn.btn-primary(type='submit') Update
+          else
+            br
+            form#newScriptForm.form-horizontal(method='post')
+              fieldset
+                .form-group
+                    label.col-lg-2.control-label(for='inputEmailAddress') Email Address
+                    .col-lg-8
+                        input#inputEmailAddress.form-control(value=userEmail, placeholder='Enter your Email Address', type='email', name="emailaddress", readonly="true")
+                .form-group
+                    label.col-lg-2.control-label(for='inputUniversityName') University Name
+                    .col-lg-8
+                        input#inputUniversityName.form-control(value=userUni, placeholder='Which University do you attend?', type='text', name="university")
+                .form-group
+                    label.col-lg-2.control-label(for='inputCourse') Course
+                    .col-lg-8
+                        input#inputCourse.form-control(value=userDeg, placeholder='What do you study?', type='text', name="course")
+                .form-group
+                    label.col-lg-2.control-label(name="year", for='inputYearGroup') Year Group
+                    .col-lg-8
+                        select#inputYearGroup.form-control(name="year")
+                            option(selected=userYear=="1st Year") 1st Year
+                            option(selected=userYear=="2nd Year") 2nd Year
+                            option(selected=userYear=="3rd Year") 3rd Year
+                            option(selected=userYear=="4th Year") 4th Year
+                .form-group
+                  .col-lg-6.col-lg-offset-2
+                    .btn-group
+                      button.btn.btn-primary(type='submit') Update
