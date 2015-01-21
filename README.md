@@ -1,9 +1,11 @@
--- AI Racing Node --
+#AI Racing Challenge
 
-#Dependencies
 
-MongoDB: http://www.mongodb.org/downloads 
+##Dependencies
+
+MongoDB: http://www.mongodb.org/downloads
+
 Node.js: http://nodejs.org/
 
-#Execution
+##Execution
 node AIRacingNode/bin/www
