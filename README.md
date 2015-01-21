@@ -1,11 +1,9 @@
 -- AI Racing Node --
 
-Installation Guide
+#Dependencies
 
-1) Install MongoDB: http://www.mongodb.org/downloads
-2) Install Node.js: http://nodejs.org/
+MongoDB: http://www.mongodb.org/downloads 
+Node.js: http://nodejs.org/
 
-Handover Issues
-
-1) Lack of forever
-2) Bundle ace code
+#Execution
+node AIRacingNode/bin/www
